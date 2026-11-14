@@ -45,7 +45,7 @@ function StatItem({
           {suffix}
         </span>
       </p>
-      <p className="text-sm font-medium text-white/60 md:text-[15px]">{label}</p>
+      <p className="text-[15px] font-medium text-white/70 md:text-[16px]">{label}</p>
     </div>
   );
 }
@@ -81,7 +81,7 @@ export function Stats() {
               숫자로 보는 채다원
             </h2>
           </div>
-          <p className="max-w-md text-[15px] leading-relaxed text-white/55">
+          <p className="max-w-md text-[16px] leading-relaxed text-white/60">
             항공사 케이터링의 엄격한 품질 기준과 16,000개 고객사의 신뢰가
             만든 성과입니다.
           </p>

@@ -42,7 +42,7 @@ export function About() {
                 <span className="block text-lg font-extrabold tracking-tight text-foreground">
                   {COMPANY.ceo}
                 </span>
-                <span className="mt-1 block text-sm font-semibold text-muted-foreground">
+                <span className="mt-1 block text-[15px] font-semibold text-muted-foreground">
                   (주)채다원 대표이사
                 </span>
               </span>
@@ -63,7 +63,7 @@ export function About() {
             </div>
             <div className="mt-6 overflow-hidden rounded-2xl border border-brand-line bg-cream">
               <div className="border-b border-brand-line bg-brand px-6 py-3.5">
-                <p className="text-[13px] font-bold tracking-[0.18em] text-white">
+                <p className="text-[14px] font-bold tracking-[0.18em] text-white">
                   기업 개요 <span className="text-white/60">CORPORATE PROFILE</span>
                 </p>
               </div>
@@ -73,10 +73,10 @@ export function About() {
                     key={row.label}
                     className="flex items-start gap-4 px-6 py-3.5"
                   >
-                    <dt className="w-20 shrink-0 text-[14px] font-bold text-brand-deep">
+                    <dt className="w-20 shrink-0 text-[15px] font-bold text-brand-deep">
                       {row.label}
                     </dt>
-                    <dd className="text-[14px] leading-relaxed text-foreground/80">
+                    <dd className="text-[15px] leading-relaxed text-foreground/80">
                       {row.value}
                     </dd>
                   </div>
@@ -98,7 +98,7 @@ export function About() {
                     decimals={"decimals" in m ? (m.decimals as number) : 0}
                   />
                 </dd>
-                <dt className="text-[14px] font-semibold text-muted-foreground">
+                <dt className="text-[15px] font-semibold text-muted-foreground">
                   {m.label}
                 </dt>
               </div>

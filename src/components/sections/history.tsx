@@ -36,7 +36,7 @@ export function History() {
                     <span
                       className={
                         yi === 0
-                          ? "flex h-6 w-6 items-center justify-center rounded-full bg-brand text-[10px] font-extrabold text-white md:h-8 md:w-8 md:text-[11px]"
+                          ? "flex h-6 w-6 items-center justify-center rounded-full bg-brand text-[11px] font-extrabold text-white md:h-8 md:w-8 md:text-[12px]"
                           : "h-3 w-3 rounded-full border-2 border-brand bg-white md:h-4 md:w-4"
                       }
                     >
@@ -53,10 +53,10 @@ export function History() {
                         key={`${h.year}-${item.month}-${item.text}`}
                         className="flex items-center gap-3 rounded-xl border border-brand-line bg-white px-4 py-3"
                       >
-                        <span className="font-num shrink-0 rounded-md bg-brand-soft px-2 py-1 text-[12px] font-extrabold text-brand">
+                        <span className="font-num shrink-0 rounded-md bg-brand-soft px-2 py-1 text-[13.5px] font-extrabold text-brand">
                           {item.month}월
                         </span>
-                        <span className="text-[14px] font-semibold text-foreground/85">
+                        <span className="text-[15.5px] font-semibold text-foreground/85">
                           {item.text}
                         </span>
                       </li>

@@ -40,19 +40,19 @@ export function Products() {
               <TabsList className="h-12 w-full justify-start gap-1 rounded-full border border-brand-line bg-cream p-1.5 lg:w-auto">
                 <TabsTrigger
                   value="salad"
-                  className="rounded-full px-4 py-2 text-[14px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
+                  className="rounded-full px-4 py-2 text-[15px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
                 >
                   프리미엄 샐러드
                 </TabsTrigger>
                 <TabsTrigger
                   value="kit"
-                  className="rounded-full px-4 py-2 text-[14px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
+                  className="rounded-full px-4 py-2 text-[15px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
                 >
                   셀러드 키트
                 </TabsTrigger>
                 <TabsTrigger
                   value="oem"
-                  className="rounded-full px-4 py-2 text-[14px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
+                  className="rounded-full px-4 py-2 text-[15px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
                 >
                   OEM · ODM
                 </TabsTrigger>
@@ -74,13 +74,13 @@ export function Products() {
                           />
                         </div>
                         <div className="p-4">
-                          <h3 className="text-[15.5px] font-extrabold tracking-tight text-foreground">
+                          <h3 className="text-[16.5px] font-extrabold tracking-tight text-foreground">
                             {p.name}
                           </h3>
-                          <p className="mt-1 text-[12px] font-semibold tracking-wide text-muted-foreground">
+                          <p className="mt-1 text-[13px] font-semibold tracking-wide text-muted-foreground">
                             {p.en}
                           </p>
-                          <div className="font-num mt-3 flex items-center gap-1.5 text-[12px] font-bold text-brand">
+                          <div className="font-num mt-3 flex items-center gap-1.5 text-[13.5px] font-bold text-brand">
                             <span>{p.weight}</span>
                             <span className="text-brand-line" aria-hidden="true">
                               |
@@ -91,7 +91,7 @@ export function Products() {
                             </span>
                             <span>{p.dressing}</span>
                           </div>
-                          <p className="mt-3 line-clamp-2 text-[12.5px] leading-relaxed text-muted-foreground">
+                          <p className="mt-3 line-clamp-2 text-[13.5px] leading-relaxed text-muted-foreground">
                             {p.items.join(" · ")}
                           </p>
                         </div>
@@ -102,10 +102,10 @@ export function Products() {
                 <div className="mt-8 grid gap-3 rounded-2xl border border-brand-line bg-cream p-6 sm:grid-cols-3">
                   {PRODUCT_LINES.map((line) => (
                     <div key={line.name}>
-                      <p className="text-[14px] font-extrabold text-brand-deep">
+                      <p className="text-[15px] font-extrabold text-brand-deep">
                         {line.name}
                       </p>
-                      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                      <p className="mt-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
                         {line.desc}
                       </p>
                     </div>
@@ -127,7 +127,7 @@ export function Products() {
                     />
                   </FadeIn>
                   <FadeIn delay={0.1}>
-                    <p className="text-[12px] font-bold tracking-[0.22em] text-brand">
+                    <p className="text-[13px] font-bold tracking-[0.22em] text-brand">
                       SALAD KIT · 1,000g
                     </p>
                     <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-[28px]">
@@ -139,7 +139,7 @@ export function Products() {
                           <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                             <Check className="h-3 w-3" aria-hidden="true" />
                           </span>
-                          <span className="text-[15px] leading-relaxed text-foreground/80">
+                          <span className="text-[16px] leading-relaxed text-foreground/80">
                             {f}
                           </span>
                         </li>
@@ -157,7 +157,7 @@ export function Products() {
               <TabsContent value="oem" className="mt-10">
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                   <FadeIn delay={0.1} className="order-2 lg:order-1">
-                    <p className="text-[12px] font-bold tracking-[0.22em] text-brand">
+                    <p className="text-[13px] font-bold tracking-[0.22em] text-brand">
                       OEM · ODM MANUFACTURING
                     </p>
                     <h3 className="mt-3 text-2xl font-extrabold tracking-tight whitespace-pre-line text-foreground md:text-[28px]">
@@ -169,7 +169,7 @@ export function Products() {
                           <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                             <Check className="h-3 w-3" aria-hidden="true" />
                           </span>
-                          <span className="text-[15px] leading-relaxed text-foreground/80">
+                          <span className="text-[16px] leading-relaxed text-foreground/80">
                             {f}
                           </span>
                         </li>

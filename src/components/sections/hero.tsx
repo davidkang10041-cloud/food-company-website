@@ -110,7 +110,7 @@ export function Hero() {
             className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-tomato"
             aria-hidden="true"
           />
-          <span className="text-[12px] font-bold tracking-[0.2em] text-white/90 md:text-[13px]">
+          <span className="text-[13px] font-bold tracking-[0.2em] text-white/90 md:text-[14px]">
             {slide.badge}
           </span>
         </div>
@@ -207,7 +207,7 @@ export function Hero() {
                 >
                   <span
                     className={cn(
-                      "text-[12px] font-bold tracking-wider transition-colors",
+                      "text-[13px] font-bold tracking-wider transition-colors",
                       i === index ? "text-white" : "text-white/45"
                     )}
                   >
@@ -231,7 +231,7 @@ export function Hero() {
 
           <a
             href="#about"
-            className="hidden items-center gap-3 text-[12px] font-bold tracking-[0.22em] text-white/60 transition-colors hover:text-white md:flex"
+            className="hidden items-center gap-3 text-[13px] font-bold tracking-[0.22em] text-white/60 transition-colors hover:text-white md:flex"
             aria-label="아래로 스크롤"
           >
             SCROLL DOWN

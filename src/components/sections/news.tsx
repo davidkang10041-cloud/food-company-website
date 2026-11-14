@@ -77,27 +77,27 @@ export function News() {
             {NEWS.map((item) => (
               <li key={item.title}>
                 <a href="#contact" className="news-row group">
-                  <span className="font-num w-20 shrink-0 text-[14px] font-bold text-muted-foreground md:w-24">
+                  <span className="font-num w-20 shrink-0 text-[15px] font-bold text-muted-foreground md:w-24">
                     {item.date}
                   </span>
                   <span
                     className={cn(
-                      "shrink-0 self-start rounded-full px-3 py-1 text-[12px] font-bold md:self-auto",
+                      "shrink-0 self-start rounded-full px-3 py-1 text-[13px] font-bold md:self-auto",
                       CATEGORY_STYLE[item.category] ?? "bg-brand text-white"
                     )}
                   >
                     {item.category}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[16px] font-bold tracking-tight text-foreground transition-colors group-hover:text-brand md:text-[17px]">
+                    <span className="block text-[17px] font-bold tracking-tight text-foreground transition-colors group-hover:text-brand md:text-[19px]">
                       {item.title}
                       {item.highlight && (
-                        <span className="ml-2 inline-flex rounded-full bg-brand-soft px-2 py-0.5 align-middle text-[11px] font-bold text-brand">
+                        <span className="ml-2 inline-flex rounded-full bg-brand-soft px-2 py-0.5 align-middle text-[12px] font-bold text-brand">
                           NEW
                         </span>
                       )}
                     </span>
-                    <span className="mt-1 block line-clamp-1 text-[13.5px] text-muted-foreground md:mt-1.5">
+                    <span className="mt-1 block line-clamp-1 text-[15px] text-muted-foreground md:mt-1.5">
                       {item.desc}
                     </span>
                   </span>

@@ -87,7 +87,7 @@ export function Contact() {
                   <Phone className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-[13px] font-semibold text-white/55">
+                  <span className="block text-[14.5px] font-semibold text-white/60">
                     대표전화
                   </span>
                   <span className="font-num mt-1 block text-xl font-extrabold tracking-tight text-white">
@@ -100,10 +100,10 @@ export function Contact() {
                   <MapPin className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-[13px] font-semibold text-white/55">
+                  <span className="block text-[14.5px] font-semibold text-white/60">
                     주소
                   </span>
-                  <span className="mt-1 block text-[15px] font-bold text-white">
+                  <span className="mt-1 block text-[16px] font-bold text-white">
                     {COMPANY.address}
                   </span>
                 </span>
@@ -113,10 +113,10 @@ export function Contact() {
                   <Building2 className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-[13px] font-semibold text-white/55">
+                  <span className="block text-[14.5px] font-semibold text-white/60">
                     사업분야
                   </span>
-                  <span className="mt-1 block text-[15px] font-bold text-white">
+                  <span className="mt-1 block text-[16px] font-bold text-white">
                     {COMPANY.business}
                   </span>
                 </span>
@@ -134,13 +134,13 @@ export function Contact() {
               <h3 className="text-xl font-extrabold tracking-tight text-foreground">
                 1:1 문의하기
               </h3>
-              <p className="mt-2 text-[14px] text-muted-foreground">
+              <p className="mt-2 text-[15px] text-muted-foreground">
                 아래 정보를 남겨주시면 빠르게 연락드리겠습니다.
               </p>
 
               <div className="mt-6 grid gap-5">
                 <div className="grid gap-2">
-                  <Label htmlFor="contact-name">
+                  <Label htmlFor="contact-name" className="text-[15px]">
                     성명 <span className="text-tomato">*</span>
                   </Label>
                   <Input
@@ -152,7 +152,7 @@ export function Contact() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="contact-company">회사명 / 상호</Label>
+                  <Label htmlFor="contact-company" className="text-[15px]">회사명 / 상호</Label>
                   <Input
                     id="contact-company"
                     value={form.company}
@@ -161,7 +161,7 @@ export function Contact() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="contact-phone">
+                  <Label htmlFor="contact-phone" className="text-[15px]">
                     연락처 <span className="text-tomato">*</span>
                   </Label>
                   <Input
@@ -174,7 +174,7 @@ export function Contact() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="contact-message">
+                  <Label htmlFor="contact-message" className="text-[15px]">
                     문의내용 <span className="text-tomato">*</span>
                   </Label>
                   <Textarea
@@ -191,12 +191,12 @@ export function Contact() {
               <Button
                 type="submit"
                 disabled={pending}
-                className="mt-6 h-13 w-full rounded-full bg-brand py-4 text-[15px] font-bold hover:bg-brand-deep"
+                className="mt-6 h-13 w-full rounded-full bg-brand py-4 text-[16px] font-bold hover:bg-brand-deep"
               >
                 {pending ? "전송 중..." : "문의 접수하기"}
                 <Send className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <p className="mt-3 text-center text-[12px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-center text-[13px] leading-relaxed text-muted-foreground">
                 입력하신 개인정보는 문의 처리 목적으로만 활용되며, 일정 기간
                 후 안전하게 파기됩니다.
               </p>

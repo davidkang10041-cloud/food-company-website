@@ -31,10 +31,10 @@ export function Partners() {
           {PARTNERS.map((p, i) => (
             <FadeIn as="li" key={p.name} delay={(i % 4) * 0.05}>
               <article className="hover-lift flex h-full flex-col justify-between rounded-2xl border border-brand-line bg-cream p-6">
-                <p className="text-[17px] font-extrabold tracking-tight text-brand-deep">
+                <p className="text-[18px] font-extrabold tracking-tight text-brand-deep">
                   {p.name}
                 </p>
-                <p className="mt-2 text-[13px] font-semibold text-muted-foreground">
+                <p className="mt-2 text-[14.5px] font-semibold text-muted-foreground">
                   {p.ko}
                 </p>
               </article>
@@ -42,10 +42,10 @@ export function Partners() {
           ))}
           <FadeIn as="li" delay={0.2}>
             <article className="flex h-full flex-col justify-between rounded-2xl bg-brand p-6 text-white">
-              <p className="text-[17px] font-extrabold tracking-tight">
+              <p className="text-[18px] font-extrabold tracking-tight">
                 16,000+
               </p>
-              <p className="mt-2 text-[13px] font-semibold text-white/75">
+              <p className="mt-2 text-[14.5px] font-semibold text-white/75">
                 이용 고객사와 함께 성장합니다
               </p>
             </article>
@@ -61,10 +61,10 @@ export function Partners() {
                   <c.icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <p className="text-[15px] font-extrabold text-foreground">
+                  <p className="text-[16px] font-extrabold text-foreground">
                     {c.label}
                   </p>
-                  <p className="mt-1 text-[13px] text-muted-foreground">
+                  <p className="mt-1 text-[14.5px] text-muted-foreground">
                     {c.desc}
                   </p>
                 </div>

@@ -28,13 +28,13 @@ export function Quality() {
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand">
                   <BadgeCheck className="h-5.5 w-5.5" aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 text-[17px] font-extrabold tracking-tight text-foreground">
+                <h3 className="mt-4 text-[18px] font-extrabold tracking-tight text-foreground">
                   {cert.name}
                 </h3>
-                <p className="mt-1.5 text-[12.5px] font-semibold text-brand">
+                <p className="mt-1.5 text-[14px] font-semibold text-brand">
                   HACCP {cert.no}
                 </p>
-                <p className="font-num mt-2 text-[12.5px] text-muted-foreground">
+                <p className="font-num mt-2 text-[14px] text-muted-foreground">
                   {cert.period}
                 </p>
               </article>
@@ -77,7 +77,7 @@ export function Quality() {
               <br />
               다품종 소량생산까지
             </h3>
-            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-foreground">
               HACCP 기준으로 설계된 자체공장에서 제품유형에 맞는 다품종
               소량생산을 지원합니다. GP460 자동 열성형 진공포장기부터 금속
               검출기까지, 전 공정 전문 설비를 운영합니다.
@@ -86,13 +86,13 @@ export function Quality() {
               {EQUIPMENTS.map((eq) => (
                 <li
                   key={eq}
-                  className="rounded-full border border-brand-line bg-white px-3.5 py-1.5 text-[12.5px] font-semibold text-brand-deep"
+                  className="rounded-full border border-brand-line bg-white px-3.5 py-1.5 text-[14px] font-semibold text-brand-deep"
                 >
                   {eq}
                 </li>
               ))}
             </ul>
-            <p className="mt-6 flex items-center gap-2 text-[13px] font-bold text-brand">
+            <p className="mt-6 flex items-center gap-2 text-[15px] font-bold text-brand">
               <ShieldCheck className="h-4 w-4" aria-hidden="true" />
               과채가공품 · 간편조리세트 · 신선편의식품 · 즉석섭취식품 4개 품목
               인증

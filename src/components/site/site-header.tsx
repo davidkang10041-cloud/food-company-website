@@ -186,7 +186,7 @@ export function SiteHeader() {
           )}
         >
           <div className="utility-bar">
-            <div className="mx-auto flex h-10 max-w-[1280px] items-center justify-between px-8 text-[12px] font-medium tracking-wide text-white/70">
+            <div className="mx-auto flex h-10 max-w-[1280px] items-center justify-between px-8 text-[13px] font-medium tracking-wide text-white/75">
               <p>
                 식자재 유통 · 밀키트 OEM/ODM — HACCP 인증 4종 보유 전문 기업
               </p>
@@ -298,7 +298,7 @@ export function SiteHeader() {
             <a
               href="#contact"
               className={cn(
-                "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-all",
+                "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-bold transition-all",
                 scrolled
                   ? "bg-brand text-white hover:bg-brand-deep"
                   : "bg-white/15 text-white ring-1 ring-white/40 backdrop-blur-sm hover:bg-white hover:text-brand-deep"
@@ -353,19 +353,19 @@ export function SiteHeader() {
                   <div>
                     {MEGA.filter((m) => m.href === openMenu).map((item) => (
                       <div key={item.href}>
-                        <p className="text-[11px] font-bold tracking-[0.3em] text-brand">
+                        <p className="text-[12px] font-bold tracking-[0.3em] text-brand">
                           {item.en.toUpperCase()}
                         </p>
                         <p className="mt-3 text-2xl font-extrabold tracking-tight text-foreground">
                           {item.label}
                         </p>
-                        <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-muted-foreground">
+                        <p className="mt-3 whitespace-pre-line text-[16px] leading-relaxed text-muted-foreground">
                           {item.desc}
                         </p>
                         <a
                           href={item.href}
                           onClick={() => setOpenMenu(null)}
-                          className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-brand transition-all hover:gap-2.5"
+                          className="mt-5 inline-flex items-center gap-1.5 text-[15px] font-bold text-brand transition-all hover:gap-2.5"
                         >
                           바로가기 <span aria-hidden="true">→</span>
                         </a>
@@ -379,7 +379,7 @@ export function SiteHeader() {
                           <a
                             href={link.href}
                             onClick={() => setOpenMenu(null)}
-                            className="group flex items-center justify-between rounded-lg px-4 py-3 text-[15px] font-semibold text-foreground/75 transition-colors hover:bg-brand-soft hover:text-brand"
+                            className="group flex items-center justify-between rounded-lg px-4 py-3 text-[16px] font-semibold text-foreground/75 transition-colors hover:bg-brand-soft hover:text-brand"
                           >
                             {link.label}
                             <span
@@ -414,7 +414,7 @@ export function SiteHeader() {
             aria-label="통합 검색"
           >
             <div className="mx-auto flex h-16 w-full max-w-[880px] items-center justify-between px-5 pt-8 md:h-20">
-              <p className="text-[12px] font-bold tracking-[0.28em] text-white/60">
+              <p className="text-[13px] font-bold tracking-[0.28em] text-white/60">
                 SEARCH CHEDAWON
               </p>
               <button
@@ -442,7 +442,7 @@ export function SiteHeader() {
                   aria-label="검색어 입력"
                 />
               </div>
-              <p className="mt-4 text-sm font-semibold text-white/50">
+              <p className="mt-4 text-[15px] font-semibold text-white/50">
                 {query.trim()
                   ? `${results.length}개의 결과를 찾았습니다`
                   : "주요 메뉴 바로가기"}
@@ -453,7 +453,7 @@ export function SiteHeader() {
                     <a
                       href={link.href}
                       onClick={closeSearch}
-                      className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] font-semibold text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+                      className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-[16px] font-semibold text-white/75 transition-colors hover:bg-white/10 hover:text-white"
                     >
                       {link.label}
                       <ChevronRight
@@ -464,7 +464,7 @@ export function SiteHeader() {
                   </li>
                 ))}
                 {results.length === 0 && (
-                  <li className="col-span-full py-10 text-center text-[15px] text-white/50">
+                  <li className="col-span-full py-10 text-center text-[16px] text-white/50">
                     &ldquo;{query}&rdquo;에 대한 검색 결과가 없습니다.
                   </li>
                 )}
@@ -534,7 +534,7 @@ export function SiteHeader() {
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <p className="pb-3 text-sm leading-relaxed text-white/55">
+                          <p className="pb-3 text-[15px] leading-relaxed text-white/60">
                             {item.desc.replace(/\n/g, " ")}
                           </p>
                           <ul className="pb-5">
@@ -543,7 +543,7 @@ export function SiteHeader() {
                                 <a
                                   href={link.href}
                                   onClick={() => setMobileOpen(false)}
-                                  className="block py-2.5 text-[15px] font-medium text-white/75 transition-colors hover:text-white"
+                                  className="block py-2.5 text-[16px] font-medium text-white/80 transition-colors hover:text-white"
                                 >
                                   {link.label}
                                 </a>
@@ -561,12 +561,12 @@ export function SiteHeader() {
               <a
                 href="#contact"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-full bg-brand py-4 text-[15px] font-bold text-white"
+                className="flex items-center justify-center gap-2 rounded-full bg-brand py-4 text-[16px] font-bold text-white"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" />
                 1:1 문의하기 · {COMPANY.phoneDisplay}
               </a>
-              <p className="mt-4 text-center text-xs font-semibold tracking-[0.2em] text-white/40">
+              <p className="mt-4 text-center text-[13px] font-semibold tracking-[0.2em] text-white/40">
                 CHEDAWON CO., LTD. · SINCE 2017
               </p>
             </div>

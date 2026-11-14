@@ -84,7 +84,7 @@ function FamilySiteDropdown() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex w-full items-center justify-between rounded-lg border border-white/20 bg-white/[0.06] px-4 py-3 text-[13.5px] font-bold text-white/70 transition-colors hover:border-white/45 hover:text-white"
+        className="flex w-full items-center justify-between rounded-lg border border-white/20 bg-white/[0.06] px-4 py-3 text-[14.5px] font-bold text-white/70 transition-colors hover:border-white/45 hover:text-white"
       >
         Family Site
         <ChevronDown
@@ -108,7 +108,7 @@ function FamilySiteDropdown() {
                 <a
                   href={site.href}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-3 text-[13.5px] font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  className="block px-4 py-3 text-[14.5px] font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   {site.label}
                 </a>
@@ -128,7 +128,7 @@ export function SiteFooter() {
       <div className="border-b border-white/10">
         <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-6 px-5 py-10 md:flex-row md:items-center md:px-8 md:py-12">
           <div>
-            <p className="text-[13px] font-bold tracking-[0.24em] text-[#7fc0a8]">
+            <p className="text-[14px] font-bold tracking-[0.24em] text-[#7fc0a8]">
               START YOUR PROJECT
             </p>
             <p className="mt-2 text-2xl font-extrabold tracking-tight md:text-[28px]">
@@ -138,13 +138,13 @@ export function SiteFooter() {
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[15px] font-bold text-brand-deep transition-colors hover:bg-brand-soft"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[16px] font-bold text-brand-deep transition-colors hover:bg-brand-soft"
             >
               1:1 문의하기
             </a>
             <a
               href={`tel:${COMPANY.phone.replace(/-/g, "")}`}
-              className="font-num inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-[15px] font-bold text-white transition-colors hover:bg-white/10"
+              className="font-num inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-[16px] font-bold text-white transition-colors hover:bg-white/10"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
               {COMPANY.phoneDisplay}
@@ -158,7 +158,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr]">
           <div className="max-w-sm">
             <Logo variant="light" />
-            <p className="mt-5 text-[15px] leading-relaxed text-white/55">
+            <p className="mt-5 text-[16px] leading-relaxed text-white/60">
               {COMPANY.slogan}
               <br />
               올바른 식자재 유통과 차별화된 식품 솔루션으로
@@ -185,7 +185,7 @@ export function SiteFooter() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
             {MENU_GROUPS.map((group) => (
               <nav key={group.title} aria-label={`${group.title} 메뉴`}>
-                <p className="text-[13px] font-extrabold tracking-[0.14em] text-white">
+                <p className="text-[14px] font-extrabold tracking-[0.14em] text-white">
                   {group.title}
                 </p>
                 <ul className="mt-4 space-y-2.5">
@@ -193,7 +193,7 @@ export function SiteFooter() {
                     <li key={link.label}>
                       <a
                         href={link.href}
-                        className="text-[14px] text-white/55 transition-colors hover:text-white"
+                        className="text-[15px] text-white/60 transition-colors hover:text-white"
                       >
                         {link.label}
                       </a>
@@ -214,7 +214,7 @@ export function SiteFooter() {
           ].map((badge) => (
             <span
               key={badge}
-              className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-4 py-2 text-[12.5px] font-semibold text-white/65"
+              className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-4 py-2 text-[13.5px] font-semibold text-white/70"
             >
               <ShieldCheck className="h-4 w-4 text-[#7fc0a8]" aria-hidden="true" />
               {badge}
@@ -225,7 +225,7 @@ export function SiteFooter() {
 
       {/* Legal bar */}
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-4 px-5 py-6 text-[12.5px] text-white/40 md:flex-row md:items-center md:justify-between md:px-8">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-4 px-5 py-6 text-[13.5px] text-white/45 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <a href="#top" className="font-bold text-white/75 transition-colors hover:text-white">
               개인정보처리방침

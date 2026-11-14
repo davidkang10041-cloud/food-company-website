@@ -25,10 +25,10 @@ export function Business() {
             description="식자재 유통부터 제조, 밀키트, 온라인몰까지 — 채다원의 네 가지 사업영역이 하나의 흐름으로 연결됩니다."
           />
           <FadeIn delay={0.15} className="flex shrink-0 flex-wrap gap-2">
-            <span className="rounded-full border border-brand-line bg-white px-4 py-2 text-[12px] font-bold tracking-wide text-brand">
+            <span className="rounded-full border border-brand-line bg-white px-4 py-2 text-[13.5px] font-bold tracking-wide text-brand">
               TFS · Total Food Solution
             </span>
-            <span className="rounded-full border border-brand-line bg-white px-4 py-2 text-[12px] font-bold tracking-wide text-brand">
+            <span className="rounded-full border border-brand-line bg-white px-4 py-2 text-[13.5px] font-bold tracking-wide text-brand">
               TCO · Total Cost of Ownership
             </span>
           </FadeIn>
@@ -76,7 +76,7 @@ export function Business() {
                     )}
                   >
                     <span className="flex flex-col items-center gap-4">
-                      <span className="font-num text-[13px] font-bold tracking-widest text-white/60">
+                      <span className="font-num text-[14px] font-bold tracking-widest text-white/60">
                         0{i + 1}
                       </span>
                       <span
@@ -97,13 +97,13 @@ export function Business() {
                         : "pointer-events-none translate-y-6 opacity-0"
                     )}
                   >
-                    <p className="text-[12px] font-bold tracking-[0.22em] text-[#8ecfb4]">
+                    <p className="text-[13.5px] font-bold tracking-[0.22em] text-[#8ecfb4]">
                       {biz.category.toUpperCase()}
                     </p>
                     <h3 className="mt-3 text-[26px] font-extrabold leading-snug tracking-tight whitespace-pre-line text-white">
                       {biz.headline}
                     </h3>
-                    <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-white/70 [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden">
+                    <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-white/80 [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden">
                       {biz.intro}
                     </p>
                     {biz.stats && (
@@ -111,7 +111,7 @@ export function Business() {
                         {biz.stats.slice(0, 2).map((s) => (
                           <span
                             key={s.label}
-                            className="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[13px] font-bold text-white backdrop-blur-sm"
+                            className="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[14.5px] font-bold text-white backdrop-blur-sm"
                           >
                             <span className="font-num text-[#a5d8c2]">
                               {s.value}
@@ -123,7 +123,7 @@ export function Business() {
                     )}
                     <a
                       href="#contact"
-                      className="mt-6 inline-flex items-center gap-2 text-[14px] font-bold text-white transition-all hover:gap-3"
+                      className="mt-6 inline-flex items-center gap-2 text-[15.5px] font-bold text-white transition-all hover:gap-3"
                     >
                       해당 사업 문의하기
                       <ArrowUpRight
@@ -151,7 +151,7 @@ export function Business() {
                     sizes="100vw"
                     className="object-cover"
                   />
-                  <span className="absolute left-4 top-4 rounded-full bg-brand-ink/70 px-3 py-1 text-[11px] font-bold tracking-[0.18em] text-white backdrop-blur-sm">
+                  <span className="absolute left-4 top-4 rounded-full bg-brand-ink/70 px-3 py-1 text-[12px] font-bold tracking-[0.18em] text-white backdrop-blur-sm">
                     0{i + 1} · {biz.category}
                   </span>
                 </div>
@@ -162,12 +162,12 @@ export function Business() {
                   <p className="mt-1.5 text-[15px] font-bold text-brand">
                     {biz.headline}
                   </p>
-                  <p className="mt-3 line-clamp-3 text-[14px] leading-relaxed text-muted-foreground">
+                  <p className="mt-3 line-clamp-3 text-[15px] leading-relaxed text-muted-foreground">
                     {biz.intro}
                   </p>
                   <a
                     href="#contact"
-                    className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-bold text-brand transition-all hover:gap-2.5"
+                    className="mt-4 inline-flex items-center gap-1.5 text-[15px] font-bold text-brand transition-all hover:gap-2.5"
                   >
                     문의하기
                     <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

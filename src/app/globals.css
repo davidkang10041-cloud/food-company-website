@@ -192,7 +192,7 @@
 }
 
 .kicker {
-  @apply inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.24em] uppercase;
+  @apply inline-flex items-center gap-2 text-[14px] font-bold tracking-[0.24em] uppercase;
   color: var(--brand);
 }
 .kicker::before {
@@ -203,7 +203,7 @@
 }
 
 .kicker-light {
-  @apply inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.24em] uppercase;
+  @apply inline-flex items-center gap-2 text-[14px] font-bold tracking-[0.24em] uppercase;
   color: #7fc0a8;
 }
 .kicker-light::before {
@@ -214,7 +214,7 @@
 }
 
 .kicker-tomato {
-  @apply inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.24em] uppercase;
+  @apply inline-flex items-center gap-2 text-[14px] font-bold tracking-[0.24em] uppercase;
   color: var(--tomato);
 }
 .kicker-tomato::before {
@@ -434,7 +434,7 @@
 .btn-line,
 .btn-line-light,
 .btn-line-dark {
-  @apply inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-[15px] font-bold transition-all duration-300;
+  @apply inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-[16px] font-bold transition-all duration-300;
 }
 
 .btn-line-light {
@@ -452,7 +452,7 @@
 }
 
 .btn-solid {
-  @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-bold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand-deep;
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[16px] font-bold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand-deep;
 }
 
 /* ---------- Ghost index number (섹션 번호 워터마크) ---------- */

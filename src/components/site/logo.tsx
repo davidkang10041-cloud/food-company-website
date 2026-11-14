@@ -49,7 +49,7 @@ export function Logo({
         {!compact && (
           <span
             className={cn(
-              "mt-1 text-[10px] font-semibold tracking-[0.28em]",
+              "mt-1 text-[11px] font-semibold tracking-[0.28em]",
               variant === "dark" ? "text-brand/70" : "text-white/60"
             )}
           >

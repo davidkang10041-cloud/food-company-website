@@ -29,19 +29,19 @@ export function Values() {
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/45 to-transparent" />
-                  <span className="font-num absolute left-5 top-4 text-[13px] font-bold tracking-[0.18em] text-white/80">
+                  <span className="font-num absolute left-5 top-4 text-[14px] font-bold tracking-[0.18em] text-white/80">
                     0{i + 1}
                   </span>
                 </div>
                 <div className="flex flex-col p-6 md:p-7">
-                  <h3 className="whitespace-pre-line text-[19px] font-extrabold leading-snug tracking-tight text-foreground md:text-[21px]">
+                  <h3 className="whitespace-pre-line text-[20px] font-extrabold leading-snug tracking-tight text-foreground md:text-[22px]">
                     {value.title}
                   </h3>
                   <ul className="mt-4 flex-1 space-y-2.5">
                     {value.points.map((point) => (
                       <li
                         key={point}
-                        className="flex items-start gap-2 text-[13.5px] leading-relaxed text-muted-foreground"
+                        className="flex items-start gap-2 text-[15px] leading-relaxed text-muted-foreground"
                       >
                         <ArrowUpRight
                           className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand"
