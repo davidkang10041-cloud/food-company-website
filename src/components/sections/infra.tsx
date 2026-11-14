@@ -47,7 +47,7 @@ export function Quality() {
           <div className="grid grid-cols-2 gap-4 md:gap-5">
             <FadeIn className="img-zoom overflow-hidden rounded-2xl">
               <Image
-                src="/images/quality-1.png"
+                src="/images/quality-1-v2.png"
                 alt="신선 채소 품질 검수를 진행하는 채다원 품질관리 전문가"
                 width={1344}
                 height={768}
