@@ -244,6 +244,7 @@ export const BUSINESSES: BusinessItem[] = [
 export const STRATEGY_PILLARS = [
   {
     name: "맞춤제조",
+    en: "CUSTOM MANUFACTURING",
     points: [
       "품목 카테고리 별 신뢰성 있는 우수 산지 중심으로 원물 소싱 및 가공 공정화",
       "HACCP 기준으로 설계된 자체공장, 제품유형에 맞는 다품종 소량생산 가능",
@@ -251,6 +252,7 @@ export const STRATEGY_PILLARS = [
   },
   {
     name: "품질관리",
+    en: "QUALITY MANAGEMENT",
     points: [
       "품목 선정 및 발주 전 Function별 Check를 통한 위험요소 분석",
       "위생·안전관리를 위한 선진 위생 및 관리체계와 담당자 육성",
@@ -258,6 +260,7 @@ export const STRATEGY_PILLARS = [
   },
   {
     name: "Price",
+    en: "PRICE COMPETITIVENESS",
     points: [
       "대량구매 및 전략적 통합구매계약(단가계약)에 의한 원가절감 유도",
       "Price Monitoring에 의한 지속적 가격 검증",
@@ -265,6 +268,7 @@ export const STRATEGY_PILLARS = [
   },
   {
     name: "Trend",
+    en: "TREND RESPONSE",
     points: [
       "고객의 니즈에 대응하기 위한 B2B 인프라 활용 유/무형 서비스 상품 개발",
       "신규품목은 단가검증 및 시장조사 업무를 수행하여 제안",
@@ -272,6 +276,7 @@ export const STRATEGY_PILLARS = [
   },
   {
     name: "Data Base",
+    en: "DATA-DRIVEN SERVICE",
     points: [
       "고객 구매 품목 및 패턴 등의 자료 분석을 기반으로 한 맞춤형 서비스 제공",
       "빅데이터 활용 온라인 유통 강화 및 디지털 전환의 지속 가능성",
