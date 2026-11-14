@@ -49,6 +49,13 @@ dev.out.log
 test
 prompt
 
+# database (regenerate via: bun run db:push)
+/db/*.db
+/db/*.db-journal
+
+# runtime artifacts
+*.pid
+
 server.log
 # Skills directory
 /skills/
