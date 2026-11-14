@@ -83,7 +83,7 @@ export const BUSINESSES: BusinessItem[] = [
     category: "B2B",
     title: "식자재 유통 · 구매대행",
     headline: "전과정을 아우르는 원스톱 B2B 식자재 유통",
-    image: "/images/biz-b2b-v3.png",
+    image: "/images/biz-b2b-v4.png",
     intro:
       "한국의 기업 간 거래(B2B) 식자재 유통 시장은 다양한 산업에서 중요한 역할을 하고 있으며, 앞으로의 전망도 밝습니다. 국내 B2B 식자재 유통 시장은 2020년 55조 원에서 2025년 64조 원으로 성장할 것으로 추산되며, 연 6~8% 성장과 디지털화의 진행으로 온라인 주문과 배송 서비스가 더욱 활성화될 것입니다.",
     stats: [
@@ -124,7 +124,7 @@ export const BUSINESSES: BusinessItem[] = [
     category: "B2B / B2C",
     title: "식품제조 연결사업",
     headline: "푸드메이킹 프로세스 혁신",
-    image: "/images/biz-mfg-v3.png",
+    image: "/images/biz-mfg-v4.png",
     intro:
       "가장 간편식, 기타 자체 레시피의 상품화를 원하는 개인·소상공인들에게 자체 제조시설을 제공하여 업계 최소 MOQ로 간편 건직의뢰 및 상품을 만들 수 있습니다. R&D 기획과 제조역량, 빠른 고객테스트와 온라인에 대한 강점을 가진 경쟁력이 밀레니얼 세대의 감성을 파고들어 팬덤을 이루고, 꾸준하고 지속적인 소비로 연결시키면서 시장을 만들 수 있습니다.",
     stats: [
@@ -165,7 +165,7 @@ export const BUSINESSES: BusinessItem[] = [
     category: "Cooksan",
     title: "특화 밀키트 사업",
     headline: "Cooksan 브랜드로 여는 밀키트 시장의 새로운 트렌드",
-    image: "/images/biz-kit.png",
+    image: "/images/biz-kit-v4.png",
     intro:
       "밀키트 산업의 최근 트렌드는 건강·웰빙, 개인화·맞춤형, 간편성·편의성, 지속가능성·친환경, 다양성·글로벌화로 변화하고 있습니다. 브랜드 차별화를 통한 프리미엄 상품의 고급화와 패키지 구성을 통해 시장 트렌드 변화에 따른 빠른 상품기획과 마케팅 강화, 오프라인매장 진출, 온라인과의 연계로 밀키트시장의 신규시장을 개척하고자 합니다.",
     stats: [
@@ -203,7 +203,7 @@ export const BUSINESSES: BusinessItem[] = [
     category: "B2C Platform",
     title: "식자재 전문몰",
     headline: "심심한 식자재 장보기 고민,\n채다원으로 한번에 해결하세요",
-    image: "/images/biz-online-v3.png",
+    image: "/images/biz-online-v4.png",
     intro:
       "온라인을 기반으로 차별화된 서비스 제공, 프리미엄 상품의 고급화와 패키지 구성을 통한 상품 로열티 부여, 스마트스토어/크라우드펜딩(외디즈 외)/오픈마켓 입점 등 온라인 홍보를 통해 식자재 전문몰 온라인 유통 사업을 운영하고 있습니다.",
     stats: [

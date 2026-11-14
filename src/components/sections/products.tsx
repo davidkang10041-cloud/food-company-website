@@ -118,7 +118,7 @@ export function Products() {
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                   <FadeIn className="img-zoom overflow-hidden rounded-2xl">
                     <Image
-                      src="/images/biz-kit.png"
+                      src="/images/biz-kit-v4.png"
                       alt="채다원 셀러드 키트 구성 — 신선한 채소와 재료"
                       width={1344}
                       height={768}
@@ -182,7 +182,7 @@ export function Products() {
                   </FadeIn>
                   <FadeIn className="img-zoom order-1 overflow-hidden rounded-2xl lg:order-2">
                     <Image
-                      src="/images/biz-mfg.png"
+                      src="/images/biz-mfg-v4.png"
                       alt="HACCP 인증 채다원 식품제조 시설의 생산 라인"
                       width={1344}
                       height={768}
