@@ -1,209 +1,227 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { GROWTH, STRATEGY_PILLARS } from "@/lib/company";
-import { SectionHeading } from "@/components/site/section-heading";
+import Image from "next/image";
+import {
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { FadeIn } from "@/components/site/fade-in";
+import { SectionHeading } from "@/components/site/section-heading";
+import { STRATEGY_PILLARS, VALUES, GROWTH } from "@/lib/company";
 
-const MAX = 31; // 억원 기준 최대값
+const CHART_DATA = GROWTH.years.map((year, i) => ({
+  year,
+  revenue: GROWTH.revenue[i],
+  profit: GROWTH.profit[i],
+  margin: GROWTH.margins[i],
+}));
 
-const PILLAR_LABELS: Record<string, string> = {
-  맞춤제조: "Manufacturing",
-  품질관리: "Quality",
-  Price: "Price",
-  Trend: "Trend",
-  "Data Base": "Data",
-};
+function ChartTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: { name: string; value: number; color?: string }[];
+  label?: string;
+}) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="rounded-xl border border-brand-line bg-white px-4 py-3 shadow-lg">
+      <p className="font-num text-[13px] font-extrabold text-foreground">
+        {label}년
+      </p>
+      {payload.map((p) => (
+        <p
+          key={p.name}
+          className="font-num mt-1 text-[13px] font-semibold text-muted-foreground"
+        >
+          <span
+            className="mr-1.5 inline-block h-2 w-2 rounded-full"
+            style={{ background: p.color }}
+            aria-hidden="true"
+          />
+          {p.name === "revenue" ? "매출" : "영업이익"} {p.value}억원
+        </p>
+      ))}
+    </div>
+  );
+}
 
 export function Growth() {
   return (
-    <section id="growth" className="bg-white" aria-labelledby="growth-heading">
-      <div className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
-        {/* Core competency pillars */}
-        <SectionHeading
-          kicker="Core Competency"
-          title={"경쟁력의 원천,\n다섯 가지 핵심 역량"}
-          description="산지 소싱부터 품질·가격·트렌드·데이터까지 — 채다원의 경쟁력은 전 과정의 체계적인 관리에서 나옵니다."
-        />
+    <>
+      {/* Growth strategy — dark */}
+      <section
+        id="growth"
+        className="texture-dark py-24 text-white md:py-32"
+        aria-label="지속가능한 성장 전략"
+      >
+        <div className="mx-auto max-w-[1280px] px-5 md:px-8">
+          <SectionHeading
+            dark
+            kicker="SUSTAINABILITY"
+            title={"지속가능한 성장,\n데이터로 설계합니다"}
+            description="다섯 가지 핵심 역량과 체계적인 재무계획으로 식품유통의 지속성장기업으로 나아갑니다."
+          />
 
-        <ol className="mt-12 grid gap-4 md:mt-14 md:grid-cols-2 lg:grid-cols-5">
-          {STRATEGY_PILLARS.map((pillar, i) => (
-            <FadeIn key={pillar.name} delay={i * 0.07} as="li">
-              <div className="hover-lift group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white px-6 py-7">
-                <span
-                  className="pointer-events-none absolute -right-3 -top-5 text-[72px] font-black leading-none text-brand-soft transition-colors duration-500 group-hover:text-brand-line/60"
-                  aria-hidden="true"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <p className="relative text-[11px] font-bold tracking-[0.2em] text-tomato">
-                  {PILLAR_LABELS[pillar.name] ?? pillar.name.toUpperCase()}
-                </p>
-                <h3 className="relative mt-2 text-[20px] font-extrabold tracking-tight text-foreground">
-                  {pillar.name}
-                </h3>
-                <ul className="relative mt-4 space-y-2.5">
-                  {pillar.points.map((point) => (
-                    <li
-                      key={point}
-                      className="flex items-start gap-2 text-[13.5px] leading-relaxed text-muted-foreground"
-                    >
-                      <span
-                        className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-brand"
-                        aria-hidden="true"
-                      />
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-                <span
-                  className="relative mt-auto block pt-5"
-                  aria-hidden="true"
-                >
-                  <span className="block h-[3px] w-8 rounded-full bg-brand transition-all duration-500 group-hover:w-16" />
-                </span>
-              </div>
-            </FadeIn>
-          ))}
-        </ol>
-
-        {/* Growth plan */}
-        <div className="mt-24 grid gap-10 md:mt-32 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-8">
+          <div className="mt-14 grid gap-10 lg:grid-cols-[6fr_5fr] lg:gap-14">
+            {/* Strategy pillars */}
             <FadeIn>
-              <p className="kicker">Growth Plan</p>
-              <h2 className="h-section mt-4 text-foreground">
-                5개년 성장 계획
-                <span className="mt-1 block text-[0.55em] font-bold tracking-tight text-muted-foreground">
-                  2025년 14.8억 → 2029년 31억, 연평균 성장률 +20.3%
-                </span>
-              </h2>
+              <ol className="divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.04]">
+                {STRATEGY_PILLARS.map((p, i) => (
+                  <li key={p.name} className="flex gap-5 p-6 md:gap-7">
+                    <span className="ghost-num !text-white !opacity-25 text-[34px] leading-none">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <p className="text-[16.5px] font-extrabold tracking-tight text-white">
+                        {p.name}
+                      </p>
+                      <ul className="mt-2 space-y-1">
+                        {p.points.map((point) => (
+                          <li
+                            key={point}
+                            className="text-[13.5px] leading-relaxed text-white/60"
+                          >
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </FadeIn>
 
-            <FadeIn delay={0.15}>
-              <div className="mt-10 rounded-2xl border border-border bg-white p-6 shadow-[0_20px_50px_-30px_rgba(6,25,19,0.2)] md:p-8">
-                <div className="flex items-center gap-5 pb-4">
-                  <span className="inline-flex items-center gap-2 text-[13px] font-bold text-foreground/75">
-                    <span
-                      className="h-2.5 w-2.5 rounded-sm bg-brand"
-                      aria-hidden="true"
-                    />
-                    외형매출 (억원)
+            {/* Revenue chart */}
+            <FadeIn delay={0.12}>
+              <div className="rounded-2xl bg-white p-6 shadow-2xl md:p-8">
+                <div className="flex items-baseline justify-between">
+                  <div>
+                    <p className="text-[12px] font-bold tracking-[0.2em] text-brand">
+                      FINANCIAL PLAN
+                    </p>
+                    <h3 className="mt-2 text-xl font-extrabold tracking-tight text-foreground">
+                      매출 및 영업이익 계획
+                    </h3>
+                  </div>
+                  <p className="font-num text-[12px] font-semibold text-muted-foreground">
+                    단위: 억원
+                  </p>
+                </div>
+                <div className="mt-6 h-[280px] w-full" role="img" aria-label="2025년부터 2029년까지 매출과 영업이익 증가 차트">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={CHART_DATA} margin={{ top: 8, right: 4, left: -18, bottom: 0 }}>
+                      <CartesianGrid vertical={false} stroke="#e2ebe7" />
+                      <XAxis
+                        dataKey="year"
+                        tickLine={false}
+                        axisLine={{ stroke: "#cfe0d8" }}
+                        tick={{ fill: "#5b6f68", fontSize: 13, fontWeight: 600 }}
+                      />
+                      <YAxis
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{ fill: "#5b6f68", fontSize: 12 }}
+                      />
+                      <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(14,95,76,0.06)" }} />
+                      <Bar
+                        dataKey="revenue"
+                        name="revenue"
+                        fill="#0e5f4c"
+                        radius={[6, 6, 0, 0]}
+                        barSize={26}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="profit"
+                        name="profit"
+                        stroke="#c9a96a"
+                        strokeWidth={2.5}
+                        dot={{ r: 4, fill: "#c9a96a", strokeWidth: 0 }}
+                      />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="mt-4 flex items-center justify-center gap-6 text-[12.5px] font-semibold text-muted-foreground">
+                  <span className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-sm bg-brand" aria-hidden="true" />
+                    매출 (억원)
                   </span>
-                  <span className="inline-flex items-center gap-2 text-[13px] font-bold text-foreground/75">
-                    <span
-                      className="h-2.5 w-2.5 rounded-sm bg-tomato"
-                      aria-hidden="true"
-                    />
+                  <span className="flex items-center gap-2">
+                    <span className="h-0.5 w-4 rounded-full bg-gold" aria-hidden="true" />
                     영업이익 (억원)
                   </span>
                 </div>
-
-                <div className="flex h-56 items-end gap-3 border-b-2 border-border pb-0 md:h-72 md:gap-6">
-                  {GROWTH.years.map((year, i) => (
-                    <div
-                      key={year}
-                      className="flex h-full flex-1 flex-col justify-end"
-                    >
-                      <div className="flex h-full items-end justify-center gap-1.5">
-                        <motion.div
-                          initial={{ height: 0 }}
-                          whileInView={{
-                            height: `${(GROWTH.revenue[i] / MAX) * 100}%`,
-                          }}
-                          viewport={{ once: true, margin: "-60px" }}
-                          transition={{
-                            duration: 1.1,
-                            delay: 0.2 + i * 0.1,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
-                          className="relative w-6 rounded-t-md bg-gradient-to-t from-brand to-[#2f8a6d] md:w-9"
-                          aria-hidden="true"
-                        >
-                          <span className="font-num absolute -top-7 left-1/2 -translate-x-1/2 text-[13px] font-extrabold text-brand-deep md:text-sm">
-                            {GROWTH.revenue[i]}
-                          </span>
-                        </motion.div>
-                        <motion.div
-                          initial={{ height: 0 }}
-                          whileInView={{
-                            height: `${(GROWTH.profit[i] / MAX) * 100}%`,
-                          }}
-                          viewport={{ once: true, margin: "-60px" }}
-                          transition={{
-                            duration: 1.1,
-                            delay: 0.35 + i * 0.1,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
-                          className="relative w-6 rounded-t-md bg-tomato/90 md:w-9"
-                          aria-hidden="true"
-                        >
-                          <span className="font-num absolute -top-7 left-1/2 -translate-x-1/2 text-[11px] font-bold text-tomato md:text-xs">
-                            {GROWTH.profit[i]}
-                          </span>
-                        </motion.div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-3 flex gap-3 md:gap-6">
-                  {GROWTH.years.map((year, i) => (
-                    <div key={year} className="flex-1 text-center">
-                      <p className="font-num text-sm font-extrabold text-foreground/85 md:text-base">
-                        {year}
-                      </p>
-                      <p className="font-num mt-0.5 text-[11px] font-semibold text-muted-foreground">
-                        이익률 {GROWTH.margins[i]}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                <p className="mt-6 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
-                  * 단위: 억원 · 상기 수치는 PR자료(2025.08) 기준 5개년
-                  매출계획 및 추정 손익 전망입니다.
+                <p className="mt-4 rounded-xl bg-brand-mist px-4 py-3 text-center text-[13px] font-bold text-brand-deep">
+                  2025 → 2029 매출 성장{" "}
+                  <span className="font-num text-brand">
+                    14.8억 → 31.0억 (2배)
+                  </span>{" "}
+                  · 영업이익률 {GROWTH.margins[0]} → {GROWTH.margins[4]}
                 </p>
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
 
-          {/* Summary cards */}
-          <div className="flex flex-col justify-center gap-4 lg:col-span-4 lg:pt-24">
-            {[
-              {
-                label: "2029 목표 매출",
-                value: "31억",
-                sub: "외형매출 (2025년 14.8억 → 2.1배)",
-              },
-              {
-                label: "2029 목표 영업이익",
-                value: "2,557백만",
-                sub: "영업이익률 8.2% 달성",
-              },
-              {
-                label: "연평균 성장률",
-                value: "CAGR +20.3%",
-                sub: "2025~2029 외형매출 기준",
-              },
-            ].map((card, i) => (
-              <FadeIn key={card.label} delay={0.2 + i * 0.1}>
-                <div className="rounded-2xl border border-border bg-brand-mist p-6 transition-colors md:p-7">
-                  <p className="text-sm font-bold text-muted-foreground">
-                    {card.label}
-                  </p>
-                  <p className="font-num mt-2 text-3xl font-black tracking-tight text-brand-deep md:text-4xl">
-                    {card.value}
-                  </p>
-                  <p className="mt-2 text-[13px] font-medium text-muted-foreground">
-                    {card.sub}
-                  </p>
-                </div>
+      {/* Core values — light */}
+      <section
+        id="values"
+        className="bg-white py-24 md:py-32"
+        aria-label="핵심가치"
+      >
+        <div className="mx-auto max-w-[1280px] px-5 md:px-8">
+          <SectionHeading
+            kicker="OUR VALUES"
+            title={"사람과 먹거리를 향한\n네 가지 약속"}
+          />
+          <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUES.map((v, i) => (
+              <FadeIn as="li" key={v.title} delay={i * 0.06}>
+                <article className="hover-lift group h-full overflow-hidden rounded-2xl border border-brand-line bg-white">
+                  <div className="img-zoom relative h-40 overflow-hidden">
+                    <Image
+                      src={v.image}
+                      alt={v.title.replace(/\n/g, " ")}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 300px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-[16.5px] font-extrabold tracking-tight whitespace-pre-line text-foreground">
+                      {v.title}
+                    </h3>
+                    <ul className="mt-3 space-y-1.5">
+                      {v.points.slice(0, 3).map((pt) => (
+                        <li
+                          key={pt}
+                          className="flex gap-2 text-[13px] leading-relaxed text-muted-foreground"
+                        >
+                          <span
+                            className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-brand"
+                            aria-hidden="true"
+                          />
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
               </FadeIn>
             ))}
-          </div>
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

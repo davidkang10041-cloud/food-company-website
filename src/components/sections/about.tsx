@@ -3,121 +3,108 @@
 import Image from "next/image";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
-import { CEO_MESSAGE, COMPANY, COMPANY_INFO } from "@/lib/company";
+import { CountUp } from "@/components/site/count-up";
+import { COMPANY, CEO_MESSAGE, COMPANY_INFO } from "@/lib/company";
+
+const METRICS = [
+  { value: 2017, suffix: "년", label: "법인 설립", raw: true },
+  { value: 4, suffix: "종", label: "HACCP 인증 보유" },
+  { value: 16000, suffix: "+", label: "이용 고객사" },
+  { value: 620330, suffix: "+", label: "누적 배송 건수" },
+  { value: 81.5, suffix: "%", label: "고객 재이용률", decimals: 1 },
+];
 
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-white">
-      <div className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
-        {/* CEO Message */}
-        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
+    <section id="about" className="bg-white py-24 md:py-32" aria-label="회사소개">
+      <div className="mx-auto max-w-[1280px] px-5 md:px-8">
+        <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:gap-16">
+          {/* CEO message */}
           <div>
-            <FadeIn>
-              <div className="relative">
-                <div className="img-zoom relative aspect-[4/5] overflow-hidden rounded-2xl">
-                  <Image
-                    src="/images/about.png"
-                    alt="채다원이 취급하는 신선한 농산물과 식자재"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
+            <SectionHeading
+              kicker="ABOUT CHEDAWON"
+              title={"고객의 요구를 충족시킬 수 있는\n신뢰받는 식자재 솔루션 공급자"}
+              description={CEO_MESSAGE.body.join("\n\n")}
+              className="max-w-none"
+            />
+            <FadeIn delay={0.2} className="mt-10 flex items-center gap-4">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft text-brand">
+                <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+                  <path
+                    d="M12 21c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
                   />
-                </div>
-                <div className="absolute -bottom-6 -right-4 rounded-2xl bg-brand px-7 py-6 text-white shadow-2xl shadow-brand/40 md:-right-8">
-                  <p className="text-[11px] font-bold tracking-[0.26em] text-white/70">
-                    MESSAGE FROM CEO
-                  </p>
-                  <p className="font-num mt-1.5 text-xl font-extrabold">
-                    대표이사 박영호
-                  </p>
-                </div>
-              </div>
+                </svg>
+              </span>
+              <span>
+                <span className="block text-lg font-extrabold tracking-tight text-foreground">
+                  {COMPANY.ceo}
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-muted-foreground">
+                  (주)채다원 대표이사
+                </span>
+              </span>
             </FadeIn>
+          </div>
 
-            {/* Company info */}
-            <FadeIn delay={0.15} className="mt-16">
-              <h3 className="text-lg font-extrabold tracking-tight text-foreground">
-                기업 개요
-              </h3>
-              <dl className="mt-5 divide-y divide-border rounded-xl border border-border bg-brand-mist/60">
-                {COMPANY_INFO.map((info) => (
+          {/* Company overview card */}
+          <FadeIn delay={0.15} className="lg:pt-4">
+            <div className="img-zoom relative overflow-hidden rounded-2xl">
+              <Image
+                src="/images/about.png"
+                alt="채다원이 취급하는 신선한 유기농 채소와 식재료"
+                width={1152}
+                height={864}
+                className="h-56 w-full object-cover md:h-64"
+                sizes="(max-width: 1024px) 100vw, 480px"
+              />
+            </div>
+            <div className="mt-6 overflow-hidden rounded-2xl border border-brand-line bg-cream">
+              <div className="border-b border-brand-line bg-brand px-6 py-3.5">
+                <p className="text-[13px] font-bold tracking-[0.18em] text-white">
+                  기업 개요 <span className="text-white/60">CORPORATE PROFILE</span>
+                </p>
+              </div>
+              <dl className="divide-y divide-brand-line/70">
+                {COMPANY_INFO.map((row) => (
                   <div
-                    key={info.label}
-                    className="flex items-center justify-between gap-4 px-5 py-3.5"
+                    key={row.label}
+                    className="flex items-start gap-4 px-6 py-3.5"
                   >
-                    <dt className="shrink-0 text-[14px] font-bold text-brand">
-                      {info.label}
+                    <dt className="w-20 shrink-0 text-[14px] font-bold text-brand-deep">
+                      {row.label}
                     </dt>
-                    <dd className="text-right text-[14px] font-medium text-foreground/80">
-                      {info.value}
+                    <dd className="text-[14px] leading-relaxed text-foreground/80">
+                      {row.value}
                     </dd>
                   </div>
                 ))}
               </dl>
-            </FadeIn>
-          </div>
-
-          <div className="lg:pt-6">
-            <FadeIn>
-              <p className="kicker">CEO Message</p>
-              <h2 className="mt-4 whitespace-pre-line text-[32px] leading-[1.24] font-extrabold tracking-[-0.02em] text-foreground md:text-[42px]">
-                {CEO_MESSAGE.title}
-              </h2>
-            </FadeIn>
-
-            <div className="mt-8 space-y-6">
-              {CEO_MESSAGE.body.map((paragraph, i) => (
-                <FadeIn key={i} delay={0.1 + i * 0.1}>
-                  <p className="text-[16px] leading-[1.85] text-muted-foreground md:text-[17px]">
-                    {paragraph}
-                  </p>
-                </FadeIn>
-              ))}
             </div>
-
-            <FadeIn delay={0.4} className="mt-10">
-              <div className="flex items-center gap-4 rounded-2xl border border-brand-line bg-brand-soft/50 px-7 py-6">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-lg font-extrabold text-white">
-                  채
-                </div>
-                <div>
-                  <p className="text-[15px] font-extrabold text-foreground">
-                    주식회사 채다원 대표이사
-                  </p>
-                  <p className="mt-0.5 text-[14px] text-muted-foreground">
-                    식자재 유통 · 밀키트 OEM/ODM 전문 기업
-                  </p>
-                </div>
-                <span className="font-num ml-auto hidden text-[13px] font-bold tracking-[0.2em] text-brand sm:block">
-                  SINCE 2017
-                </span>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </div>
-
-      {/* Slogan band */}
-      <div className="texture-dark relative overflow-hidden">
-        <div className="texture-grid-dark absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto max-w-[1280px] px-5 py-16 md:px-8 md:py-20">
-          <FadeIn className="flex flex-col items-center text-center">
-            <p className="kicker-light">Our Slogan</p>
-            <p className="mt-6 text-[34px] font-extrabold tracking-[-0.04em] text-white md:text-[52px]">
-              사람<span className="text-[#7fc0a8]">.</span> 다양한 생활
-              <span className="text-[#7fc0a8]">.</span> 좋은 먹거리
-            </p>
-            <p className="mt-4 text-[15px] font-medium tracking-[0.14em] text-white/60 md:text-base">
-              The Company Responsible for Healthy Life
-            </p>
-            <p className="mt-8 max-w-2xl text-[15px] leading-relaxed text-white/65">
-              채다원은 식자재 유통 · 제조 · 밀키트 · 온라인 전문몰을 아우르는
-              통합 푸드 솔루션으로 식품문화 발전에 기여합니다. 생산지 ·
-              공급사와의 공고한 파트너십과 {COMPANY.business} 경쟁력으로 고객과
-              함께 성장합니다.
-            </p>
           </FadeIn>
         </div>
+
+        {/* Metrics strip */}
+        <FadeIn delay={0.1}>
+          <dl className="mt-20 grid grid-cols-2 gap-x-6 gap-y-10 border-t border-brand-line pt-12 sm:grid-cols-3 lg:grid-cols-5">
+            {METRICS.map((m) => (
+              <div key={m.label} className="flex flex-col gap-2">
+                <dd className="text-[34px] text-brand md:text-[40px]">
+                  <CountUp
+                    value={m.value}
+                    suffix={m.suffix}
+                    decimals={"decimals" in m ? (m.decimals as number) : 0}
+                  />
+                </dd>
+                <dt className="text-[14px] font-semibold text-muted-foreground">
+                  {m.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </FadeIn>
       </div>
     </section>
   );

@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Menu, Phone, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  Phone,
+  Search,
+  X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
@@ -22,8 +29,8 @@ const MEGA: MegaItem[] = [
     en: "About",
     desc: "항공사 케이터링에서 검증된\n통합 식품 솔루션 기업",
     links: [
-      { href: "#about", label: "대표 인사말" },
       { href: "#about", label: "기업 개요" },
+      { href: "#about", label: "대표 인사말" },
       { href: "#history", label: "회사 연혁" },
     ],
   },
@@ -43,22 +50,32 @@ const MEGA: MegaItem[] = [
     href: "#products",
     label: "제품소개",
     en: "Products",
-    desc: "신선함을 가장 신선하게\n전하는 프리미엄 셀러드",
+    desc: "신선함을 가장 신선하게 전하는\n프리미엄 샐러드와 밀키트",
     links: [
-      { href: "#products", label: "베이직 샐러드" },
-      { href: "#products", label: "사각 샐러드" },
+      { href: "#products", label: "프리미엄 샐러드" },
       { href: "#products", label: "셀러드 키트" },
+      { href: "#products", label: "OEM · ODM 제조" },
     ],
   },
   {
     href: "#quality",
-    label: "품질·시설",
+    label: "품질·인증",
     en: "Quality",
     desc: "HACCP 4종 인증과\n전문 생산시설의 품질 경쟁력",
     links: [
       { href: "#quality", label: "HACCP 인증 현황" },
       { href: "#quality", label: "생산시설 · 설비" },
-      { href: "#quality", label: "품질 안전관리" },
+      { href: "#quality", label: "핵심 역량" },
+    ],
+  },
+  {
+    href: "#news",
+    label: "뉴스룸",
+    en: "Newsroom",
+    desc: "새로운 공급 확대와\n인증 · 시설 소식을 전합니다",
+    links: [
+      { href: "#news", label: "공지사항" },
+      { href: "#news", label: "사업 · 공급 소식" },
     ],
   },
   {
@@ -67,9 +84,9 @@ const MEGA: MegaItem[] = [
     en: "Sustainability",
     desc: "데이터 기반 성장 전략과\n상생 파트너십의 미래",
     links: [
-      { href: "#growth", label: "핵심 역량" },
       { href: "#growth", label: "성장 전략" },
-      { href: "#partners", label: "고객 파트너" },
+      { href: "#growth", label: "핵심가치" },
+      { href: "#partners", label: "파트너 네트워크" },
     ],
   },
   {
@@ -77,16 +94,29 @@ const MEGA: MegaItem[] = [
     label: "문의",
     en: "Contact",
     desc: "식자재 공급 · OEM/ODM\n1:1 상담으로 신속하게",
-    links: [{ href: "#contact", label: "1:1 문의하기" }],
+    links: [
+      { href: "#contact", label: "1:1 문의하기" },
+      { href: "#contact", label: "오시는 길" },
+    ],
   },
 ];
+
+const QUICK_LINKS = MEGA.flatMap((m) => m.links);
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+    setQuery("");
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -99,11 +129,36 @@ export function SiteHeader() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    const overflow = mobileOpen || searchOpen ? "hidden" : "";
+    document.body.style.overflow = overflow;
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, searchOpen]);
+
+  useEffect(() => {
+    if (searchOpen) {
+      const t = setTimeout(() => searchInputRef.current?.focus(), 80);
+      return () => clearTimeout(t);
+    }
+  }, [searchOpen]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeSearch();
+        setOpenMenu(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const results = useMemo(() => {
+    const q = query.trim();
+    if (!q) return QUICK_LINKS;
+    return QUICK_LINKS.filter((l) => l.label.toLowerCase().includes(q.toLowerCase()));
+  }, [query]);
 
   const scheduleClose = () => {
     closeTimer.current = setTimeout(() => setOpenMenu(null), 180);
@@ -133,15 +188,37 @@ export function SiteHeader() {
           <div className="utility-bar">
             <div className="mx-auto flex h-10 max-w-[1280px] items-center justify-between px-8 text-[12px] font-medium tracking-wide text-white/70">
               <p>
-                HACCP 인증 4종 보유 · 항공사 케이터링 검증 식자재 전문 기업
+                식자재 유통 · 밀키트 OEM/ODM — HACCP 인증 4종 보유 전문 기업
               </p>
               <div className="flex items-center gap-5">
-                <a href="#history" className="transition-colors hover:text-white">
-                  회사 연혁
-                </a>
-                <a href="#contact" className="transition-colors hover:text-white">
-                  오시는 길
-                </a>
+                <span className="flex items-center gap-2" aria-label="언어 선택">
+                  <button
+                    type="button"
+                    className="font-bold text-white"
+                    aria-current="true"
+                  >
+                    KR
+                  </button>
+                  <span className="text-white/30" aria-hidden="true">
+                    |
+                  </span>
+                  <button
+                    type="button"
+                    className="text-white/55 transition-colors hover:text-white"
+                    title="English (준비중)"
+                  >
+                    EN
+                  </button>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className="flex items-center gap-1.5 transition-colors hover:text-white"
+                  aria-label="통합 검색 열기"
+                >
+                  <Search className="h-3.5 w-3.5" aria-hidden="true" />
+                  검색
+                </button>
                 <span className="font-num font-bold text-white/90">
                   SINCE 2017
                 </span>
@@ -176,7 +253,7 @@ export function SiteHeader() {
                     href={item.href}
                     onClick={() => setOpenMenu(null)}
                     className={cn(
-                      "flex h-16 items-center px-5 text-[16px] font-bold transition-colors md:h-[76px]",
+                      "relative flex h-16 items-center px-4 text-[16px] font-bold transition-colors xl:px-5 md:h-[76px]",
                       scrolled && "md:h-[68px]",
                       scrolled
                         ? "text-foreground/85 hover:text-brand"
@@ -186,8 +263,15 @@ export function SiteHeader() {
                     {item.label}
                     <ChevronDown
                       className={cn(
-                        "ml-1.5 h-3.5 w-3.5 transition-transform duration-300",
+                        "ml-1 h-3.5 w-3.5 transition-transform duration-300",
                         openMenu === item.href && "rotate-180"
+                      )}
+                      aria-hidden="true"
+                    />
+                    <span
+                      className={cn(
+                        "absolute inset-x-4 bottom-0 h-[3px] rounded-full bg-brand transition-transform duration-300 xl:inset-x-5",
+                        openMenu === item.href ? "scale-x-100" : "scale-x-0"
                       )}
                       aria-hidden="true"
                     />
@@ -197,7 +281,20 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className="hidden lg:block">
+          <div className="hidden items-center gap-2 lg:flex">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className={cn(
+                "inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                scrolled
+                  ? "text-foreground/70 hover:bg-brand-soft hover:text-brand"
+                  : "text-white/85 hover:bg-white/15 hover:text-white"
+              )}
+              aria-label="통합 검색"
+            >
+              <Search className="h-[18px] w-[18px]" aria-hidden="true" />
+            </button>
             <a
               href="#contact"
               className={cn(
@@ -212,17 +309,31 @@ export function SiteHeader() {
             </a>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setMobileOpen(true)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden"
-            aria-label="메뉴 열기"
-            aria-expanded={mobileOpen}
-          >
-            <Menu
-              className={cn("h-6 w-6", scrolled ? "text-brand-deep" : "text-white")}
-            />
-          </button>
+          <div className="flex items-center gap-1 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className={cn(
+                "inline-flex h-11 w-11 items-center justify-center rounded-full",
+                scrolled ? "text-brand-deep" : "text-white"
+              )}
+              aria-label="검색 열기"
+            >
+              <Search className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className={cn(
+                "inline-flex h-11 w-11 items-center justify-center rounded-full",
+                scrolled ? "text-brand-deep" : "text-white"
+              )}
+              aria-label="메뉴 열기"
+              aria-expanded={mobileOpen}
+            >
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
         </div>
 
         {/* Mega dropdown */}
@@ -289,6 +400,80 @@ export function SiteHeader() {
         </AnimatePresence>
       </header>
 
+      {/* Search overlay */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[70] flex flex-col bg-brand-ink/95 backdrop-blur-md"
+            role="dialog"
+            aria-modal="true"
+            aria-label="통합 검색"
+          >
+            <div className="mx-auto flex h-16 w-full max-w-[880px] items-center justify-between px-5 pt-8 md:h-20">
+              <p className="text-[12px] font-bold tracking-[0.28em] text-white/60">
+                SEARCH CHEDAWON
+              </p>
+              <button
+                type="button"
+                onClick={closeSearch}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10"
+                aria-label="검색 닫기"
+              >
+                <X className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="mx-auto w-full max-w-[880px] flex-1 px-5 pb-10 pt-6 md:px-8">
+              <div className="flex items-center gap-4 border-b-2 border-white/25 pb-4 transition-colors focus-within:border-white">
+                <Search
+                  className="h-7 w-7 shrink-0 text-white/70"
+                  aria-hidden="true"
+                />
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="찾으시는 메뉴를 입력하세요 (예: 밀키트, HACCP)"
+                  className="h-11 w-full bg-transparent text-2xl font-bold text-white placeholder:text-white/35 focus:outline-none md:text-3xl"
+                  aria-label="검색어 입력"
+                />
+              </div>
+              <p className="mt-4 text-sm font-semibold text-white/50">
+                {query.trim()
+                  ? `${results.length}개의 결과를 찾았습니다`
+                  : "주요 메뉴 바로가기"}
+              </p>
+              <ul className="thin-scroll mt-6 grid max-h-[46vh] grid-cols-1 gap-1 overflow-y-auto sm:grid-cols-2">
+                {results.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={closeSearch}
+                      className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] font-semibold text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      {link.label}
+                      <ChevronRight
+                        className="h-4 w-4 text-brand-soft opacity-0 transition-opacity group-hover:opacity-100"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </li>
+                ))}
+                {results.length === 0 && (
+                  <li className="col-span-full py-10 text-center text-[15px] text-white/50">
+                    &ldquo;{query}&rdquo;에 대한 검색 결과가 없습니다.
+                  </li>
+                )}
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile full-screen menu */}
       <AnimatePresence>
         {mobileOpen && (
@@ -309,7 +494,7 @@ export function SiteHeader() {
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white"
                 aria-label="메뉴 닫기"
               >
-                <X className="h-6 w-6" />
+                <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
             <nav

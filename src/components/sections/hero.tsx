@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SLIDE_DURATION = 7000;
@@ -11,33 +11,33 @@ const SLIDES = [
   {
     image: "/images/hero.png",
     alt: "신선한 샐러드와 식재료가 가득한 채다원의 프리미엄 푸드 스프레드",
-    badge: "FOOD SOLUTION PROVIDER · SINCE 2017",
+    badge: "TOTAL FOOD SOLUTION · SINCE 2017",
     title: [
       { text: "사람. 다양한 생활.", highlight: false },
-      { text: "좋은 먹거리,", highlight: false },
-      { text: "알맞은 먹거리를 찾는다면", highlight: true },
+      { text: "좋은 먹거리,", highlight: true },
+      { text: "채다원이 함께합니다", highlight: false },
     ],
-    body: "올바른 식자재 유통과 푸드메이킹 프로세스 혁신으로\n건강한 식문화를 발전시키는 통합 식품 솔루션 기업, 채다원.",
+    body: "올바른 식자재 유통과 푸드메이킹 프로세스 혁신으로\n건강한 식문화를 발전시키는 통합 식품 솔루션 기업.",
   },
   {
-    image: "/images/biz-b2b.png",
-    alt: "항공기 내에서 제공되는 채다원의 기내식",
+    image: "/images/hero-airline.png",
+    alt: "항공기 기내에서 제공되는 채다원의 프리미엄 기내식",
     badge: "AIRLINE CATERING EXPERTISE",
     title: [
       { text: "하늘 위 식탁에서", highlight: false },
-      { text: "검증된 식자재 품질,", highlight: false },
-      { text: "전 과정을 아우르는 유통", highlight: true },
+      { text: "검증된 품질로", highlight: false },
+      { text: "신뢰를 쌓았습니다", highlight: true },
     ],
     body: "대형항공사 케이터링에서 쌓은 노하우로 수퍼마켓·편의점·호텔까지,\n신뢰받는 식자재 솔루션 공급자로 나아갑니다.",
   },
   {
-    image: "/images/biz-kit.png",
-    alt: "채다원 쿡산 밀키트와 신선한 재료",
+    image: "/images/hero-mealkit.png",
+    alt: "채다원의 프리미엄 밀키트와 신선한 재료",
     badge: "MEALKIT OEM / ODM",
     title: [
       { text: "업계 최소 MOQ로 시작하는", highlight: false },
-      { text: "푸드메이킹 프로세스", highlight: true },
-      { text: "혁신", highlight: false },
+      { text: "푸드메이킹", highlight: true },
+      { text: "프로세스 혁신", highlight: false },
     ],
     body: "R&D 기획부터 제조·포장·판매채널 연계까지 원스톱,\n자체 HACCP 시설이 여러분의 브랜드를 완성합니다.",
   },
@@ -94,8 +94,8 @@ export function Hero() {
             )}
             key={`${i}-${index === i}`}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-ink/75 via-brand-ink/40 to-brand-ink/90" />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/60 via-transparent to-brand-ink/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-brand-ink/30 to-brand-ink/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/75 via-brand-ink/25 to-brand-ink/10" />
         </div>
       ))}
 
@@ -117,7 +117,7 @@ export function Hero() {
 
         <h1
           key={`title-${index}`}
-          className="mt-7 text-[42px] leading-[1.12] font-extrabold tracking-tight text-shadow-hero sm:text-6xl md:text-[72px] md:leading-[1.08]"
+          className="text-shadow-hero mt-7 text-[42px] leading-[1.12] font-extrabold tracking-tight sm:text-6xl md:text-[72px] md:leading-[1.08]"
         >
           {slide.title.map((line, li) => (
             <span
@@ -125,7 +125,7 @@ export function Hero() {
               className="hero-text-rise block"
               style={{ animationDelay: `${0.12 + li * 0.12}s` }}
             >
-              <span className={line.highlight ? "text-[#6fc7a4]" : undefined}>
+              <span className={line.highlight ? "text-[#8ecfb4]" : undefined}>
                 {line.text}
               </span>
             </span>
@@ -134,7 +134,7 @@ export function Hero() {
 
         <p
           key={`body-${index}`}
-          className="hero-text-rise mt-7 max-w-2xl text-base leading-relaxed whitespace-pre-line text-white/75 md:text-lg"
+          className="hero-text-rise mt-7 max-w-2xl text-base leading-relaxed whitespace-pre-line text-white/80 md:text-lg"
           style={{ animationDelay: "0.45s" }}
         >
           {slide.body}
@@ -145,10 +145,7 @@ export function Hero() {
           className="hero-text-rise mt-10 flex flex-wrap items-center gap-3"
           style={{ animationDelay: "0.55s" }}
         >
-          <a
-            href="#about"
-            className="group inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-bold text-white shadow-lg shadow-brand/40 transition-all hover:bg-brand-deep"
-          >
+          <a href="#about" className="btn-solid group">
             회사소개 보기
             <span
               className="transition-transform group-hover:translate-x-1"
@@ -157,10 +154,7 @@ export function Hero() {
               →
             </span>
           </a>
-          <a
-            href="#business"
-            className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/5 px-7 py-3.5 text-[15px] font-bold text-white backdrop-blur-sm transition-all hover:bg-white hover:text-brand-deep"
-          >
+          <a href="#business" className="btn-line-light">
             사업영역 살펴보기
           </a>
         </div>
@@ -176,7 +170,7 @@ export function Hero() {
               className="hidden h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-brand-deep md:inline-flex"
               aria-label="이전 슬라이드"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-5 w-5" aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -184,7 +178,21 @@ export function Hero() {
               className="hidden h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-brand-deep md:inline-flex"
               aria-label="다음 슬라이드"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setPaused((p) => !p)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-brand-deep"
+              aria-label={paused ? "슬라이드 재생" : "슬라이드 정지"}
+              aria-pressed={paused}
+            >
+              {paused ? (
+                <Play className="h-4.5 w-4.5" aria-hidden="true" />
+              ) : (
+                <Pause className="h-4.5 w-4.5" aria-hidden="true" />
+              )}
             </button>
 
             <div className="flex items-center gap-4 md:ml-4">
@@ -210,7 +218,9 @@ export function Hero() {
                       "slide-progress block w-14 transition-opacity",
                       i === index && "active"
                     )}
-                    style={{ ["--slide-duration" as string]: `${SLIDE_DURATION}ms` }}
+                    style={{
+                      ["--slide-duration" as string]: `${SLIDE_DURATION}ms`,
+                    }}
                     key={`progress-${i}-${paused}`}
                     data-paused={paused}
                   />
@@ -220,7 +230,7 @@ export function Hero() {
           </div>
 
           <a
-            href="#stats"
+            href="#about"
             className="hidden items-center gap-3 text-[12px] font-bold tracking-[0.22em] text-white/60 transition-colors hover:text-white md:flex"
             aria-label="아래로 스크롤"
           >

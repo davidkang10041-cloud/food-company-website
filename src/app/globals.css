@@ -165,6 +165,11 @@
   letter-spacing: -0.02em;
 }
 
+.text-shadow-hero {
+  text-shadow: 0 2px 28px rgba(6, 25, 19, 0.55),
+    0 1px 6px rgba(6, 25, 19, 0.35);
+}
+
 .h-display {
   font-size: clamp(2.6rem, 6vw, 4.75rem);
   line-height: 1.08;
@@ -422,6 +427,74 @@
 .biz-panel {
   transition: flex-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.4s ease;
+}
+
+/* ---------- Buttons (라인 버튼: 대기업 CTA 표준) ---------- */
+
+.btn-line,
+.btn-line-light,
+.btn-line-dark {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-[15px] font-bold transition-all duration-300;
+}
+
+.btn-line-light {
+  @apply border-white/35 bg-white/5 text-white backdrop-blur-sm;
+}
+.btn-line-light:hover {
+  @apply border-white bg-white text-brand-deep;
+}
+
+.btn-line-dark {
+  @apply border-brand-line bg-white text-brand;
+}
+.btn-line-dark:hover {
+  @apply border-brand bg-brand text-white;
+}
+
+.btn-solid {
+  @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-bold text-white shadow-lg shadow-brand/30 transition-all duration-300 hover:bg-brand-deep;
+}
+
+/* ---------- Ghost index number (섹션 번호 워터마크) ---------- */
+
+.ghost-num {
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--brand);
+  opacity: 0.08;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+/* ---------- News row (뉴스룸 리스트) ---------- */
+
+.news-row {
+  @apply relative flex flex-col gap-2 px-1 py-6 transition-colors md:flex-row md:items-center md:gap-8;
+}
+.news-row + .news-row {
+  border-top: 1px solid var(--brand-line);
+}
+.news-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 0;
+  background: var(--brand);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.news-row:hover::after {
+  width: 100%;
+}
+
+/* ---------- Count-up number ---------- */
+
+.stat-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 /* Underline link animation */

@@ -1,140 +1,199 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { Flame, Package, UtensilsCrossed } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
-import { PRODUCTS, PRODUCT_LINES } from "@/lib/company";
-import { cn } from "@/lib/utils";
+import { SectionHeading } from "@/components/site/section-heading";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PRODUCTS, PRODUCT_LINES, BUSINESSES } from "@/lib/company";
 
-const DRESSING_TABS = ["전체", "발사므", "랜치", "오리엔탈"] as const;
+const KIT_FEATURES = [
+  "1,000g 셀러드 키트 — 스위트콘 · 올리브슬라이스 · 계란 · 방울토마토 · 야채믹스",
+  "가정 · 카페 · 소규모 외식업까지 손쉽게 활용하는 대용량 구성",
+  "당일 생산 · 콜드체인 배송으로 신선함 그대로",
+];
+
+const OEM_FEATURES = [
+  "신규/기존 브랜드 OEM · ODM — 다품목, 식품 유형별 제조 기반",
+  "인허가 및 메뉴 분석, 개발·포장 등 브랜드/패키지 디자인, 영상 제작",
+  "B2B 파트너사 제안부터 MCN · 크라우드펀딩 · 커머스까지 판매채널 연계",
+];
 
 export function Products() {
-  const [tab, setTab] = useState(0);
-  const filtered =
-    tab === 0 ? PRODUCTS : PRODUCTS.filter((p) => p.dressing === DRESSING_TABS[tab]);
+  const manufacturing = BUSINESSES.find((b) => b.id === "manufacturing");
 
   return (
-    <section id="products" className="relative overflow-hidden bg-cream">
-      {/* Decorative brand circle */}
-      <div
-        className="pointer-events-none absolute -top-40 -right-40 h-[480px] w-[480px] rounded-full border-[44px] border-brand-soft"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-56 -left-32 h-[420px] w-[420px] rounded-full border-[36px] border-brand-soft/70"
-        aria-hidden="true"
-      />
-
-      <div className="relative mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
+    <section
+      id="products"
+      className="bg-white py-24 md:py-32"
+      aria-label="제품소개"
+    >
+      <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <FadeIn>
-            <p className="kicker-tomato">Signature Brand</p>
-            <h2 className="h-section mt-4 text-foreground">
-              쿡산 <span className="text-brand">Cooksan</span> 브랜드
-            </h2>
-            <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
-              자체 HACCP 생산시설에서 만든 프리미엄 샐러드와 밀키트. 신선한
-              식재료를 가장 신선하게, 여러분의 식탁까지 전합니다.
-            </p>
-          </FadeIn>
-
-          {/* Tabs */}
-          <FadeIn delay={0.15} className="shrink-0">
-            <div
-              className="flex flex-wrap gap-2"
-              role="tablist"
-              aria-label="드레싱별 제품 필터"
-            >
-              {DRESSING_TABS.map((t, i) => (
-                <button
-                  key={t}
-                  type="button"
-                  role="tab"
-                  aria-selected={tab === i}
-                  onClick={() => setTab(i)}
-                  className={cn(
-                    "rounded-full px-4.5 py-2.5 text-[14px] font-bold transition-all",
-                    tab === i
-                      ? "bg-brand text-white shadow-md shadow-brand/25"
-                      : "bg-white text-foreground/65 ring-1 ring-border hover:text-brand"
-                  )}
+          <SectionHeading
+            kicker="PRODUCTS"
+            title={"신선함을 가장 신선하게\n전하는 프리미엄 샐러드"}
+            description="당일 생산된 신선한 재료를 HACCP 인증 시설에서 정성껏 담았습니다. 취향과 목적에 맞는 세 가지 방식으로 만나보세요."
+          />
+          <FadeIn delay={0.1}>
+            <Tabs defaultValue="salad" className="w-full lg:w-auto">
+              <TabsList className="h-12 w-full justify-start gap-1 rounded-full border border-brand-line bg-cream p-1.5 lg:w-auto">
+                <TabsTrigger
+                  value="salad"
+                  className="rounded-full px-4 py-2 text-[14px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
                 >
-                  {t === "전체" ? "전체" : `${t} 드레싱`}
-                </button>
-              ))}
-            </div>
+                  프리미엄 샐러드
+                </TabsTrigger>
+                <TabsTrigger
+                  value="kit"
+                  className="rounded-full px-4 py-2 text-[14px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
+                >
+                  셀러드 키트
+                </TabsTrigger>
+                <TabsTrigger
+                  value="oem"
+                  className="rounded-full px-4 py-2 text-[14px] font-bold text-muted-foreground data-[state=active]:bg-brand data-[state=active]:text-white"
+                >
+                  OEM · ODM
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Salad products */}
+              <TabsContent value="salad" className="mt-10">
+                <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-5">
+                  {PRODUCTS.map((p, i) => (
+                    <FadeIn as="li" key={p.name} delay={i * 0.05}>
+                      <article className="hover-lift h-full overflow-hidden rounded-2xl border border-brand-line bg-white">
+                        <div className="img-zoom relative aspect-square overflow-hidden bg-cream">
+                          <Image
+                            src={p.image}
+                            alt={`${p.name} (${p.en})`}
+                            fill
+                            sizes="(max-width: 768px) 50vw, 240px"
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <h3 className="text-[15.5px] font-extrabold tracking-tight text-foreground">
+                            {p.name}
+                          </h3>
+                          <p className="mt-1 text-[12px] font-semibold tracking-wide text-muted-foreground">
+                            {p.en}
+                          </p>
+                          <div className="font-num mt-3 flex items-center gap-1.5 text-[12px] font-bold text-brand">
+                            <span>{p.weight}</span>
+                            <span className="text-brand-line" aria-hidden="true">
+                              |
+                            </span>
+                            <span>{p.kcal}</span>
+                            <span className="text-brand-line" aria-hidden="true">
+                              |
+                            </span>
+                            <span>{p.dressing}</span>
+                          </div>
+                          <p className="mt-3 line-clamp-2 text-[12.5px] leading-relaxed text-muted-foreground">
+                            {p.items.join(" · ")}
+                          </p>
+                        </div>
+                      </article>
+                    </FadeIn>
+                  ))}
+                </ul>
+                <div className="mt-8 grid gap-3 rounded-2xl border border-brand-line bg-cream p-6 sm:grid-cols-3">
+                  {PRODUCT_LINES.map((line) => (
+                    <div key={line.name}>
+                      <p className="text-[14px] font-extrabold text-brand-deep">
+                        {line.name}
+                      </p>
+                      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                        {line.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Salad kit */}
+              <TabsContent value="kit" className="mt-10">
+                <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+                  <FadeIn className="img-zoom overflow-hidden rounded-2xl">
+                    <Image
+                      src="/images/biz-kit.png"
+                      alt="채다원 셀러드 키트 구성 — 신선한 채소와 재료"
+                      width={1344}
+                      height={768}
+                      sizes="(max-width: 1024px) 100vw, 600px"
+                      className="h-72 w-full object-cover md:h-96"
+                    />
+                  </FadeIn>
+                  <FadeIn delay={0.1}>
+                    <p className="text-[12px] font-bold tracking-[0.22em] text-brand">
+                      SALAD KIT · 1,000g
+                    </p>
+                    <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-[28px]">
+                      {PRODUCT_LINES[2].name}
+                    </h3>
+                    <ul className="mt-6 space-y-3.5">
+                      {KIT_FEATURES.map((f) => (
+                        <li key={f} className="flex items-start gap-3">
+                          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                            <Check className="h-3 w-3" aria-hidden="true" />
+                          </span>
+                          <span className="text-[15px] leading-relaxed text-foreground/80">
+                            {f}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a href="#contact" className="btn-line-dark mt-8">
+                      키트 공급 문의
+                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    </a>
+                  </FadeIn>
+                </div>
+              </TabsContent>
+
+              {/* OEM / ODM */}
+              <TabsContent value="oem" className="mt-10">
+                <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+                  <FadeIn delay={0.1} className="order-2 lg:order-1">
+                    <p className="text-[12px] font-bold tracking-[0.22em] text-brand">
+                      OEM · ODM MANUFACTURING
+                    </p>
+                    <h3 className="mt-3 text-2xl font-extrabold tracking-tight whitespace-pre-line text-foreground md:text-[28px]">
+                      {manufacturing?.headline}
+                    </h3>
+                    <ul className="mt-6 space-y-3.5">
+                      {OEM_FEATURES.map((f) => (
+                        <li key={f} className="flex items-start gap-3">
+                          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                            <Check className="h-3 w-3" aria-hidden="true" />
+                          </span>
+                          <span className="text-[15px] leading-relaxed text-foreground/80">
+                            {f}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a href="#contact" className="btn-line-dark mt-8">
+                      OEM/ODM 제조 문의
+                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    </a>
+                  </FadeIn>
+                  <FadeIn className="img-zoom order-1 overflow-hidden rounded-2xl lg:order-2">
+                    <Image
+                      src="/images/biz-mfg.png"
+                      alt="HACCP 인증 채다원 식품제조 시설의 생산 라인"
+                      width={1344}
+                      height={768}
+                      sizes="(max-width: 1024px) 100vw, 600px"
+                      className="h-72 w-full object-cover md:h-96"
+                    />
+                  </FadeIn>
+                </div>
+              </TabsContent>
+            </Tabs>
           </FadeIn>
-        </div>
-
-        {/* Product grid */}
-        <div className="mt-12 grid grid-cols-2 gap-4 md:mt-14 md:gap-6 lg:grid-cols-3 xl:grid-cols-5">
-          {filtered.map((p, i) => (
-            <FadeIn key={p.name} delay={i * 0.07}>
-              <article className="hover-lift group h-full overflow-hidden rounded-2xl bg-white shadow-sm">
-                <div className="img-zoom relative aspect-square overflow-hidden">
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 20vw"
-                    className="object-cover"
-                  />
-                  <span className="absolute left-3 top-3 rounded-full bg-brand-ink/70 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white backdrop-blur-sm">
-                    {p.weight}
-                  </span>
-                </div>
-                <div className="p-4 md:p-5">
-                  <p className="text-[11px] font-bold tracking-[0.16em] text-tomato">
-                    {p.dressing}
-                  </p>
-                  <h3 className="mt-1.5 text-[16px] font-extrabold tracking-tight text-foreground md:text-[17px]">
-                    {p.name}
-                  </h3>
-                  <p className="mt-0.5 text-[12px] font-medium text-muted-foreground">
-                    {p.en}
-                  </p>
-                  <div className="mt-3.5 flex items-center gap-3 border-t border-border pt-3.5 text-[12px] font-semibold text-muted-foreground">
-                    <span className="inline-flex items-center gap-1">
-                      <Flame
-                        className="h-3.5 w-3.5 text-tomato"
-                        aria-hidden="true"
-                      />
-                      <span className="font-num">{p.kcal}</span>
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <UtensilsCrossed
-                        className="h-3.5 w-3.5 text-brand"
-                        aria-hidden="true"
-                      />
-                      {p.items.length}종
-                    </span>
-                  </div>
-                </div>
-              </article>
-            </FadeIn>
-          ))}
-        </div>
-
-        {/* Product lines */}
-        <div className="mt-14 grid gap-4 md:mt-16 md:grid-cols-3 md:gap-6">
-          {PRODUCT_LINES.map((line, i) => (
-            <FadeIn key={line.name} delay={i * 0.08}>
-              <div className="group flex h-full flex-col gap-3 rounded-2xl border border-brand-line bg-white/70 px-6 py-6 transition-colors hover:border-brand">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">
-                    <Package className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <h3 className="text-[17px] font-extrabold tracking-tight text-foreground">
-                    {line.name}
-                  </h3>
-                </div>
-                <p className="text-[13.5px] leading-relaxed text-muted-foreground">
-                  {line.desc}
-                </p>
-              </div>
-            </FadeIn>
-          ))}
         </div>
       </div>
     </section>

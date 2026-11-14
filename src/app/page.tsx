@@ -5,16 +5,38 @@ import { ArrowUp } from "lucide-react";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { Hero } from "@/components/sections/hero";
-import { Stats } from "@/components/sections/stats";
 import { About } from "@/components/sections/about";
 import { Business } from "@/components/sections/business";
 import { Products } from "@/components/sections/products";
 import { Quality } from "@/components/sections/infra";
-import { Growth } from "@/components/sections/growth";
-import { Values } from "@/components/sections/values";
 import { Partners } from "@/components/sections/partners";
+import { News } from "@/components/sections/news";
+import { Growth } from "@/components/sections/growth";
 import { History } from "@/components/sections/history";
 import { Contact } from "@/components/sections/contact";
+import { HERO_KEYWORDS } from "@/lib/company";
+
+function KeywordTicker() {
+  const keywords = [...HERO_KEYWORDS, ...HERO_KEYWORDS];
+  return (
+    <div
+      className="overflow-hidden border-y border-white/10 bg-brand-deep py-4"
+      aria-hidden="true"
+    >
+      <div className="animate-marquee-slow marquee-mask flex w-max items-center gap-0">
+        {keywords.map((kw, i) => (
+          <span
+            key={`${kw}-${i}`}
+            className="flex items-center gap-6 pr-6 text-[13.5px] font-bold tracking-[0.14em] text-white/70"
+          >
+            {kw}
+            <span className="h-1.5 w-1.5 rounded-full bg-[#7fc0a8]" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function ScrollProgress() {
   const [progress, setProgress] = useState(0);
@@ -68,18 +90,24 @@ function BackToTop() {
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-brand focus:px-5 focus:py-3 focus:text-[15px] focus:font-bold focus:text-white"
+      >
+        본문 바로가기
+      </a>
       <ScrollProgress />
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main" className="flex-1">
         <Hero />
-        <Stats />
+        <KeywordTicker />
         <About />
         <Business />
         <Products />
         <Quality />
-        <Growth />
-        <Values />
         <Partners />
+        <News />
+        <Growth />
         <History />
         <Contact />
       </main>

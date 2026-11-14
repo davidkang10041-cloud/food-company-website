@@ -5,91 +5,64 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { HISTORY } from "@/lib/company";
 
 export function History() {
-  const sorted = [...HISTORY].sort((a, b) => b.year - a.year);
-
   return (
-    <section id="history" className="bg-brand-mist" aria-labelledby="history-heading">
-      <div className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
-          {/* Sticky intro */}
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <SectionHeading
-              kicker="Our Journey"
-              title={"법인 설립부터\n대기업 공급까지"}
-              description="2017년 항공사 케이터링 식자재 공급으로 시작해, HACCP 인증과 자체 공장 신설, 대기업 유통 공급으로 성장을 이어갑니다."
-            />
-            <FadeIn delay={0.2} className="mt-8">
-              <div className="rounded-2xl border border-border bg-white px-6 py-6">
-                <p className="text-[13px] font-bold tracking-[0.2em] text-brand">
-                  MILESTONES
-                </p>
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-num text-3xl font-black text-brand-deep">
-                      8<span className="text-lg">년+</span>
-                    </p>
-                    <p className="mt-1 text-[12.5px] font-medium text-muted-foreground">
-                      지속 성장 기간
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-num text-3xl font-black text-brand-deep">
-                      4<span className="text-lg">종</span>
-                    </p>
-                    <p className="mt-1 text-[12.5px] font-medium text-muted-foreground">
-                      HACCP 인증
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-num text-3xl font-black text-brand-deep">
-                      2<span className="text-lg">개</span>
-                    </p>
-                    <p className="mt-1 text-[12.5px] font-medium text-muted-foreground">
-                      생산 공장 운영
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-num text-3xl font-black text-brand-deep">
-                      7<span className="text-lg">+</span>
-                    </p>
-                    <p className="mt-1 text-[12.5px] font-medium text-muted-foreground">
-                      대형 공급 파트너
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
+    <section
+      id="history"
+      className="bg-brand-mist py-24 md:py-32"
+      aria-label="회사 연혁"
+    >
+      <div className="mx-auto max-w-[1280px] px-5 md:px-8">
+        <SectionHeading
+          kicker="HISTORY"
+          title={"항공 케이터링에서 시작해\n대기업 유통 채널로"}
+          description="2017년 법인 설립 이후, 검증된 품질로 공급처를 넓혀왔습니다."
+        />
 
-          {/* Timeline */}
-          <ol className="relative space-y-10 border-l-2 border-brand-line pl-8 md:pl-10">
-            {sorted.map((group, gi) => (
-              <FadeIn key={group.year} as="li" delay={gi * 0.05} className="relative">
-                <span
-                  className="absolute -left-[42px] top-1 flex h-5 w-5 items-center justify-center md:-left-[50px]"
-                  aria-hidden="true"
-                >
-                  <span className="absolute h-5 w-5 rounded-full bg-brand/15" />
-                  <span className="relative h-2.5 w-2.5 rounded-full bg-brand ring-2 ring-white" />
-                </span>
-                <p className="font-num text-[26px] font-black tracking-tight text-foreground md:text-[32px]">
-                  {group.year}
-                </p>
-                <ul className="mt-3 space-y-2.5">
-                  {group.items.map((item) => (
-                    <li
-                      key={`${item.month}-${item.text}`}
-                      className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3"
+        <div className="relative mt-16">
+          {/* Spine */}
+          <span
+            className="absolute bottom-0 left-[11px] top-2 w-px bg-brand-line md:left-[15px]"
+            aria-hidden="true"
+          />
+          <ol className="space-y-12">
+            {HISTORY.map((h, yi) => (
+              <FadeIn as="li" key={h.year} delay={yi * 0.04}>
+                <div className="relative flex flex-col gap-4 pl-12 md:flex-row md:gap-10 md:pl-16">
+                  {/* Node */}
+                  <span
+                    className="absolute left-0 top-1.5 flex h-6 w-6 items-center justify-center md:top-2 md:h-8 md:w-8"
+                    aria-hidden="true"
+                  >
+                    <span
+                      className={
+                        yi === 0
+                          ? "flex h-6 w-6 items-center justify-center rounded-full bg-brand text-[10px] font-extrabold text-white md:h-8 md:w-8 md:text-[11px]"
+                          : "h-3 w-3 rounded-full border-2 border-brand bg-white md:h-4 md:w-4"
+                      }
                     >
-                      <span className="font-num shrink-0 rounded-md bg-brand px-2 py-0.5 text-[12px] font-bold text-white">
-                        {item.month}월
-                      </span>
-                      <span className="text-[14.5px] font-semibold text-foreground/85">
-                        {item.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                      {yi === 0 ? "NOW" : ""}
+                    </span>
+                  </span>
+
+                  <p className="font-num w-24 shrink-0 text-[30px] font-extrabold tracking-tight text-brand-deep md:text-[36px]">
+                    {h.year}
+                  </p>
+                  <ul className="grid flex-1 gap-2.5 sm:grid-cols-2">
+                    {h.items.map((item) => (
+                      <li
+                        key={`${h.year}-${item.month}-${item.text}`}
+                        className="flex items-center gap-3 rounded-xl border border-brand-line bg-white px-4 py-3"
+                      >
+                        <span className="font-num shrink-0 rounded-md bg-brand-soft px-2 py-1 text-[12px] font-extrabold text-brand">
+                          {item.month}월
+                        </span>
+                        <span className="text-[14px] font-semibold text-foreground/85">
+                          {item.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </FadeIn>
             ))}
           </ol>
