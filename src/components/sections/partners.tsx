@@ -34,7 +34,7 @@ export function Partners() {
                 <p className="text-[18px] font-extrabold tracking-tight text-brand-deep">
                   {p.name}
                 </p>
-                <p className="mt-2 text-[14.5px] font-semibold text-muted-foreground">
+                <p className="mt-2 text-[16px] font-semibold text-muted-foreground">
                   {p.ko}
                 </p>
               </article>
@@ -45,7 +45,7 @@ export function Partners() {
               <p className="text-[18px] font-extrabold tracking-tight">
                 16,000+
               </p>
-              <p className="mt-2 text-[14.5px] font-semibold text-white/75">
+              <p className="mt-2 text-[16px] font-semibold text-white/75">
                 이용 고객사와 함께 성장합니다
               </p>
             </article>
@@ -64,7 +64,7 @@ export function Partners() {
                   <p className="text-[16px] font-extrabold text-foreground">
                     {c.label}
                   </p>
-                  <p className="mt-1 text-[14.5px] text-muted-foreground">
+                  <p className="mt-1 text-[15.5px] text-muted-foreground">
                     {c.desc}
                   </p>
                 </div>

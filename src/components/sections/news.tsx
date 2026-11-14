@@ -82,7 +82,7 @@ export function News() {
                   </span>
                   <span
                     className={cn(
-                      "shrink-0 self-start rounded-full px-3 py-1 text-[13px] font-bold md:self-auto",
+                      "shrink-0 self-start rounded-full px-3 py-1 text-[14px] font-bold md:self-auto",
                       CATEGORY_STYLE[item.category] ?? "bg-brand text-white"
                     )}
                   >
@@ -92,7 +92,7 @@ export function News() {
                     <span className="block text-[17px] font-bold tracking-tight text-foreground transition-colors group-hover:text-brand md:text-[19px]">
                       {item.title}
                       {item.highlight && (
-                        <span className="ml-2 inline-flex rounded-full bg-brand-soft px-2 py-0.5 align-middle text-[12px] font-bold text-brand">
+                        <span className="ml-2 inline-flex rounded-full bg-brand-soft px-2 py-0.5 align-middle text-[13px] font-bold text-brand">
                           NEW
                         </span>
                       )}

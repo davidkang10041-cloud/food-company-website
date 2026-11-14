@@ -87,7 +87,7 @@ export function Contact() {
                   <Phone className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-[14.5px] font-semibold text-white/60">
+                  <span className="block text-[15.5px] font-semibold text-white/60">
                     대표전화
                   </span>
                   <span className="font-num mt-1 block text-xl font-extrabold tracking-tight text-white">
@@ -100,7 +100,7 @@ export function Contact() {
                   <MapPin className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-[14.5px] font-semibold text-white/60">
+                  <span className="block text-[15.5px] font-semibold text-white/60">
                     주소
                   </span>
                   <span className="mt-1 block text-[16px] font-bold text-white">
@@ -113,7 +113,7 @@ export function Contact() {
                   <Building2 className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-[14.5px] font-semibold text-white/60">
+                  <span className="block text-[15.5px] font-semibold text-white/60">
                     사업분야
                   </span>
                   <span className="mt-1 block text-[16px] font-bold text-white">
@@ -196,7 +196,7 @@ export function Contact() {
                 {pending ? "전송 중..." : "문의 접수하기"}
                 <Send className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <p className="mt-3 text-center text-[13px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-center text-[14.5px] leading-relaxed text-muted-foreground">
                 입력하신 개인정보는 문의 처리 목적으로만 활용되며, 일정 기간
                 후 안전하게 파기됩니다.
               </p>

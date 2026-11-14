@@ -186,7 +186,7 @@ export function SiteHeader() {
           )}
         >
           <div className="utility-bar">
-            <div className="mx-auto flex h-10 max-w-[1280px] items-center justify-between px-8 text-[13px] font-medium tracking-wide text-white/75">
+            <div className="mx-auto flex h-10 max-w-[1280px] items-center justify-between px-8 text-[14px] font-medium tracking-wide text-white/75">
               <p>
                 식자재 유통 · 밀키트 OEM/ODM — HACCP 인증 4종 보유 전문 기업
               </p>
@@ -353,7 +353,7 @@ export function SiteHeader() {
                   <div>
                     {MEGA.filter((m) => m.href === openMenu).map((item) => (
                       <div key={item.href}>
-                        <p className="text-[12px] font-bold tracking-[0.3em] text-brand">
+                        <p className="text-[13px] font-bold tracking-[0.3em] text-brand">
                           {item.en.toUpperCase()}
                         </p>
                         <p className="mt-3 text-2xl font-extrabold tracking-tight text-foreground">
@@ -414,7 +414,7 @@ export function SiteHeader() {
             aria-label="통합 검색"
           >
             <div className="mx-auto flex h-16 w-full max-w-[880px] items-center justify-between px-5 pt-8 md:h-20">
-              <p className="text-[13px] font-bold tracking-[0.28em] text-white/60">
+              <p className="text-[14px] font-bold tracking-[0.28em] text-white/70">
                 SEARCH CHEDAWON
               </p>
               <button
@@ -566,7 +566,7 @@ export function SiteHeader() {
                 <Phone className="h-4 w-4" aria-hidden="true" />
                 1:1 문의하기 · {COMPANY.phoneDisplay}
               </a>
-              <p className="mt-4 text-center text-[13px] font-semibold tracking-[0.2em] text-white/40">
+              <p className="mt-4 text-center text-[14px] font-semibold tracking-[0.2em] text-white/60">
                 CHEDAWON CO., LTD. · SINCE 2017
               </p>
             </div>

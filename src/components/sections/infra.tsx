@@ -31,10 +31,10 @@ export function Quality() {
                 <h3 className="mt-4 text-[18px] font-extrabold tracking-tight text-foreground">
                   {cert.name}
                 </h3>
-                <p className="mt-1.5 text-[14px] font-semibold text-brand">
+                <p className="mt-1.5 text-[15px] font-semibold text-brand">
                   HACCP {cert.no}
                 </p>
-                <p className="font-num mt-2 text-[14px] text-muted-foreground">
+                <p className="font-num mt-2 text-[15.5px] text-muted-foreground">
                   {cert.period}
                 </p>
               </article>
@@ -86,7 +86,7 @@ export function Quality() {
               {EQUIPMENTS.map((eq) => (
                 <li
                   key={eq}
-                  className="rounded-full border border-brand-line bg-white px-3.5 py-1.5 text-[14px] font-semibold text-brand-deep"
+                  className="rounded-full border border-brand-line bg-white px-3.5 py-1.5 text-[15px] font-semibold text-brand-deep"
                 >
                   {eq}
                 </li>

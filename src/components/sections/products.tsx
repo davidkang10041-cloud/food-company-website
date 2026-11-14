@@ -77,10 +77,10 @@ export function Products() {
                           <h3 className="text-[16.5px] font-extrabold tracking-tight text-foreground">
                             {p.name}
                           </h3>
-                          <p className="mt-1 text-[13px] font-semibold tracking-wide text-muted-foreground">
+                          <p className="mt-1 text-[14.5px] font-semibold tracking-wide text-muted-foreground">
                             {p.en}
                           </p>
-                          <div className="font-num mt-3 flex items-center gap-1.5 text-[13.5px] font-bold text-brand">
+                          <div className="font-num mt-3 flex items-center gap-1.5 text-[14.5px] font-bold text-brand">
                             <span>{p.weight}</span>
                             <span className="text-brand-line" aria-hidden="true">
                               |
@@ -91,7 +91,7 @@ export function Products() {
                             </span>
                             <span>{p.dressing}</span>
                           </div>
-                          <p className="mt-3 line-clamp-2 text-[13.5px] leading-relaxed text-muted-foreground">
+                          <p className="mt-3 line-clamp-2 text-[14.5px] leading-relaxed text-muted-foreground">
                             {p.items.join(" · ")}
                           </p>
                         </div>
@@ -105,7 +105,7 @@ export function Products() {
                       <p className="text-[15px] font-extrabold text-brand-deep">
                         {line.name}
                       </p>
-                      <p className="mt-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
+                      <p className="mt-1.5 text-[15.5px] leading-relaxed text-muted-foreground">
                         {line.desc}
                       </p>
                     </div>
@@ -127,7 +127,7 @@ export function Products() {
                     />
                   </FadeIn>
                   <FadeIn delay={0.1}>
-                    <p className="text-[13px] font-bold tracking-[0.22em] text-brand">
+                    <p className="text-[14.5px] font-bold tracking-[0.22em] text-brand">
                       SALAD KIT · 1,000g
                     </p>
                     <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-[28px]">
@@ -157,7 +157,7 @@ export function Products() {
               <TabsContent value="oem" className="mt-10">
                 <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                   <FadeIn delay={0.1} className="order-2 lg:order-1">
-                    <p className="text-[13px] font-bold tracking-[0.22em] text-brand">
+                    <p className="text-[14.5px] font-bold tracking-[0.22em] text-brand">
                       OEM · ODM MANUFACTURING
                     </p>
                     <h3 className="mt-3 text-2xl font-extrabold tracking-tight whitespace-pre-line text-foreground md:text-[28px]">

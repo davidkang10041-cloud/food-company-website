@@ -27,7 +27,7 @@ function KeywordTicker() {
         {keywords.map((kw, i) => (
           <span
             key={`${kw}-${i}`}
-            className="flex items-center gap-6 pr-6 text-[13.5px] font-bold tracking-[0.14em] text-white/70"
+            className="flex items-center gap-6 pr-6 text-[15px] font-bold tracking-[0.14em] text-white/70"
           >
             {kw}
             <span className="h-1.5 w-1.5 rounded-full bg-[#7fc0a8]" />

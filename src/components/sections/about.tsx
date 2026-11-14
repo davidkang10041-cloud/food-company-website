@@ -63,7 +63,7 @@ export function About() {
             </div>
             <div className="mt-6 overflow-hidden rounded-2xl border border-brand-line bg-cream">
               <div className="border-b border-brand-line bg-brand px-6 py-3.5">
-                <p className="text-[14px] font-bold tracking-[0.18em] text-white">
+                <p className="text-[15px] font-bold tracking-[0.18em] text-white">
                   기업 개요 <span className="text-white/60">CORPORATE PROFILE</span>
                 </p>
               </div>
