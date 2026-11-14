@@ -1,153 +1,141 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Package, Salad, Utensils, Weight } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import { PRODUCTS, PRODUCT_LINES } from "@/lib/company";
-import { SectionHeading } from "@/components/site/section-heading";
+import { useState } from "react";
+import { Flame, Package, UtensilsCrossed } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
-import { useCallback, useEffect, useState } from "react";
+import { PRODUCTS, PRODUCT_LINES } from "@/lib/company";
+import { cn } from "@/lib/utils";
+
+const DRESSING_TABS = ["전체", "발사므", "랜치", "오리엔탈"] as const;
 
 export function Products() {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const count = PRODUCTS.length;
-
-  useEffect(() => {
-    if (!api) return;
-    const onSelect = () => setCurrent(api.selectedScrollSnap());
-    api.on("select", onSelect);
-    return () => {
-      api.off("select", onSelect);
-    };
-  }, [api]);
-
-  const prev = useCallback(() => api?.scrollPrev(), [api]);
-  const next = useCallback(() => api?.scrollNext(), [api]);
+  const [tab, setTab] = useState(0);
+  const filtered =
+    tab === 0 ? PRODUCTS : PRODUCTS.filter((p) => p.dressing === DRESSING_TABS[tab]);
 
   return (
-    <section id="products" className="py-24 md:py-32" aria-labelledby="products-heading">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <SectionHeading
-            kicker="Product Line"
-            title={"MEALBOX25\n프레시 샐러드 라인"}
-            description="신선한 재료로 준비된 프리미엄 샐러드를 만나보세요. 매일의 식사를 더 건강하고 간편하게."
-          />
+    <section id="products" className="relative overflow-hidden bg-cream">
+      {/* Decorative brand circle */}
+      <div
+        className="pointer-events-none absolute -top-40 -right-40 h-[480px] w-[480px] rounded-full border-[44px] border-brand-soft"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -bottom-56 -left-32 h-[420px] w-[420px] rounded-full border-[36px] border-brand-soft/70"
+        aria-hidden="true"
+      />
 
-          {/* Carousel controls */}
-          <FadeIn delay={0.15}>
-            <div className="flex items-center gap-3">
-              <span className="font-num mr-2 text-sm font-bold text-muted-foreground">
-                <span className="text-brand-deep">{String(current + 1).padStart(2, "0")}</span>
-                {" / "}
-                {String(count).padStart(2, "0")}
-              </span>
-              <button
-                type="button"
-                onClick={prev}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-brand-line bg-white text-brand-deep transition-all hover:bg-brand hover:text-white"
-                aria-label="이전 제품 보기"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-brand-line bg-white text-brand-deep transition-all hover:bg-brand hover:text-white"
-                aria-label="다음 제품 보기"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
+      <div className="relative mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <FadeIn>
+            <p className="kicker-tomato">Signature Brand</p>
+            <h2 className="h-section mt-4 text-foreground">
+              쿡산 <span className="text-brand">Cooksan</span> 브랜드
+            </h2>
+            <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
+              자체 HACCP 생산시설에서 만든 프리미엄 샐러드와 밀키트. 신선한
+              식재료를 가장 신선하게, 여러분의 식탁까지 전합니다.
+            </p>
+          </FadeIn>
+
+          {/* Tabs */}
+          <FadeIn delay={0.15} className="shrink-0">
+            <div
+              className="flex flex-wrap gap-2"
+              role="tablist"
+              aria-label="드레싱별 제품 필터"
+            >
+              {DRESSING_TABS.map((t, i) => (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === i}
+                  onClick={() => setTab(i)}
+                  className={cn(
+                    "rounded-full px-4.5 py-2.5 text-[14px] font-bold transition-all",
+                    tab === i
+                      ? "bg-brand text-white shadow-md shadow-brand/25"
+                      : "bg-white text-foreground/65 ring-1 ring-border hover:text-brand"
+                  )}
+                >
+                  {t === "전체" ? "전체" : `${t} 드레싱`}
+                </button>
+              ))}
             </div>
           </FadeIn>
         </div>
 
-        <FadeIn delay={0.1}>
-          <Carousel
-            setApi={setApi}
-            opts={{ loop: true, align: "start" }}
-            className="mt-12"
-          >
-            <CarouselContent className="-ml-5">
-              {PRODUCTS.map((product) => (
-                <CarouselItem
-                  key={product.name}
-                  className="pl-5 basis-full sm:basis-1/2 lg:basis-1/3"
-                >
-                  <article className="hover-lift group h-full overflow-hidden rounded-2xl border border-brand-line/70 bg-white">
-                    <div className="relative">
-                      <div className="relative aspect-square overflow-hidden bg-brand-mist">
-                        <Image
-                          src={product.image}
-                          alt={`${product.name} 제품 이미지`}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      </div>
-                      <span className="absolute left-4 top-4 rounded-full bg-brand px-3.5 py-1.5 text-xs font-bold tracking-wide text-white shadow-md">
-                        FRESH SALAD
-                      </span>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-lg font-extrabold tracking-tight text-brand-deep">
-                        {product.name}
-                      </h3>
-                      <p className="mt-1 text-[13px] font-semibold uppercase tracking-wider text-brand/60">
-                        {product.en}
-                      </p>
-                      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-brand-line/60 pt-4 text-[13px] font-semibold text-foreground/70">
-                        <span className="inline-flex items-center gap-1.5">
-                          <Weight className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-                          {product.weight}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5">
-                          <Salad className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-                          {product.kcal}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5">
-                          <Utensils className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-                          {product.dressing}
-                        </span>
-                      </div>
-                      <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-                        {product.items.join(" · ")}
-                      </p>
-                    </div>
-                  </article>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </FadeIn>
-
-        {/* Other lines */}
-        <FadeIn delay={0.15}>
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            {PRODUCT_LINES.map((line) => (
-              <div
-                key={line.name}
-                className="flex items-start gap-4 rounded-2xl border border-brand-line/70 bg-brand-mist p-6"
-              >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand text-white">
-                  <Package className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <h4 className="text-[15px] font-extrabold text-brand-deep">{line.name}</h4>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
-                    {line.desc}
-                  </p>
+        {/* Product grid */}
+        <div className="mt-12 grid grid-cols-2 gap-4 md:mt-14 md:gap-6 lg:grid-cols-3 xl:grid-cols-5">
+          {filtered.map((p, i) => (
+            <FadeIn key={p.name} delay={i * 0.07}>
+              <article className="hover-lift group h-full overflow-hidden rounded-2xl bg-white shadow-sm">
+                <div className="img-zoom relative aspect-square overflow-hidden">
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 20vw"
+                    className="object-cover"
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-brand-ink/70 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white backdrop-blur-sm">
+                    {p.weight}
+                  </span>
                 </div>
+                <div className="p-4 md:p-5">
+                  <p className="text-[11px] font-bold tracking-[0.16em] text-tomato">
+                    {p.dressing}
+                  </p>
+                  <h3 className="mt-1.5 text-[16px] font-extrabold tracking-tight text-foreground md:text-[17px]">
+                    {p.name}
+                  </h3>
+                  <p className="mt-0.5 text-[12px] font-medium text-muted-foreground">
+                    {p.en}
+                  </p>
+                  <div className="mt-3.5 flex items-center gap-3 border-t border-border pt-3.5 text-[12px] font-semibold text-muted-foreground">
+                    <span className="inline-flex items-center gap-1">
+                      <Flame
+                        className="h-3.5 w-3.5 text-tomato"
+                        aria-hidden="true"
+                      />
+                      <span className="font-num">{p.kcal}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <UtensilsCrossed
+                        className="h-3.5 w-3.5 text-brand"
+                        aria-hidden="true"
+                      />
+                      {p.items.length}종
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </FadeIn>
+          ))}
+        </div>
+
+        {/* Product lines */}
+        <div className="mt-14 grid gap-4 md:mt-16 md:grid-cols-3 md:gap-6">
+          {PRODUCT_LINES.map((line, i) => (
+            <FadeIn key={line.name} delay={i * 0.08}>
+              <div className="group flex h-full flex-col gap-3 rounded-2xl border border-brand-line bg-white/70 px-6 py-6 transition-colors hover:border-brand">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">
+                    <Package className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="text-[17px] font-extrabold tracking-tight text-foreground">
+                    {line.name}
+                  </h3>
+                </div>
+                <p className="text-[13.5px] leading-relaxed text-muted-foreground">
+                  {line.desc}
+                </p>
               </div>
-            ))}
-          </div>
-        </FadeIn>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );

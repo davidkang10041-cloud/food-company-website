@@ -1,49 +1,61 @@
+"use client";
+
 import Image from "next/image";
-import { Check } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { VALUES } from "@/lib/company";
 import { SectionHeading } from "@/components/site/section-heading";
 import { FadeIn } from "@/components/site/fade-in";
 
 export function Values() {
   return (
-    <section id="values" className="texture-dark py-24 md:py-32" aria-labelledby="values-heading">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
+    <section id="values" className="bg-brand-mist" aria-labelledby="values-heading">
+      <div className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
         <SectionHeading
-          dark
-          kicker="Our Values"
-          title="채다원의 핵심가치"
-          description="트렌디한 상품 기획. 상품의 고급화. 독자상품(Identity 상품) 소싱을 기본으로 상품의 경쟁력을 높일 수 있도록 노력합니다."
+          kicker="Sustainability"
+          title={"신유통 패러다임을 제시하며\n책임 있게 성장합니다"}
+          description="고객사를 위한 차별화 서비스부터 사회적 책임까지 — 채다원이 지향하는 네 가지 가치입니다."
         />
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
+        <div className="mt-12 grid gap-5 md:mt-14 md:grid-cols-2">
           {VALUES.map((value, i) => (
-            <FadeIn key={value.title} delay={i * 0.08} className="h-full">
-              <article className="hover-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-sm">
-                <div className="relative h-52 overflow-hidden md:h-56">
+            <FadeIn key={value.title} delay={i * 0.08}>
+              <article className="hover-lift group grid h-full overflow-hidden rounded-2xl bg-white shadow-sm sm:grid-cols-[0.9fr_1.1fr]">
+                <div className="img-zoom relative min-h-44 overflow-hidden">
                   <Image
                     src={value.image}
                     alt={value.title.replace("\n", " ")}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/20 to-transparent" />
-                  <h3 className="absolute bottom-5 left-7 whitespace-pre-line text-xl font-extrabold leading-snug tracking-tight text-white md:text-[22px]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/45 to-transparent" />
+                  <span className="font-num absolute left-5 top-4 text-[13px] font-bold tracking-[0.18em] text-white/80">
+                    0{i + 1}
+                  </span>
+                </div>
+                <div className="flex flex-col p-6 md:p-7">
+                  <h3 className="whitespace-pre-line text-[19px] font-extrabold leading-snug tracking-tight text-foreground md:text-[21px]">
                     {value.title}
                   </h3>
-                </div>
-                <ul className="flex-1 space-y-3 p-7 pt-5">
-                  {value.points.map((point) => (
-                    <li key={point} className="flex items-start gap-2.5">
-                      <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6fc7a4]/15">
-                        <Check className="h-3 w-3 text-[#6fc7a4]" aria-hidden="true" />
-                      </span>
-                      <span className="text-[14px] leading-relaxed text-white/70">
+                  <ul className="mt-4 flex-1 space-y-2.5">
+                    {value.points.map((point) => (
+                      <li
+                        key={point}
+                        className="flex items-start gap-2 text-[13.5px] leading-relaxed text-muted-foreground"
+                      >
+                        <ArrowUpRight
+                          className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand"
+                          aria-hidden="true"
+                        />
                         {point}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                      </li>
+                    ))}
+                  </ul>
+                  <span
+                    className="mt-5 block h-[3px] w-10 rounded-full bg-tomato transition-all duration-500 group-hover:w-20"
+                    aria-hidden="true"
+                  />
+                </div>
               </article>
             </FadeIn>
           ))}

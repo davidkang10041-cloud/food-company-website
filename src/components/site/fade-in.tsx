@@ -31,7 +31,7 @@ export function FadeIn({
       custom={delay}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-40px" }}
     >
       {children}
     </Comp>

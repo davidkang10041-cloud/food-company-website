@@ -1,39 +1,116 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Menu, Phone, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Menu, Phone, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import { COMPANY } from "@/lib/company";
 
-const NAV = [
-  { href: "#about", label: "회사소개" },
-  { href: "#business", label: "사업영역" },
-  { href: "#values", label: "핵심가치" },
-  { href: "#products", label: "제품소개" },
-  { href: "#infra", label: "인프라" },
-  { href: "#history", label: "연혁" },
-  { href: "#contact", label: "문의" },
+type MegaItem = {
+  href: string;
+  label: string;
+  en: string;
+  desc: string;
+  links: { href: string; label: string }[];
+};
+
+const MEGA: MegaItem[] = [
+  {
+    href: "#about",
+    label: "회사소개",
+    en: "About",
+    desc: "항공사 케이터링에서 검증된\n통합 식품 솔루션 기업",
+    links: [
+      { href: "#about", label: "대표 인사말" },
+      { href: "#about", label: "기업 개요" },
+      { href: "#history", label: "회사 연혁" },
+    ],
+  },
+  {
+    href: "#business",
+    label: "사업영역",
+    en: "Business",
+    desc: "유통 · 제조 · 밀키트 · 온라인까지\n전과정을 아우르는 푸드 솔루션",
+    links: [
+      { href: "#business", label: "식자재 유통 · 구매대행" },
+      { href: "#business", label: "식품제조 연결사업" },
+      { href: "#business", label: "특화 밀키트 Cooksan" },
+      { href: "#business", label: "식자재 전문몰" },
+    ],
+  },
+  {
+    href: "#products",
+    label: "제품소개",
+    en: "Products",
+    desc: "신선함을 가장 신선하게\n전하는 프리미엄 셀러드",
+    links: [
+      { href: "#products", label: "베이직 샐러드" },
+      { href: "#products", label: "사각 샐러드" },
+      { href: "#products", label: "셀러드 키트" },
+    ],
+  },
+  {
+    href: "#quality",
+    label: "품질·시설",
+    en: "Quality",
+    desc: "HACCP 4종 인증과\n전문 생산시설의 품질 경쟁력",
+    links: [
+      { href: "#quality", label: "HACCP 인증 현황" },
+      { href: "#quality", label: "생산시설 · 설비" },
+      { href: "#quality", label: "품질 안전관리" },
+    ],
+  },
+  {
+    href: "#growth",
+    label: "지속가능성",
+    en: "Sustainability",
+    desc: "데이터 기반 성장 전략과\n상생 파트너십의 미래",
+    links: [
+      { href: "#growth", label: "핵심 역량" },
+      { href: "#growth", label: "성장 전략" },
+      { href: "#partners", label: "고객 파트너" },
+    ],
+  },
+  {
+    href: "#contact",
+    label: "문의",
+    en: "Contact",
+    desc: "식자재 공급 · OEM/ODM\n1:1 상담으로 신속하게",
+    links: [{ href: "#contact", label: "1:1 문의하기" }],
+  },
 ];
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      setOpenMenu(null);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [mobileOpen]);
+
+  const scheduleClose = () => {
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 180);
+  };
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  };
 
   return (
     <>
@@ -41,29 +118,79 @@ export function SiteHeader() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           scrolled
-            ? "glass-header border-b border-brand-line/60 shadow-[0_4px_24px_-12px_rgba(10,61,49,0.18)]"
+            ? "glass-header shadow-[0_8px_30px_-18px_rgba(6,25,19,0.3)]"
             : "bg-transparent"
         )}
+        onMouseLeave={scheduleClose}
       >
-        <div className="mx-auto flex h-16 md:h-20 max-w-7xl items-center justify-between px-5 md:px-8">
-          <a href="#top" aria-label="채다원 홈으로 이동">
+        {/* Utility bar */}
+        <div
+          className={cn(
+            "hidden overflow-hidden transition-all duration-500 lg:block",
+            scrolled ? "max-h-0" : "max-h-10"
+          )}
+        >
+          <div className="utility-bar">
+            <div className="mx-auto flex h-10 max-w-[1280px] items-center justify-between px-8 text-[12px] font-medium tracking-wide text-white/70">
+              <p>
+                HACCP 인증 4종 보유 · 항공사 케이터링 검증 식자재 전문 기업
+              </p>
+              <div className="flex items-center gap-5">
+                <a href="#history" className="transition-colors hover:text-white">
+                  회사 연혁
+                </a>
+                <a href="#contact" className="transition-colors hover:text-white">
+                  오시는 길
+                </a>
+                <span className="font-num font-bold text-white/90">
+                  SINCE 2017
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main GNB */}
+        <div
+          className={cn(
+            "mx-auto flex h-16 max-w-[1280px] items-center justify-between px-5 transition-all duration-500 md:h-[76px] md:px-8",
+            scrolled && "md:h-[68px]"
+          )}
+        >
+          <a href="#top" aria-label="채다원 홈으로 이동" className="shrink-0">
             <Logo variant={scrolled ? "dark" : "light"} />
           </a>
 
           <nav className="hidden lg:block" aria-label="주요 메뉴">
-            <ul className="flex items-center gap-1">
-              {NAV.map((item) => (
-                <li key={item.href}>
+            <ul className="flex items-stretch">
+              {MEGA.map((item) => (
+                <li
+                  key={item.href}
+                  className="relative"
+                  onMouseEnter={() => {
+                    cancelClose();
+                    setOpenMenu(item.href);
+                  }}
+                >
                   <a
                     href={item.href}
+                    onClick={() => setOpenMenu(null)}
                     className={cn(
-                      "rounded-full px-4 py-2 text-[15px] font-semibold transition-colors",
+                      "flex h-16 items-center px-5 text-[16px] font-bold transition-colors md:h-[76px]",
+                      scrolled && "md:h-[68px]",
                       scrolled
-                        ? "text-foreground/80 hover:bg-brand-soft hover:text-brand"
-                        : "text-white/85 hover:bg-white/10 hover:text-white"
+                        ? "text-foreground/85 hover:text-brand"
+                        : "text-white/90 hover:text-white"
                     )}
                   >
                     {item.label}
+                    <ChevronDown
+                      className={cn(
+                        "ml-1.5 h-3.5 w-3.5 transition-transform duration-300",
+                        openMenu === item.href && "rotate-180"
+                      )}
+                      aria-hidden="true"
+                    />
                   </a>
                 </li>
               ))}
@@ -77,7 +204,7 @@ export function SiteHeader() {
                 "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-all",
                 scrolled
                   ? "bg-brand text-white hover:bg-brand-deep"
-                  : "bg-white/15 text-white ring-1 ring-white/40 hover:bg-white hover:text-brand-deep"
+                  : "bg-white/15 text-white ring-1 ring-white/40 backdrop-blur-sm hover:bg-white hover:text-brand-deep"
               )}
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
@@ -87,24 +214,84 @@ export function SiteHeader() {
 
           <button
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={() => setMobileOpen(true)}
             className="inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden"
             aria-label="메뉴 열기"
-            aria-expanded={open}
+            aria-expanded={mobileOpen}
           >
             <Menu
-              className={cn(
-                "h-6 w-6",
-                scrolled ? "text-brand-deep" : "text-white"
-              )}
+              className={cn("h-6 w-6", scrolled ? "text-brand-deep" : "text-white")}
             />
           </button>
         </div>
+
+        {/* Mega dropdown */}
+        <AnimatePresence>
+          {openMenu && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="mega-panel hidden bg-white lg:block"
+              onMouseEnter={cancelClose}
+              onMouseLeave={scheduleClose}
+            >
+              <div>
+                <div className="mx-auto grid max-w-[1280px] grid-cols-[1fr_2fr] gap-10 px-8 py-9">
+                  <div>
+                    {MEGA.filter((m) => m.href === openMenu).map((item) => (
+                      <div key={item.href}>
+                        <p className="text-[11px] font-bold tracking-[0.3em] text-brand">
+                          {item.en.toUpperCase()}
+                        </p>
+                        <p className="mt-3 text-2xl font-extrabold tracking-tight text-foreground">
+                          {item.label}
+                        </p>
+                        <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-muted-foreground">
+                          {item.desc}
+                        </p>
+                        <a
+                          href={item.href}
+                          onClick={() => setOpenMenu(null)}
+                          className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-brand transition-all hover:gap-2.5"
+                        >
+                          바로가기 <span aria-hidden="true">→</span>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                  <ul className="grid grid-cols-2 gap-x-8 gap-y-1 self-start">
+                    {MEGA.filter((m) => m.href === openMenu).map((item) =>
+                      item.links.map((link) => (
+                        <li key={link.label}>
+                          <a
+                            href={link.href}
+                            onClick={() => setOpenMenu(null)}
+                            className="group flex items-center justify-between rounded-lg px-4 py-3 text-[15px] font-semibold text-foreground/75 transition-colors hover:bg-brand-soft hover:text-brand"
+                          >
+                            {link.label}
+                            <span
+                              className="text-brand opacity-0 transition-opacity group-hover:opacity-100"
+                              aria-hidden="true"
+                            >
+                              →
+                            </span>
+                          </a>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Mobile full-screen menu */}
       <AnimatePresence>
-        {open && (
+        {mobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -118,38 +305,85 @@ export function SiteHeader() {
               <Logo variant="light" />
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={() => setMobileOpen(false)}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white"
                 aria-label="메뉴 닫기"
               >
                 <X className="h-6 w-6" />
               </button>
             </div>
-            <nav className="flex flex-1 flex-col justify-center px-8" aria-label="모바일 메뉴">
-              <ul className="space-y-2">
-                {NAV.map((item, i) => (
-                  <motion.li
-                    key={item.href}
-                    initial={{ opacity: 0, x: -24 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.06 * i, duration: 0.4 }}
-                  >
-                    <a
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="block py-3 text-3xl font-extrabold text-white/90 transition-colors hover:text-white"
+            <nav
+              className="thin-scroll flex-1 overflow-y-auto px-6 pb-10 pt-4"
+              aria-label="모바일 메뉴"
+            >
+              <ul className="divide-y divide-white/10">
+                {MEGA.map((item) => (
+                  <li key={item.href}>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileExpanded(
+                          mobileExpanded === item.href ? null : item.href
+                        )
+                      }
+                      className="flex w-full items-center justify-between py-5 text-left"
+                      aria-expanded={mobileExpanded === item.href}
                     >
-                      {item.label}
-                    </a>
-                  </motion.li>
+                      <span className="text-2xl font-extrabold text-white">
+                        {item.label}
+                      </span>
+                      <ChevronDown
+                        className={cn(
+                          "h-5 w-5 text-white/50 transition-transform duration-300",
+                          mobileExpanded === item.href && "rotate-180"
+                        )}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {mobileExpanded === item.href && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="pb-3 text-sm leading-relaxed text-white/55">
+                            {item.desc.replace(/\n/g, " ")}
+                          </p>
+                          <ul className="pb-5">
+                            {item.links.map((link) => (
+                              <li key={link.label}>
+                                <a
+                                  href={link.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="block py-2.5 text-[15px] font-medium text-white/75 transition-colors hover:text-white"
+                                >
+                                  {link.label}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
                 ))}
               </ul>
             </nav>
-            <div className="px-8 pb-10">
-              <p className="text-sm font-semibold tracking-[0.2em] text-white/40">
-                CHEDAWON CO., LTD.
+            <div className="px-6 pb-10 pt-4">
+              <a
+                href="#contact"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-full bg-brand py-4 text-[15px] font-bold text-white"
+              >
+                <Phone className="h-4 w-4" aria-hidden="true" />
+                1:1 문의하기 · {COMPANY.phoneDisplay}
+              </a>
+              <p className="mt-4 text-center text-xs font-semibold tracking-[0.2em] text-white/40">
+                CHEDAWON CO., LTD. · SINCE 2017
               </p>
-              <p className="mt-2 text-lg font-bold text-white">{COMPANY.phoneDisplay}</p>
             </div>
           </motion.div>
         )}

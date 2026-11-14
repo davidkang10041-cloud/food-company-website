@@ -34,10 +34,10 @@ export const HERO_KEYWORDS = [
 /* ------------------------------ Stats ----------------------------- */
 
 export const STATS = [
-  { value: 2017, suffix: "년", label: "설립 이래 꾸준한 성장", decimals: 0 },
-  { value: 4, suffix: "종", label: "HACCP 인증 보유", decimals: 0 },
-  { value: 16000, suffix: "+", label: "이용 고객사", decimals: 0 },
-  { value: 620330, suffix: "+", label: "누적 배송 건수", decimals: 0 },
+  { value: 2017, suffix: "년", label: "설립 이래 꾸준한 성장", decimals: 0, raw: true },
+  { value: 4, suffix: "종", label: "HACCP 인증 보유", decimals: 0, raw: false },
+  { value: 16000, suffix: "+", label: "이용 고객사", decimals: 0, raw: false },
+  { value: 620330, suffix: "+", label: "누적 배송 건수", decimals: 0, raw: false },
 ];
 
 /* ------------------------- CEO / About ---------------------------- */
