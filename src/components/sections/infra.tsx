@@ -4,7 +4,11 @@ import Image from "next/image";
 import { BadgeCheck, ShieldCheck } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
-import { CERTIFICATIONS, EQUIPMENTS } from "@/lib/company";
+import { CERTIFICATIONS, EQUIPMENT_STAGES } from "@/lib/company";
+
+const STEP_INDEX = new Map(
+  EQUIPMENT_STAGES.flatMap((s) => s.items).map((eq, i) => [eq.name, i] as const)
+);
 
 export function Quality() {
   return (
@@ -84,37 +88,72 @@ export function Quality() {
             </p>
             <p className="mt-6 flex items-center gap-2 text-[15px] font-bold text-brand">
               <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-              보유 주요 설비 10종 — 아래 갤러리에서 확인하세요
+              원물 세척부터 출고 검사까지, 전 공정 10종 설비를 직접 운영합니다
             </p>
           </FadeIn>
         </div>
 
-        {/* Equipment gallery — 실제 보유 설비 */}
-        <ul className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-5 lg:gap-5">
-          {EQUIPMENTS.map((eq, i) => (
-            <FadeIn as="li" key={eq.name} delay={(i % 5) * 0.05}>
-              <figure className="hover-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-line bg-white">
-                <div className="img-zoom relative h-36 overflow-hidden bg-white md:h-44">
-                  <Image
-                    src={eq.image}
-                    alt={eq.name}
-                    fill
-                    sizes="(max-width: 1024px) 50vw, 240px"
-                    className="object-contain"
+        {/* Production line — 실제 보유 설비 10종, 공정 단계별 */}
+        <div className="mt-12 space-y-12 md:mt-16 md:space-y-14">
+          {EQUIPMENT_STAGES.map((stage, si) => (
+            <FadeIn key={stage.label} delay={si * 0.05}>
+              <div className="grid gap-5 lg:grid-cols-[230px_1fr] lg:gap-10">
+                {/* Stage label */}
+                <div className="lg:sticky lg:top-28 lg:self-start">
+                  <p className="font-num text-[15px] font-extrabold tracking-[0.24em] text-brand">
+                    STAGE 0{si + 1}
+                  </p>
+                  <h4 className="mt-2 text-[20px] font-extrabold tracking-tight text-foreground md:text-[22px]">
+                    {stage.label}
+                  </h4>
+                  <p className="mt-1.5 text-[15px] text-muted-foreground">
+                    {stage.desc}
+                  </p>
+                  <p className="font-num mt-3 hidden text-[14px] font-bold text-brand/70 lg:block">
+                    설비 {stage.items.length}종
+                  </p>
+                  <span
+                    className="mt-4 hidden h-px w-14 bg-brand/30 lg:block"
+                    aria-hidden="true"
                   />
                 </div>
-                <figcaption className="flex-1 border-t border-brand-line/60 p-4">
-                  <p className="text-[15.5px] font-extrabold leading-snug tracking-tight text-foreground">
-                    {eq.name}
-                  </p>
-                  <p className="mt-1 text-[14px] font-semibold text-brand">
-                    {eq.role}
-                  </p>
-                </figcaption>
-              </figure>
+
+                {/* Equipment cards */}
+                <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
+                  {stage.items.map((eq) => {
+                    const step = (STEP_INDEX.get(eq.name) ?? 0) + 1;
+                    return (
+                      <li key={eq.name}>
+                        <figure className="hover-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-line bg-white transition-colors duration-300 hover:border-brand/40">
+                          <div className="img-zoom relative h-36 overflow-hidden md:h-44">
+                            <Image
+                              src={eq.image}
+                              alt={eq.name}
+                              fill
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
+                              className="object-contain"
+                            />
+                            <span className="font-num absolute left-3 top-3 rounded-full border border-brand-line/70 bg-white/85 px-2.5 py-1 text-[13px] font-extrabold tracking-wide text-brand backdrop-blur-sm">
+                              {String(step).padStart(2, "0")}
+                            </span>
+                          </div>
+                          <figcaption className="flex flex-1 flex-col justify-center border-t border-brand-line/60 px-4 py-3.5">
+                            <p className="text-[15.5px] font-extrabold leading-snug tracking-tight text-foreground">
+                              {eq.name}
+                            </p>
+                            <p className="mt-1 text-[14px] font-semibold text-brand">
+                              {eq.role}
+                            </p>
+                          </figcaption>
+                        </figure>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </FadeIn>
           ))}
-        </ul>
+        </div>
 
         <FadeIn delay={0.2}>
           <p className="mt-8 flex items-center gap-2 text-[15px] font-bold text-brand">
