@@ -392,17 +392,57 @@ export const CERTIFICATIONS = [
   { name: "즉석 섭취식품", no: "제 2023-3-0862호", period: "2023.11.02 ~ 2026.11.01" },
 ];
 
-export const EQUIPMENTS = [
-  "GP460 자동 열성형 진공포장기",
-  "복식 챔버식 진공포장기",
-  "트레이 실러 포장기",
-  "금속 검출기",
-  "금속 검출기 (알루미늄)",
-  "대형 3단 버블세척기",
-  "버켓 세척기",
-  "탈수기",
-  "채소 슬라이서",
-  "수평형 밴드 실링기",
+export const EQUIPMENTS: { name: string; role: string; image: string }[] = [
+  {
+    name: "GP460 자동 열성형 진공포장기",
+    role: "자동 성형 · 진공 포장",
+    image: "/images/equip-gp460.jpg",
+  },
+  {
+    name: "복식 챔버식 진공포장기",
+    role: "진공 포장",
+    image: "/images/equip-chamber.jpg",
+  },
+  {
+    name: "트레이 실러 포장기",
+    role: "트레이 실링 · 밀봉",
+    image: "/images/equip-traysealer.jpg",
+  },
+  {
+    name: "금속 검출기",
+    role: "이물 검사",
+    image: "/images/equip-metal.jpg",
+  },
+  {
+    name: "금속 검출기 (알루미늄)",
+    role: "알루미늄 대응 검사",
+    image: "/images/equip-metal-alu.jpg",
+  },
+  {
+    name: "대형 3단 버블세척기",
+    role: "원물 세척 · 살균",
+    image: "/images/equip-washer.jpg",
+  },
+  {
+    name: "버켓 세척기",
+    role: "용기 세척",
+    image: "/images/equip-bucketwasher.jpg",
+  },
+  {
+    name: "탈수기",
+    role: "탈수",
+    image: "/images/equip-dryer.jpg",
+  },
+  {
+    name: "채소 슬라이서",
+    role: "절단 · 슬라이스",
+    image: "/images/equip-slicer.jpg",
+  },
+  {
+    name: "수평형 밴드 실링기",
+    role: "포장 백 실링",
+    image: "/images/equip-bandsealer.jpg",
+  },
 ];
 
 /* ----------------------------- History ---------------------------- */

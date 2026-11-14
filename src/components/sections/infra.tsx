@@ -79,26 +79,49 @@ export function Quality() {
             </h3>
             <p className="mt-4 text-[16px] leading-relaxed text-muted-foreground">
               HACCP 기준으로 설계된 자체공장에서 제품유형에 맞는 다품종
-              소량생산을 지원합니다. GP460 자동 열성형 진공포장기부터 금속
-              검출기까지, 전 공정 전문 설비를 운영합니다.
+              소량생산을 지원합니다. 원물 세척부터 진공 포장, 금속 검출까지 —
+              전 공정을 자체 설비로 직접 운영합니다.
             </p>
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {EQUIPMENTS.map((eq) => (
-                <li
-                  key={eq}
-                  className="rounded-full border border-brand-line bg-white px-3.5 py-1.5 text-[15px] font-semibold text-brand-deep"
-                >
-                  {eq}
-                </li>
-              ))}
-            </ul>
             <p className="mt-6 flex items-center gap-2 text-[15px] font-bold text-brand">
               <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-              과채가공품 · 간편조리세트 · 신선편의식품 · 즉석섭취식품 4개 품목
-              인증
+              보유 주요 설비 10종 — 아래 갤러리에서 확인하세요
             </p>
           </FadeIn>
         </div>
+
+        {/* Equipment gallery — 실제 보유 설비 */}
+        <ul className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-5 lg:gap-5">
+          {EQUIPMENTS.map((eq, i) => (
+            <FadeIn as="li" key={eq.name} delay={(i % 5) * 0.05}>
+              <figure className="hover-lift group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-line bg-white">
+                <div className="img-zoom relative h-36 overflow-hidden bg-white md:h-44">
+                  <Image
+                    src={eq.image}
+                    alt={eq.name}
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 240px"
+                    className="object-contain"
+                  />
+                </div>
+                <figcaption className="flex-1 border-t border-brand-line/60 p-4">
+                  <p className="text-[15.5px] font-extrabold leading-snug tracking-tight text-foreground">
+                    {eq.name}
+                  </p>
+                  <p className="mt-1 text-[14px] font-semibold text-brand">
+                    {eq.role}
+                  </p>
+                </figcaption>
+              </figure>
+            </FadeIn>
+          ))}
+        </ul>
+
+        <FadeIn delay={0.2}>
+          <p className="mt-8 flex items-center gap-2 text-[15px] font-bold text-brand">
+            <BadgeCheck className="h-4 w-4" aria-hidden="true" />
+            과채가공품 · 간편조리세트 · 신선편의식품 · 즉석섭취식품 4개 품목 인증
+          </p>
+        </FadeIn>
       </div>
     </section>
   );
