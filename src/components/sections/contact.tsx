@@ -75,7 +75,7 @@ export function Contact() {
               dark
               kicker="CONTACT"
               title={"알맞은 먹거리를 찾는다면,\n채다원으로 한번에 해결하세요"}
-              description="식자제 유통, OEM/ODM 제조, 특화 밀키트까지 — 궁금하신 점을 남겨주시면 담당자가 빠르게 안내해 드립니다."
+              description="식자재 유통, OEM/ODM 제조, 특화 밀키트까지 — 궁금하신 점을 남겨주시면 담당자가 빠르게 안내해 드립니다."
             />
 
             <FadeIn className="mt-10 space-y-4">

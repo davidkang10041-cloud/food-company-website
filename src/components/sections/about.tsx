@@ -96,6 +96,7 @@ export function About() {
                     value={m.value}
                     suffix={m.suffix}
                     decimals={"decimals" in m ? (m.decimals as number) : 0}
+                    raw={"raw" in m ? Boolean(m.raw) : false}
                   />
                 </dd>
                 <dt className="text-[15px] font-semibold text-muted-foreground">

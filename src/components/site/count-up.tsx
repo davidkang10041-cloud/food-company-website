@@ -16,6 +16,7 @@ export function CountUp({
   suffix = "",
   prefix = "",
   duration = 1800,
+  raw = false,
   className,
 }: {
   value: number;
@@ -23,6 +24,8 @@ export function CountUp({
   suffix?: string;
   prefix?: string;
   duration?: number;
+  /** true일 경우 천 단위 구분자 없이 원래 숫자를 표기 (연도 등) */
+  raw?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -72,10 +75,14 @@ export function CountUp({
     };
   }, [value, duration]);
 
+  const formatted = raw
+    ? String(Math.round(done ? value : display))
+    : formatNumber(done ? value : display, decimals);
+
   return (
     <span ref={ref} className={cn("stat-num", className)}>
       {prefix}
-      {formatNumber(done ? value : display, decimals)}
+      {formatted}
       {suffix && (
         <span className="ml-0.5 text-[0.55em] font-bold opacity-80">
           {suffix}

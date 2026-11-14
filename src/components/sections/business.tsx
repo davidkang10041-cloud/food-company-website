@@ -43,11 +43,19 @@ export function Business() {
                 <article
                   key={biz.id}
                   role="listitem"
+                  tabIndex={0}
                   onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
                   onClick={() => setActive(i)}
-                  className="biz-panel relative min-w-0 cursor-pointer overflow-hidden rounded-2xl bg-brand-ink"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActive(i);
+                    }
+                  }}
+                  className="biz-panel relative min-w-0 cursor-pointer overflow-hidden rounded-2xl bg-brand-ink focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white/60"
                   style={{ flexGrow: isActive ? 4.2 : 1, flexBasis: 0 }}
-                  aria-label={biz.title}
+                  aria-label={`${biz.title} — ${isActive ? "선택됨" : "선택"}`}
                 >
                   <Image
                     src={biz.image}

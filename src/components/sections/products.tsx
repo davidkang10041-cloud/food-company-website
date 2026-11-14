@@ -80,17 +80,13 @@ export function Products() {
                           <p className="mt-1 text-[14.5px] font-semibold tracking-wide text-muted-foreground">
                             {p.en}
                           </p>
-                          <div className="font-num mt-3 flex items-center gap-1.5 text-[14.5px] font-bold text-brand">
-                            <span>{p.weight}</span>
-                            <span className="text-brand-line" aria-hidden="true">
-                              |
-                            </span>
-                            <span>{p.kcal}</span>
-                            <span className="text-brand-line" aria-hidden="true">
-                              |
-                            </span>
-                            <span>{p.dressing}</span>
+                          <div className="font-num mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[14.5px] font-bold text-brand">
+                            <span className="whitespace-nowrap">{p.weight}</span>
+                            <span className="whitespace-nowrap">{p.kcal}</span>
                           </div>
+                          <p className="mt-1.5 text-[14px] font-semibold text-muted-foreground">
+                            {p.dressing} 드레싱
+                          </p>
                           <p className="mt-3 line-clamp-2 text-[14.5px] leading-relaxed text-muted-foreground">
                             {p.items.join(" · ")}
                           </p>
