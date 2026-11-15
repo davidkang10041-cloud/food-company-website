@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { COMPANY } from "@/lib/company";
@@ -45,6 +46,11 @@ export const metadata: Metadata = {
   generator: "Next.js",
   alternates: {
     canonical: "/",
+    languages: {
+      "ko-KR": SITE_URL,
+      en: `${SITE_URL}/en`,
+      "x-default": SITE_URL,
+    },
   },
   robots: {
     index: true,
@@ -89,6 +95,48 @@ export const metadata: Metadata = {
   },
   other: { ...GEO_META },
 };
+
+/** 트래픽 분석 — 환경변수가 설정된 경우에만 로드 (GA4 + 네이버 애널리틱스) */
+function Analytics() {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const naverId = process.env.NEXT_PUBLIC_NAVER_ANALYTICS_ID;
+
+  return (
+    <>
+      {gaId ? (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            strategy="afterInteractive"
+          />
+          <Script id="ga4-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gaId}', { anonymize_ip: true });
+            `}
+          </Script>
+        </>
+      ) : null}
+      {naverId ? (
+        <>
+          <Script src="https://wcs.naver.net/wcslog.js" strategy="afterInteractive" />
+          <Script id="naver-analytics-init" strategy="afterInteractive">
+            {`
+              if (!window.wcs_add) window.wcs_add = {};
+              window.wcs_add["wa"] = "${naverId}";
+              if (window.wcs) {
+                wcs.checkout("woo");
+                wcs.set() && wcs.set();
+              }
+            `}
+          </Script>
+        </>
+      ) : null}
+    </>
+  );
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -189,6 +237,7 @@ export default function RootLayout({
       <body className="antialiased bg-background text-foreground">
         {children}
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

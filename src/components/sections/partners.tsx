@@ -1,9 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Plane, Store, Hotel, UtensilsCrossed } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
-import { PARTNERS } from "@/lib/company";
+import { DEFAULT_PARTNERS, type PartnerItem } from "@/lib/company";
 
 const CHANNELS = [
   { icon: Plane, label: "항공사 · 케이터링", desc: "대한항공 · 아시아나항공 · LSG" },
@@ -13,6 +14,26 @@ const CHANNELS = [
 ];
 
 export function Partners() {
+  // 관리자 콘텐츠 관리(/admin → 콘텐츠 관리)에서 저장한 파트너사를 반영.
+  const [partners, setPartners] = useState<PartnerItem[]>(DEFAULT_PARTNERS);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/content", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.ok && Array.isArray(data.partners) && data.partners.length > 0) {
+          setPartners(data.partners);
+        }
+      })
+      .catch(() => {
+        // 실패 시 기본 데이터 유지
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <section
       id="partners"
@@ -28,7 +49,7 @@ export function Partners() {
 
         {/* Partner wordmark cards */}
         <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5 lg:grid-cols-4">
-          {PARTNERS.map((p, i) => (
+          {partners.map((p, i) => (
             <FadeIn as="li" key={p.name} delay={(i % 4) * 0.05}>
               <article className="hover-lift flex h-full flex-col justify-between rounded-2xl border border-brand-line bg-cream p-6">
                 <p className="text-[18px] font-extrabold tracking-tight text-brand-deep">

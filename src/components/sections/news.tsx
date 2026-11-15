@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { DEFAULT_NEWS, type DefaultNewsItem } from "@/lib/company";
 import { cn } from "@/lib/utils";
 
-type NewsItem = DefaultNewsItem;
+type NewsItem = DefaultNewsItem & { id?: string };
 
 const CATEGORY_STYLE: Record<string, string> = {
   공급: "bg-brand text-white",
@@ -63,7 +63,11 @@ export function News() {
           <ul>
             {news.map((item) => (
               <li key={item.title}>
-                <a href="#contact" className="news-row group">
+                <a
+                  href={item.id ? `/news/${item.id}` : "#contact"}
+                  className="news-row group"
+                  aria-label={`${item.title} 자세히 보기`}
+                >
                   <span className="font-num w-20 shrink-0 text-[15px] font-bold text-muted-foreground md:w-24">
                     {item.date}
                   </span>

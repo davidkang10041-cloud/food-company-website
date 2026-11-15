@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { Download, Loader2, MailOpen, NotebookPen, Search, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,6 +13,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -59,13 +60,25 @@ function csvCell(value: string): string {
 }
 
 function exportCsv(messages: AdminMessage[]) {
-  const header = ["접수일시", "성명", "회사", "연락처", "처리상태", "문의내용", "관리자메모"];
+  const header = [
+    "접수일시",
+    "성명",
+    "회사",
+    "연락처",
+    "이메일",
+    "문의유형",
+    "처리상태",
+    "문의내용",
+    "관리자메모",
+  ];
   const rows = messages.map((m) =>
     [
       formatDate(m.createdAt),
       m.name,
       m.company ?? "",
       m.phone,
+      m.email ?? "",
+      m.inquiryType,
       STATUS_LABEL[m.status] ?? m.status,
       m.message.replace(/\r?\n/g, " "),
       (m.memo ?? "").replace(/\r?\n/g, " "),
@@ -102,6 +115,9 @@ export function InquiriesPanel({
   const [deleteTarget, setDeleteTarget] = useState<AdminMessage | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  // 일괄 선택 / 일괄 상태 변경
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkUpdating, setBulkUpdating] = useState(false);
   // 상세 Dialog의 메모 편집 로컬 상태
   const [memoDraft, setMemoDraft] = useState("");
   const [memoSaving, setMemoSaving] = useState(false);
@@ -115,10 +131,64 @@ export function InquiriesPanel({
         m.name.toLowerCase().includes(q) ||
         (m.company ?? "").toLowerCase().includes(q) ||
         m.phone.includes(q) ||
+        (m.email ?? "").toLowerCase().includes(q) ||
         m.message.toLowerCase().includes(q)
       );
     });
   }, [messages, filter, query]);
+
+  const allSelected = filtered.length > 0 && filtered.every((m) => selected.has(m.id));
+
+  const toggleSelect = (id: string, checked: boolean) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (checked) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = (checked: boolean) => {
+    if (checked) setSelected(new Set(filtered.map((m) => m.id)));
+    else setSelected(new Set());
+  };
+
+  const clearSelection = () => setSelected(new Set());
+
+  const bulkChangeStatus = async (status: InquiryStatus) => {
+    if (selected.size === 0) return;
+    setBulkUpdating(true);
+    try {
+      const res = await fetch("/api/messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: Array.from(selected), status }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.ok) {
+        toast({
+          title: "상태 일괄 변경 실패",
+          description: data?.error ?? "잠시 후 다시 시도해주세요.",
+          variant: "destructive",
+        });
+        return;
+      }
+      const updated = typeof data.updated === "number" ? data.updated : selected.size;
+      toast({
+        title: `${updated}건이 '${STATUS_LABEL[status]}'(으)로 변경되었습니다.`,
+      });
+      clearSelection();
+      await onRefresh();
+    } catch {
+      toast({
+        title: "상태 일괄 변경 실패",
+        description: "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        variant: "destructive",
+      });
+    } finally {
+      setBulkUpdating(false);
+    }
+  };
 
   const openDetail = (m: AdminMessage) => {
     setDetail(m);
@@ -205,6 +275,11 @@ export function InquiriesPanel({
         return;
       }
       toast({ title: "문의가 삭제되었습니다." });
+      setSelected((prev) => {
+        const next = new Set(prev);
+        next.delete(deleteTarget.id);
+        return next;
+      });
       setDetail(null);
       await onRefresh();
     } catch {
@@ -272,7 +347,7 @@ export function InquiriesPanel({
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="성명 · 회사 · 연락처 · 내용 검색"
+              placeholder="성명 · 회사 · 연락처 · 이메일 · 내용 검색"
               className="pl-10"
               aria-label="문의 검색"
             />
@@ -291,6 +366,59 @@ export function InquiriesPanel({
 
       {/* List */}
       <div className="overflow-hidden rounded-2xl border border-brand-line bg-white">
+        {/* Select-all header row */}
+        {!loading && filtered.length > 0 && (
+          <div className="flex items-center justify-between gap-3 border-b border-brand-line/70 bg-brand-mist/50 px-4 py-2.5 md:px-5">
+            <label className="flex cursor-pointer items-center gap-2.5">
+              <Checkbox
+                checked={allSelected ? true : selected.size > 0 ? "indeterminate" : false}
+                onCheckedChange={(v) => toggleSelectAll(v === true)}
+                aria-label="전체 문의 선택"
+                className="border-brand-line data-[state=checked]:bg-brand data-[state=checked]:border-brand"
+              />
+              <span className="text-[14px] font-bold text-muted-foreground">전체 선택</span>
+            </label>
+            <span className="font-num text-[13.5px] text-muted-foreground">
+              {selected.size > 0 ? `${selected.size}건 선택` : `${filtered.length}건`}
+            </span>
+          </div>
+        )}
+
+        {/* Bulk action bar */}
+        {selected.size > 0 && (
+          <div className="flex flex-wrap items-center gap-2 border-b border-brand-line bg-white px-4 py-3 md:px-5">
+            <span className="mr-1 text-[14.5px] font-extrabold text-foreground">
+              <span className="font-num">{selected.size}</span>건 선택됨
+            </span>
+            {STATUS_ORDER.map((s) => (
+              <Button
+                key={s}
+                size="sm"
+                onClick={() => bulkChangeStatus(s)}
+                disabled={bulkUpdating}
+                className={cn(
+                  "h-9 rounded-full px-4 text-[14px] font-bold",
+                  STATUS_STYLE[s]
+                )}
+              >
+                {bulkUpdating ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : null}
+                {STATUS_LABEL[s]} 처리
+              </Button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={clearSelection}
+              disabled={bulkUpdating}
+              className="h-9 rounded-full border-brand-line px-4 text-[14px] font-bold text-muted-foreground hover:text-foreground"
+            >
+              선택 해제
+            </Button>
+          </div>
+        )}
+
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-16 text-[15px] text-muted-foreground">
             <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
@@ -304,12 +432,18 @@ export function InquiriesPanel({
             </p>
           </div>
         ) : (
-          <ul className="max-h-[560px] overflow-y-auto thin-scroll divide-y divide-brand-line/70">
+          <ul className="thin-scroll max-h-[560px] divide-y divide-brand-line/70 overflow-y-auto">
             {filtered.map((m) => (
               <li
                 key={m.id}
                 className="flex flex-col gap-3 p-4 transition-colors hover:bg-brand-soft/40 md:flex-row md:items-center md:gap-4 md:p-5"
               >
+                <Checkbox
+                  checked={selected.has(m.id)}
+                  onCheckedChange={(v) => toggleSelect(m.id, v === true)}
+                  aria-label={`${m.name} 문의 선택`}
+                  className="shrink-0 border-brand-line data-[state=checked]:bg-brand data-[state=checked]:border-brand"
+                />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-[15.5px] font-extrabold text-foreground">
@@ -328,6 +462,11 @@ export function InquiriesPanel({
                     >
                       {STATUS_LABEL[m.status]}
                     </span>
+                    {m.inquiryType && (
+                      <span className="rounded-full border border-brand-line bg-white px-2.5 py-0.5 text-[13px] font-bold text-muted-foreground">
+                        {m.inquiryType}
+                      </span>
+                    )}
                     {m.memo && (
                       <span
                         className="inline-flex items-center gap-1 rounded-full bg-brand-soft px-2 py-0.5 text-[13px] font-bold text-brand"
@@ -406,7 +545,19 @@ export function InquiriesPanel({
                 </DialogTitle>
                 <DialogDescription className="font-num text-[14.5px]">
                   {formatDate(detail.createdAt)} 접수 · {detail.phone}
+                  {detail.inquiryType ? ` · ${detail.inquiryType}` : ""}
                 </DialogDescription>
+                {detail.email && (
+                  <p className="mt-1 text-[14.5px] text-muted-foreground">
+                    이메일:{" "}
+                    <a
+                      href={`mailto:${detail.email}`}
+                      className="text-brand underline underline-offset-2"
+                    >
+                      {detail.email}
+                    </a>
+                  </p>
+                )}
               </DialogHeader>
               <div className="mt-1 max-h-56 overflow-y-auto thin-scroll rounded-2xl bg-brand-mist p-5 text-[15.5px] leading-relaxed whitespace-pre-wrap text-foreground">
                 {detail.message}

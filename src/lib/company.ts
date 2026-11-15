@@ -583,3 +583,25 @@ export const PARTNERS = [
   { name: "SALKIT", ko: "셀러팝" },
   { name: "Sweet Balance", ko: "스윗밸런스" },
 ];
+
+/* --------------------- 관리자 페이지: 콘텐츠 기본값 --------------------- */
+/*  DB(GrowthMetric·HistoryEntry·PartnerEntry)가 비어 있을 때의 폴백 데이터. */
+
+export type GrowthMetricItem = { value: string; label: string };
+
+export const DEFAULT_GROWTH_METRICS: GrowthMetricItem[] = [
+  { value: "16,000+", label: "이용 고객사" },
+  { value: "81.5%", label: "고객 재이용률" },
+  { value: "620,330+", label: "누적 배송 건수" },
+  { value: "4종", label: "HACCP 인증 보유" },
+];
+
+export type HistoryEntryItem = { year: number; month: string; text: string };
+
+export const DEFAULT_HISTORY: HistoryEntryItem[] = HISTORY.flatMap((h) =>
+  h.items.map((item) => ({ year: h.year, month: item.month, text: item.text }))
+);
+
+export type PartnerItem = { name: string; ko: string };
+
+export const DEFAULT_PARTNERS: PartnerItem[] = PARTNERS;

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   ChevronRight,
@@ -12,7 +15,12 @@ import {
 } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
-import { STRATEGY_PILLARS, VALUES } from "@/lib/company";
+import {
+  DEFAULT_GROWTH_METRICS,
+  STRATEGY_PILLARS,
+  VALUES,
+  type GrowthMetricItem,
+} from "@/lib/company";
 
 const PILLAR_ICONS = [Factory, ShieldCheck, Coins, TrendingUp, Database];
 
@@ -24,14 +32,30 @@ const FLOW = [
   { icon: Database, label: "데이터 축적", desc: "맞춤 서비스 설계" },
 ];
 
-const GROWTH_METRICS = [
-  { value: "16,000+", label: "이용 고객사" },
-  { value: "81.5%", label: "고객 재이용률" },
-  { value: "620,330+", label: "누적 배송 건수" },
-  { value: "4종", label: "HACCP 인증 보유" },
-];
+const METRICS_FALLBACK = DEFAULT_GROWTH_METRICS;
 
 export function Growth() {
+  // 관리자 콘텐츠 관리(/admin → 콘텐츠 관리)에서 저장한 성과 지표를 반영.
+  // 응답 전/실패 시 기본 데이터로 즉시 렌더링 (레이아웃 시프트 없음).
+  const [metrics, setMetrics] = useState<GrowthMetricItem[]>(METRICS_FALLBACK);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/content", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.ok && Array.isArray(data.growth) && data.growth.length > 0) {
+          setMetrics(data.growth);
+        }
+      })
+      .catch(() => {
+        // 실패 시 기본 데이터 유지
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <>
       {/* Growth strategy — light, warm food-editorial */}
@@ -95,7 +119,7 @@ export function Growth() {
                     서비스까지 — 검증된 운영 노하우가 채다원의 성장을 견인합니다.
                   </p>
                   <div className="mt-8 grid grid-cols-2 gap-3">
-                    {GROWTH_METRICS.map((m) => (
+                    {metrics.map((m) => (
                       <div
                         key={m.label}
                         className="rounded-2xl border border-brand-line/60 bg-brand-mist px-5 py-4 transition-colors duration-300 hover:border-brand/40 hover:bg-brand-soft"

@@ -194,23 +194,19 @@ export function SiteHeader() {
               </p>
               <div className="flex items-center gap-5">
                 <span className="flex items-center gap-2" aria-label="언어 선택">
-                  <button
-                    type="button"
-                    className="font-bold text-white"
-                    aria-current="true"
-                  >
+                  <a href="/" className="font-bold text-white" aria-current="true">
                     KR
-                  </button>
+                  </a>
                   <span className="text-white/30" aria-hidden="true">
                     |
                   </span>
-                  <button
-                    type="button"
+                  <a
+                    href="/en"
                     className="text-white/55 transition-colors hover:text-white"
-                    title="English (준비중)"
+                    title="English site"
                   >
                     EN
-                  </button>
+                  </a>
                 </span>
                 <button
                   type="button"

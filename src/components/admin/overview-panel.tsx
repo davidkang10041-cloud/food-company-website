@@ -24,7 +24,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { STATUS_LABEL, formatDate, type AdminCounts, type AdminMessage, type AdminNews, type AdminTab } from "./types";
+import { STATUS_LABEL, formatDate, type AdminCounts, type AdminMessage, type AdminNews } from "./types";
+import type { AdminTab } from "./admin-shell";
 
 type OverviewPanelProps = {
   counts: AdminCounts | null;

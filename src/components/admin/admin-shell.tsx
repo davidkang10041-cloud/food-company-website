@@ -1,15 +1,16 @@
 "use client";
 
-import { Home, LayoutDashboard, LogOut, Mail, Newspaper, Settings } from "lucide-react";
+import { Database, Home, LayoutDashboard, LogOut, Mail, Newspaper, Settings } from "lucide-react";
 import { Logo } from "@/components/site/logo";
 import { cn } from "@/lib/utils";
 
-export type AdminTab = "overview" | "inquiries" | "news" | "settings";
+export type AdminTab = "overview" | "inquiries" | "news" | "content" | "settings";
 
 const TABS: { key: AdminTab; label: string; icon: typeof Home }[] = [
   { key: "overview", label: "대시보드", icon: LayoutDashboard },
   { key: "inquiries", label: "문의 관리", icon: Mail },
   { key: "news", label: "공지사항 관리", icon: Newspaper },
+  { key: "content", label: "콘텐츠 관리", icon: Database },
   { key: "settings", label: "사이트 설정", icon: Settings },
 ];
 
@@ -17,6 +18,10 @@ export const TAB_TITLES: Record<AdminTab, { title: string; desc: string }> = {
   overview: { title: "대시보드", desc: "문의와 공지사항 현황을 한눈에 확인합니다." },
   inquiries: { title: "문의 관리", desc: "홈페이지 1:1 문의를 확인하고 처리 상태를 관리합니다." },
   news: { title: "공지사항 관리", desc: "뉴스룸에 노출되는 공지사항을 등록·수정·삭제합니다." },
+  content: {
+    title: "콘텐츠 관리",
+    desc: "성과지표 · 연혁 · 파트너사를 수정하면 공개 홈페이지에 즉시 반영됩니다.",
+  },
   settings: { title: "사이트 설정", desc: "회사 기본 정보를 수정하면 홈페이지에 즉시 반영됩니다." },
 };
 

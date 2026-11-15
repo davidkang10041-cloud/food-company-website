@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { AdminLogin } from "@/components/admin/admin-login";
 import { AdminShell, type AdminTab } from "@/components/admin/admin-shell";
+import { ContentPanel } from "@/components/admin/content-panel";
 import { InquiriesPanel } from "@/components/admin/inquiries-panel";
 import { NewsPanel } from "@/components/admin/news-panel";
 import { OverviewPanel } from "@/components/admin/overview-panel";
@@ -120,6 +121,7 @@ function AdminApp() {
       {tab === "news" && (
         <NewsPanel news={news} loading={loadingData && news.length === 0} onRefresh={loadData} />
       )}
+      {tab === "content" && <ContentPanel />}
       {tab === "settings" && (
         <SettingsPanel settings={settings} onSaved={refreshSettings} />
       )}

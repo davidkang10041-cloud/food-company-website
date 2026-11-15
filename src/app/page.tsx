@@ -13,7 +13,9 @@ import { Partners } from "@/components/sections/partners";
 import { News } from "@/components/sections/news";
 import { Growth } from "@/components/sections/growth";
 import { History } from "@/components/sections/history";
+import { Faq } from "@/components/sections/faq";
 import { Contact } from "@/components/sections/contact";
+import { FloatingCta } from "@/components/site/floating-cta";
 import { SiteSettingsProvider } from "@/components/settings-context";
 import { HERO_KEYWORDS } from "@/lib/company";
 
@@ -76,7 +78,7 @@ function BackToTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-6 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:bg-brand-deep ${
+      className={`fixed bottom-24 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:bg-brand-deep md:bottom-6 md:right-5 ${
         visible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"
@@ -111,10 +113,12 @@ export default function Home() {
         <News />
         <Growth />
         <History />
+        <Faq />
         <Contact />
       </main>
       <SiteFooter />
       <BackToTop />
+      <FloatingCta />
       </div>
     </SiteSettingsProvider>
   );

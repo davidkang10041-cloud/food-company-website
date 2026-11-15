@@ -1,11 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
 import { cn } from "@/lib/utils";
-import { HISTORY } from "@/lib/company";
+import {
+  DEFAULT_HISTORY,
+  type HistoryEntryItem,
+} from "@/lib/company";
+
+type HistoryYear = { year: number; items: { month: string; text: string }[] };
+
+/** 평면 연혁 데이터를 연도별 그룹으로 변환 (연도 내림차순, 월 내림차순) */
+function groupHistory(entries: HistoryEntryItem[]): HistoryYear[] {
+  const map = new Map<number, { month: string; text: string }[]>();
+  for (const entry of entries) {
+    if (!map.has(entry.year)) map.set(entry.year, []);
+    map.get(entry.year)?.push({ month: entry.month, text: entry.text });
+  }
+  return Array.from(map.entries())
+    .sort((a, b) => b[0] - a[0])
+    .map(([year, items]) => ({
+      year,
+      items: items.sort((a, b) => b.month.localeCompare(a.month)),
+    }));
+}
 
 const YEAR_SUMMARIES = [
   "GS25 편의점 식자재 공급으로 대기업 유통 채널을 한 단계 넓힌 해입니다.",
@@ -37,8 +57,29 @@ function milestoneTag(text: string): { label: string; className: string } {
 }
 
 export function History() {
+  // 관리자 콘텐츠 관리(/admin → 콘텐츠 관리)에서 저장한 연혁을 반영.
+  const [history, setHistory] = useState<HistoryYear[]>(() => groupHistory(DEFAULT_HISTORY));
   const [active, setActive] = useState(0);
-  const current = HISTORY[active];
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/content", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.ok && Array.isArray(data.history) && data.history.length > 0) {
+          setHistory(groupHistory(data.history));
+        }
+      })
+      .catch(() => {
+        // 실패 시 기본 데이터 유지
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const current = history[active] ?? history[0];
+  const yearSummary = YEAR_SUMMARIES[active] ?? "해당 연도의 주요 성과를 확인하실 수 있습니다.";
 
   return (
     <section
@@ -70,7 +111,7 @@ export function History() {
             role="group"
             aria-label="연도 선택"
           >
-            {HISTORY.map((h, i) => {
+            {history.map((h, i) => {
               const isActive = i === active;
               return (
                 <button
@@ -100,7 +141,7 @@ export function History() {
                 className="absolute bottom-6 left-[7px] top-6 w-px bg-brand-line"
                 aria-hidden="true"
               />
-              {HISTORY.map((h, i) => {
+              {history.map((h, i) => {
                 const isActive = i === active;
                 return (
                   <button
@@ -170,7 +211,7 @@ export function History() {
                   {current.year}
                 </p>
                 <p className="relative mt-5 text-[16px] leading-relaxed text-muted-foreground">
-                  {YEAR_SUMMARIES[active]}
+                  {yearSummary}
                 </p>
                 <div className="relative mt-7 flex flex-wrap gap-2">
                   <span className="rounded-full bg-brand-soft px-4 py-2 text-[15px] font-bold text-brand">

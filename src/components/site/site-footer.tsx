@@ -229,12 +229,16 @@ export function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-4 px-5 py-6 text-[15px] text-white/60 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <a href="#top" className="font-bold text-white/75 transition-colors hover:text-white">
+            <a href="/privacy" className="font-bold text-white/75 transition-colors hover:text-white">
               개인정보처리방침
             </a>
             <span aria-hidden="true">|</span>
-            <a href="#top" className="transition-colors hover:text-white/70">
+            <a href="/terms" className="transition-colors hover:text-white/70">
               이용약관
+            </a>
+            <span aria-hidden="true">|</span>
+            <a href="/en" className="transition-colors hover:text-white/70">
+              English
             </a>
             <span aria-hidden="true">|</span>
             <a href="#contact" className="transition-colors hover:text-white/70">

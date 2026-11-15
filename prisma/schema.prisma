@@ -13,12 +13,41 @@ model ContactMessage {
   name      String
   company   String?
   phone     String
+  /// 답변 이메일 (선택)
+  email     String?
+  /// 문의 유형: 식자재 공급 | OEM·ODM 제조 | MEALBOX25·밀키트 | 기타
+  inquiryType String @default("기타")
   message   String
   /// 관리자 처리 메모 (내부 기록용)
   memo      String   @default("")
   /// NEW | IN_PROGRESS | DONE
   status    String   @default("NEW")
   createdAt DateTime @default(now())
+}
+
+/// 성과 지표 (growth 섹션 관리자 편집용)
+model GrowthMetric {
+  id    String @id @default(cuid())
+  value String
+  label String
+  sort  Int    @default(0)
+}
+
+/// 연혁 (history 섹션 관리자 편집용, 연도별 그룹은 프론트에서 처리)
+model HistoryEntry {
+  id    String @id @default(cuid())
+  year  Int
+  month String @default("")
+  text  String
+  sort  Int    @default(0)
+}
+
+/// 파트너사 (partners 섹션 관리자 편집용)
+model PartnerEntry {
+  id   String @id @default(cuid())
+  name String
+  ko   String
+  sort Int    @default(0)
 }
 
 /// 뉴스룸 공지사항 (관리자 CRUD)

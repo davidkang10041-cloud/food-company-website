@@ -6,20 +6,39 @@ import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
 import { useSiteSettings } from "@/components/settings-context";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+
+const INQUIRY_TYPES = [
+  "식자재 공급",
+  "OEM·ODM 제조",
+  "MEALBOX25·밀키트",
+  "기타",
+] as const;
 
 export function Contact() {
   const { toast } = useToast();
   const settings = useSiteSettings();
   const [pending, setPending] = useState(false);
+  const [consent, setConsent] = useState(false);
   const [form, setForm] = useState({
     name: "",
     company: "",
     phone: "",
+    email: "",
+    inquiryType: "기타",
     message: "",
+    website: "",
   });
 
   const update =
@@ -34,7 +53,16 @@ export function Contact() {
     if (!form.name.trim() || !form.phone.trim() || !form.message.trim()) {
       toast({
         title: "입력을 확인해 주세요",
-        description: "성명, 연락처, 문의내용은 필수 항목입니다.",
+        description:
+          "성명, 연락처, 문의내용은 필수 항목이며, 제출 전 개인정보 수집·이용 동의가 필요합니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!consent) {
+      toast({
+        title: "동의가 필요합니다",
+        description: "개인정보 수집·이용에 동의해주세요.",
         variant: "destructive",
       });
       return;
@@ -51,7 +79,16 @@ export function Contact() {
         title: "문의가 접수되었습니다",
         description: "담당자가 빠르게 연락드리겠습니다. 감사합니다.",
       });
-      setForm({ name: "", company: "", phone: "", message: "" });
+      setForm({
+        name: "",
+        company: "",
+        phone: "",
+        email: "",
+        inquiryType: "기타",
+        message: "",
+        website: "",
+      });
+      setConsent(false);
     } catch {
       toast({
         title: "전송에 실패했습니다",
@@ -139,7 +176,7 @@ export function Contact() {
                 아래 정보를 남겨주시면 빠르게 연락드리겠습니다.
               </p>
 
-              <div className="mt-6 grid gap-5">
+              <div className="mt-6 grid gap-5 sm:grid-cols-2">
                 <div className="grid gap-2">
                   <Label htmlFor="contact-name" className="text-[15px]">
                     성명 <span className="text-tomato">*</span>
@@ -175,6 +212,40 @@ export function Contact() {
                   />
                 </div>
                 <div className="grid gap-2">
+                  <Label htmlFor="contact-email" className="text-[15px]">
+                    이메일 (답변용, 선택)
+                  </Label>
+                  <Input
+                    id="contact-email"
+                    type="email"
+                    value={form.email}
+                    onChange={update("email")}
+                    placeholder="example@company.com"
+                  />
+                </div>
+                <div className="grid gap-2 sm:col-span-2">
+                  <Label htmlFor="contact-type" className="text-[15px]">
+                    문의 유형
+                  </Label>
+                  <Select
+                    value={form.inquiryType}
+                    onValueChange={(value: string) =>
+                      setForm((f) => ({ ...f, inquiryType: value }))
+                    }
+                  >
+                    <SelectTrigger id="contact-type" className="w-full">
+                      <SelectValue placeholder="문의 유형을 선택해 주세요" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {INQUIRY_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2 sm:col-span-2">
                   <Label htmlFor="contact-message" className="text-[15px]">
                     문의내용 <span className="text-tomato">*</span>
                   </Label>
@@ -185,6 +256,48 @@ export function Contact() {
                     placeholder="식자재 공급, OEM/ODM 제조, 밀키트 등 문의하시는 내용을 자세히 적어주세요."
                     rows={5}
                     required
+                  />
+                </div>
+                <div className="flex items-start gap-3 rounded-2xl border border-brand-line bg-brand-mist/60 p-4 sm:col-span-2">
+                  <Checkbox
+                    id="contact-consent"
+                    checked={consent}
+                    onCheckedChange={(checked) => setConsent(checked === true)}
+                    className="mt-0.5"
+                    aria-required="true"
+                  />
+                  <div className="grid gap-1.5">
+                    <Label
+                      htmlFor="contact-consent"
+                      className="text-[14.5px] font-bold leading-relaxed"
+                    >
+                      개인정보 수집·이용에 동의합니다{" "}
+                      <span className="text-tomato">(필수)</span>
+                    </Label>
+                    <a
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener"
+                      className="w-fit text-[13.5px] font-semibold text-brand underline underline-offset-4 transition-colors hover:text-brand-deep"
+                    >
+                      동의 안내 보기
+                    </a>
+                  </div>
+                </div>
+
+                {/* Honeypot — 봇 전용 필드, 사람에게는 노출되지 않음 */}
+                <div className="hidden" aria-hidden="true">
+                  <Label htmlFor="contact-website" className="sr-only">
+                    웹사이트
+                  </Label>
+                  <input
+                    id="contact-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={form.website}
+                    onChange={update("website")}
                   />
                 </div>
               </div>

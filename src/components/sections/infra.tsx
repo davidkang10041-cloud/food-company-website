@@ -128,7 +128,7 @@ export function Quality() {
                           <div className="img-zoom relative h-36 overflow-hidden md:h-44">
                             <Image
                               src={eq.image}
-                              alt={eq.name}
+                              alt={`${eq.name} — ${eq.role} 설비`}
                               fill
                               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
                               className="object-contain"
