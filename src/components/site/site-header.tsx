@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  ArrowUpRight,
   ChevronDown,
   ChevronRight,
   Menu,
@@ -19,7 +20,7 @@ type MegaItem = {
   label: string;
   en: string;
   desc: string;
-  links: { href: string; label: string }[];
+  links: { href: string; label: string; desc: string }[];
 };
 
 const MEGA: MegaItem[] = [
@@ -29,9 +30,9 @@ const MEGA: MegaItem[] = [
     en: "About",
     desc: "항공사 케이터링에서 검증된\n통합 식품 솔루션 기업",
     links: [
-      { href: "#about", label: "기업 개요" },
-      { href: "#about", label: "대표 인사말" },
-      { href: "#history", label: "회사 연혁" },
+      { href: "#about", label: "기업 개요", desc: "설립 배경과 사업분야 한눈에" },
+      { href: "#about", label: "대표 인사말", desc: "박영호 대표이사의 경영 철학" },
+      { href: "#history", label: "회사 연혁", desc: "2017년 설립부터 지금까지" },
     ],
   },
   {
@@ -40,10 +41,10 @@ const MEGA: MegaItem[] = [
     en: "Business",
     desc: "유통 · 제조 · 밀키트 · 온라인까지\n전과정을 아우르는 푸드 솔루션",
     links: [
-      { href: "#business", label: "식자재 유통 · 구매대행" },
-      { href: "#business", label: "식품제조 연결사업" },
-      { href: "#business", label: "특화 밀키트 Cooksan" },
-      { href: "#business", label: "식자재 전문몰" },
+      { href: "#business", label: "식자재 유통 · 구매대행", desc: "B2B 통합 구매 솔루션" },
+      { href: "#business", label: "식품제조 연결사업", desc: "업계 최소 MOQ OEM/ODM" },
+      { href: "#business", label: "특화 밀키트 Cooksan", desc: "단체급식 맞춤 밀키트" },
+      { href: "#business", label: "식자재 전문몰", desc: "온라인 식자재 스토어" },
     ],
   },
   {
@@ -52,9 +53,9 @@ const MEGA: MegaItem[] = [
     en: "Products",
     desc: "신선함을 가장 신선하게 전하는\n프리미엄 샐러드와 밀키트",
     links: [
-      { href: "#products", label: "프리미엄 샐러드" },
-      { href: "#products", label: "셀러드 키트" },
-      { href: "#products", label: "OEM · ODM 제조" },
+      { href: "#products", label: "프리미엄 샐러드", desc: "식전 · 메인을 한 팩에" },
+      { href: "#products", label: "셀러드 키트", desc: "1,000g 홈케어 패키지" },
+      { href: "#products", label: "OEM · ODM 제조", desc: "브랜드 맞춤 생산" },
     ],
   },
   {
@@ -63,9 +64,9 @@ const MEGA: MegaItem[] = [
     en: "Quality",
     desc: "HACCP 4종 인증과\n전문 생산시설의 품질 경쟁력",
     links: [
-      { href: "#quality", label: "HACCP 인증 현황" },
-      { href: "#quality", label: "생산시설 · 설비" },
-      { href: "#quality", label: "핵심 역량" },
+      { href: "#quality", label: "HACCP 인증 현황", desc: "4종 전 분야 인증 보유" },
+      { href: "#quality", label: "생산시설 · 설비", desc: "자체 생산 인프라와 설비" },
+      { href: "#quality", label: "핵심 역량", desc: "경쟁력의 5대 축" },
     ],
   },
   {
@@ -74,8 +75,8 @@ const MEGA: MegaItem[] = [
     en: "Newsroom",
     desc: "새로운 공급 확대와\n인증 · 시설 소식을 전합니다",
     links: [
-      { href: "#news", label: "공지사항" },
-      { href: "#news", label: "사업 · 공급 소식" },
+      { href: "#news", label: "공지사항", desc: "공식 발표와 인증 소식" },
+      { href: "#news", label: "사업 · 공급 소식", desc: "신규 공급계약 · 확대 소식" },
     ],
   },
   {
@@ -84,9 +85,9 @@ const MEGA: MegaItem[] = [
     en: "Sustainability",
     desc: "데이터 기반 성장 전략과\n상생 파트너십의 미래",
     links: [
-      { href: "#growth", label: "성장 전략" },
-      { href: "#growth", label: "핵심가치" },
-      { href: "#partners", label: "파트너 네트워크" },
+      { href: "#growth", label: "성장 전략", desc: "데이터 기반 성장 지표" },
+      { href: "#growth", label: "핵심가치", desc: "우리가 지키는 네 가지 원칙" },
+      { href: "#partners", label: "파트너 네트워크", desc: "함께 성장하는 기업들" },
     ],
   },
   {
@@ -95,8 +96,8 @@ const MEGA: MegaItem[] = [
     en: "Contact",
     desc: "식자재 공급 · OEM/ODM\n1:1 상담으로 신속하게",
     links: [
-      { href: "#contact", label: "1:1 문의하기" },
-      { href: "#contact", label: "오시는 길" },
+      { href: "#contact", label: "1:1 문의하기", desc: "공급 · 제조 상담 접수" },
+      { href: "#contact", label: "오시는 길", desc: "인천 동구 본사 오시는 안내" },
     ],
   },
 ];
@@ -252,12 +253,21 @@ export function SiteHeader() {
                   <a
                     href={item.href}
                     onClick={() => setOpenMenu(null)}
+                    onFocus={() => {
+                      cancelClose();
+                      setOpenMenu(item.href);
+                    }}
+                    aria-expanded={openMenu === item.href}
                     className={cn(
                       "relative flex h-16 items-center px-4 text-[16px] font-bold transition-colors xl:px-5 md:h-[76px]",
                       scrolled && "md:h-[68px]",
                       scrolled
-                        ? "text-foreground/85 hover:text-brand"
-                        : "text-white/90 hover:text-white"
+                        ? openMenu === item.href
+                          ? "text-brand"
+                          : "text-foreground/85 hover:text-brand"
+                        : openMenu === item.href
+                          ? "text-white"
+                          : "text-white/90 hover:text-white"
                     )}
                   >
                     {item.label}
@@ -348,15 +358,18 @@ export function SiteHeader() {
               onMouseEnter={cancelClose}
               onMouseLeave={scheduleClose}
             >
-              <div>
-                <div className="mx-auto grid max-w-[1280px] grid-cols-[1fr_2fr] gap-10 px-8 py-9">
+              <motion.div
+                key={openMenu}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="mx-auto grid min-h-[280px] max-w-[1280px] grid-cols-[1fr_2fr] gap-12 px-8 pb-8 pt-9">
                   <div>
                     {MEGA.filter((m) => m.href === openMenu).map((item) => (
                       <div key={item.href}>
-                        <p className="text-[13px] font-bold tracking-[0.3em] text-brand">
-                          {item.en.toUpperCase()}
-                        </p>
-                        <p className="mt-3 text-2xl font-extrabold tracking-tight text-foreground">
+                        <p className="kicker">{item.en.toUpperCase()}</p>
+                        <p className="mt-4 text-[26px] font-extrabold tracking-tight text-foreground">
                           {item.label}
                         </p>
                         <p className="mt-3 whitespace-pre-line text-[16px] leading-relaxed text-muted-foreground">
@@ -365,36 +378,73 @@ export function SiteHeader() {
                         <a
                           href={item.href}
                           onClick={() => setOpenMenu(null)}
-                          className="mt-5 inline-flex items-center gap-1.5 text-[15px] font-bold text-brand transition-all hover:gap-2.5"
+                          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-[15px] font-bold text-white transition-colors hover:bg-brand-deep"
                         >
-                          바로가기 <span aria-hidden="true">→</span>
+                          섹션 바로가기
+                          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                         </a>
                       </div>
                     ))}
                   </div>
-                  <ul className="grid grid-cols-2 gap-x-8 gap-y-1 self-start">
+                  <ul className="grid grid-cols-2 content-start gap-x-5 gap-y-2.5 self-start">
                     {MEGA.filter((m) => m.href === openMenu).map((item) =>
-                      item.links.map((link) => (
+                      item.links.map((link, i) => (
                         <li key={link.label}>
                           <a
                             href={link.href}
                             onClick={() => setOpenMenu(null)}
-                            className="group flex items-center justify-between rounded-lg px-4 py-3 text-[16px] font-semibold text-foreground/75 transition-colors hover:bg-brand-soft hover:text-brand"
+                            className="group flex items-center gap-4 rounded-xl border border-brand-line/60 bg-white px-4 py-3.5 transition-all hover:border-brand/40 hover:bg-brand-soft hover:shadow-[0_12px_28px_-18px_rgba(14,95,76,0.45)]"
                           >
-                            {link.label}
                             <span
-                              className="text-brand opacity-0 transition-opacity group-hover:opacity-100"
+                              className="font-num text-[13px] font-bold tabular-nums text-brand/45 transition-colors group-hover:text-brand"
                               aria-hidden="true"
                             >
-                              →
+                              {String(i + 1).padStart(2, "0")}
                             </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-[16px] font-bold text-foreground/85 transition-colors group-hover:text-brand-deep">
+                                {link.label}
+                              </span>
+                              <span className="mt-0.5 block text-[15px] text-muted-foreground">
+                                {link.desc}
+                              </span>
+                            </span>
+                            <ArrowUpRight
+                              className="h-4 w-4 shrink-0 -translate-x-1 translate-y-1 text-brand opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"
+                              aria-hidden="true"
+                            />
                           </a>
                         </li>
                       ))
                     )}
                   </ul>
                 </div>
-              </div>
+                <div className="border-t border-brand-line bg-brand-mist/60">
+                  <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-x-8 gap-y-1 px-8 py-3.5 text-[15px] font-medium text-muted-foreground">
+                    <p>
+                      <span className="font-bold text-foreground/70">
+                        대표이사 {COMPANY.ceo}
+                      </span>
+                      <span className="mx-2.5 text-brand-line" aria-hidden="true">
+                        ·
+                      </span>
+                      {COMPANY.address}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <Phone className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
+                      <span className="font-bold text-foreground/70">
+                        대표번호 {COMPANY.phoneDisplay}
+                      </span>
+                      <span className="mx-1 text-brand-line" aria-hidden="true">
+                        ·
+                      </span>
+                      <span className="font-num font-bold tracking-wide">
+                        SINCE 2017
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
