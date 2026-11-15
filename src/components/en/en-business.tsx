@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
 import { cn } from "@/lib/utils";
@@ -9,20 +10,19 @@ import { EN_BUSINESSES } from "@/lib/company-en";
 
 export function EnBusiness() {
   const [active, setActive] = useState(0);
-  const biz = EN_BUSINESSES[active];
 
   return (
     <section
-      id="business-en"
+      id="business"
       className="bg-cream py-24 md:py-32"
-      aria-label="What we do"
+      aria-label="Business areas"
     >
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHeading
-            kicker="WHAT WE DO"
-            title={"Integrated food solutions,\nfrom sourcing to shelf."}
-            description="Four business lines covering the full value chain — procurement, manufacturing, branded meal kits, and online retail — connected as one flow."
+            kicker="BUSINESS"
+            title={"An integrated food solution\ncovering the entire chain"}
+            description="From ingredient distribution to manufacturing, meal kits, and our online mall — CHEDAWON's four business areas flow as one."
           />
           <FadeIn delay={0.15} className="flex shrink-0 flex-wrap gap-2">
             <span className="rounded-full border border-brand-line bg-white px-4 py-2 text-[15px] font-bold tracking-wide text-brand">
@@ -34,132 +34,157 @@ export function EnBusiness() {
           </FadeIn>
         </div>
 
-        {/* Tabs */}
-        <FadeIn className="mt-12">
-          <div
-            role="tablist"
-            aria-label="Business areas"
-            className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 md:mx-0 md:flex-wrap md:px-0"
-          >
-            {EN_BUSINESSES.map((b, i) => (
-              <button
-                key={b.id}
-                role="tab"
-                id={`biz-tab-${b.id}`}
-                aria-selected={active === i}
-                aria-controls={`biz-panel-${b.id}`}
-                onClick={() => setActive(i)}
-                className={cn(
-                  "shrink-0 rounded-full px-5 py-2.5 text-[15px] font-bold transition-all",
-                  active === i
-                    ? "bg-brand text-white shadow-md shadow-brand/25"
-                    : "border border-brand-line bg-white text-brand-deep hover:border-brand/50"
-                )}
-              >
-                <span className="font-num mr-2 opacity-60">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                {b.title}
-              </button>
-            ))}
-          </div>
-        </FadeIn>
+        {/* Expanding accordion (desktop) */}
+        <FadeIn className="mt-12 hidden md:block">
+          <div className="flex h-[560px] gap-2.5" role="list">
+            {EN_BUSINESSES.map((biz, i) => {
+              const isActive = active === i;
+              return (
+                <article
+                  key={biz.id}
+                  role="listitem"
+                  tabIndex={0}
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActive(i);
+                    }
+                  }}
+                  className="biz-panel relative min-w-0 cursor-pointer overflow-hidden rounded-2xl bg-brand-ink focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white/60"
+                  style={{ flexGrow: isActive ? 4.2 : 1, flexBasis: 0 }}
+                  aria-label={`${biz.title} — ${isActive ? "selected" : "select"}`}
+                >
+                  <Image
+                    src={biz.image}
+                    alt={biz.headline}
+                    fill
+                    sizes="(max-width: 1280px) 100vw, 60vw"
+                    className={cn(
+                      "object-cover transition-all duration-700",
+                      isActive ? "opacity-90" : "opacity-55"
+                    )}
+                  />
+                  <div
+                    className={cn(
+                      "absolute inset-0 transition-opacity duration-700",
+                      isActive
+                        ? "bg-gradient-to-t from-brand-ink/95 via-brand-ink/35 to-brand-ink/15"
+                        : "bg-brand-ink/65"
+                    )}
+                  />
 
-        {/* Panel */}
-        <FadeIn className="mt-8">
-          <div
-            role="tabpanel"
-            id={`biz-panel-${biz.id}`}
-            aria-labelledby={`biz-tab-${biz.id}`}
-            className="overflow-hidden rounded-[28px] border border-brand-line bg-white shadow-[0_32px_70px_-42px_rgba(6,25,19,0.28)]"
-          >
-            <div className="grid lg:grid-cols-[1fr_1.15fr]">
-              <div className="img-zoom relative min-h-[240px] overflow-hidden lg:min-h-[480px]">
-                <Image
-                  src={biz.image}
-                  alt={biz.headline}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
-                />
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-brand-ink/55 via-transparent to-transparent"
-                  aria-hidden="true"
-                />
-                {biz.stats && (
-                  <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 md:bottom-5 md:left-5">
-                    {biz.stats.slice(0, 2).map((s) => (
-                      <span
-                        key={s.label}
-                        className="rounded-full bg-white/92 px-3.5 py-1.5 text-[13.5px] font-bold text-brand-deep backdrop-blur-sm"
-                      >
-                        <span className="font-num mr-1.5 text-brand">{s.value}</span>
-                        {s.label}
+                  {/* Collapsed: vertical label */}
+                  <div
+                    className={cn(
+                      "absolute inset-0 flex items-center justify-center transition-opacity duration-500",
+                      isActive ? "pointer-events-none opacity-0" : "opacity-100"
+                    )}
+                  >
+                    <span className="flex flex-col items-center gap-4">
+                      <span className="font-num text-[15px] font-bold tracking-widest text-white/60">
+                        0{i + 1}
                       </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-col p-7 md:p-10">
-                <p className="text-[14px] font-bold tracking-[0.24em] text-brand">
-                  {biz.category.toUpperCase()}
-                </p>
-                <h3 className="mt-3 text-[24px] font-extrabold leading-[1.3] tracking-tight text-foreground md:text-[28px]">
-                  {biz.headline}
-                </h3>
-                <p className="mt-4 text-[15.5px] leading-relaxed text-muted-foreground md:text-[16.5px]">
-                  {biz.intro}
-                </p>
-
-                {biz.stats && biz.stats.length > 2 && (
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    {biz.stats.slice(2).map((s) => (
-                      <div
-                        key={s.label}
-                        className="rounded-2xl border border-brand-line/60 bg-brand-mist px-5 py-4"
+                      <span
+                        className="max-h-[420px] overflow-hidden text-[17px] font-extrabold tracking-tight text-white [writing-mode:vertical-rl]"
+                        aria-hidden="true"
                       >
-                        <p className="font-num text-[22px] font-extrabold leading-none tracking-tight text-brand">
-                          {s.value}
-                        </p>
-                        <p className="mt-2 text-[14px] font-bold text-muted-foreground">
-                          {s.label}
-                        </p>
-                      </div>
-                    ))}
+                        {biz.title}
+                      </span>
+                    </span>
                   </div>
-                )}
 
-                <div className="mt-7 grid gap-5 sm:grid-cols-2">
-                  {biz.sections.map((section) => (
-                    <div
-                      key={section.subtitle}
-                      className="rounded-2xl border border-brand-line/60 bg-brand-mist/50 p-5"
-                    >
-                      <p className="text-[15.5px] font-extrabold tracking-tight text-brand-deep">
-                        {section.subtitle}
-                      </p>
-                      <ul className="mt-3 space-y-2">
-                        {section.points.map((point) => (
-                          <li
-                            key={point}
-                            className="flex gap-2.5 text-[14.5px] leading-relaxed text-muted-foreground"
+                  {/* Expanded content */}
+                  <div
+                    className={cn(
+                      "absolute inset-x-0 bottom-0 p-8 transition-all duration-500",
+                      isActive
+                        ? "translate-y-0 opacity-100 delay-150"
+                        : "pointer-events-none translate-y-6 opacity-0"
+                    )}
+                  >
+                    <p className="text-[15px] font-bold tracking-[0.22em] text-[#8ecfb4]">
+                      {biz.category.toUpperCase()}
+                    </p>
+                    <h3 className="mt-3 text-[26px] font-extrabold leading-snug tracking-tight whitespace-pre-line text-white">
+                      {biz.headline}
+                    </h3>
+                    <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-white/80 [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden">
+                      {biz.intro}
+                    </p>
+                    {biz.stats && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {biz.stats.slice(0, 2).map((s) => (
+                          <span
+                            key={s.label}
+                            className="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[15.5px] font-bold text-white backdrop-blur-sm"
                           >
-                            <span
-                              className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full bg-brand/50"
-                              aria-hidden="true"
-                            />
-                            {point}
-                          </li>
+                            <span className="font-num text-[#a5d8c2]">
+                              {s.value}
+                            </span>{" "}
+                            {s.label}
+                          </span>
                         ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+                      </div>
+                    )}
+                    <a
+                      href="#contact"
+                      className="mt-6 inline-flex items-center gap-2 text-[15.5px] font-bold text-white transition-all hover:gap-3"
+                    >
+                      Inquire about this business
+                      <ArrowUpRight
+                        className="h-4 w-4"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </FadeIn>
+
+        {/* Stacked cards (mobile) */}
+        <div className="mt-12 flex flex-col gap-5 md:hidden">
+          {EN_BUSINESSES.map((biz, i) => (
+            <FadeIn key={biz.id} delay={i * 0.06}>
+              <article className="overflow-hidden rounded-2xl border border-brand-line bg-white">
+                <div className="img-zoom relative h-44 overflow-hidden">
+                  <Image
+                    src={biz.image}
+                    alt={biz.headline}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                  <span className="absolute left-4 top-4 rounded-full bg-brand-ink/70 px-3 py-1 text-[13px] font-bold tracking-[0.18em] text-white backdrop-blur-sm">
+                    0{i + 1} · {biz.category}
+                  </span>
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-extrabold tracking-tight text-foreground">
+                    {biz.title}
+                  </h3>
+                  <p className="mt-1.5 text-[15px] font-bold text-brand">
+                    {biz.headline}
+                  </p>
+                  <p className="mt-3 line-clamp-3 text-[15px] leading-relaxed text-muted-foreground">
+                    {biz.intro}
+                  </p>
+                  <a
+                    href="#contact"
+                    className="mt-4 inline-flex items-center gap-1.5 text-[15px] font-bold text-brand transition-all hover:gap-2.5"
+                  >
+                    Inquire
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                </div>
+              </article>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );

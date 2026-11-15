@@ -4,6 +4,8 @@
 
 export const EN_COMPANY = {
   name: "CHEDAWON Co., Ltd.",
+  nameKr: "주식회사 채다원",
+  slogan: "People. Diverse Lives. Good Food.",
   ceo: "Park Young-ho",
   founded: "June 1, 2017",
   capital: "KRW 600 million",
@@ -48,6 +50,15 @@ export const EN_STATS = [
   { value: "81.5%", label: "Repeat order rate" },
   { value: "620,330+", label: "Cumulative deliveries" },
   { value: "4", label: "HACCP-certified categories" },
+];
+
+export type EnGrowthMetricItem = { value: string; label: string };
+
+export const EN_DEFAULT_GROWTH_METRICS: EnGrowthMetricItem[] = [
+  { value: "16,000+", label: "Business clients" },
+  { value: "81.5%", label: "Repeat order rate" },
+  { value: "620,330+", label: "Cumulative deliveries" },
+  { value: "4", label: "HACCP certifications" },
 ];
 
 export const EN_METRICS = [
@@ -226,6 +237,7 @@ export const EN_BUSINESSES: EnBusiness[] = [
 export const EN_PRODUCTS = [
   {
     name: "Ricotta Cheese Salad",
+    kr: "리코타치즈 샐러드",
     weight: "240g",
     kcal: "238.51 kcal",
     dressing: "Balsamic",
@@ -234,6 +246,7 @@ export const EN_PRODUCTS = [
   },
   {
     name: "Tender Chicken Salad",
+    kr: "텐더치킨 샐러드",
     weight: "220g",
     kcal: "216.59 kcal",
     dressing: "Ranch",
@@ -242,6 +255,7 @@ export const EN_PRODUCTS = [
   },
   {
     name: "Bacon Potato Salad",
+    kr: "베이컨 감자 샐러드",
     weight: "200g",
     kcal: "229.38 kcal",
     dressing: "Ranch",
@@ -250,6 +264,7 @@ export const EN_PRODUCTS = [
   },
   {
     name: "Chicken Breast Salad",
+    kr: "닭가슴살 샐러드",
     weight: "220g",
     kcal: "194.23 kcal",
     dressing: "Balsamic",
@@ -258,6 +273,7 @@ export const EN_PRODUCTS = [
   },
   {
     name: "Smoked Chicken Salad",
+    kr: "훈제 닭가슴살 샐러드",
     weight: "215g",
     kcal: "196.53 kcal",
     dressing: "Oriental",
@@ -330,7 +346,7 @@ export const EN_EQUIPMENT_STAGES: {
 export const EN_STRATEGY_PILLARS = [
   {
     name: "Custom Manufacturing",
-    en: "CUSTOM MANUFACTURING",
+    kr: "맞춤제조",
     points: [
       "Sourcing of raw materials from trusted producing regions, with standardized processing by category",
       "Self-operated plants designed to HACCP standards — multi-item, small-batch production by product type",
@@ -338,7 +354,7 @@ export const EN_STRATEGY_PILLARS = [
   },
   {
     name: "Quality Management",
-    en: "QUALITY MANAGEMENT",
+    kr: "품질관리",
     points: [
       "Risk analysis with function-by-function checks before item selection and ordering",
       "Advanced hygiene & safety systems and dedicated specialist training",
@@ -346,7 +362,7 @@ export const EN_STRATEGY_PILLARS = [
   },
   {
     name: "Price Competitiveness",
-    en: "PRICE COMPETITIVENESS",
+    kr: "Price",
     points: [
       "Cost savings through bulk purchasing and strategic unified price contracts",
       "Continuous price verification through price monitoring",
@@ -354,7 +370,7 @@ export const EN_STRATEGY_PILLARS = [
   },
   {
     name: "Trend Response",
-    en: "TREND RESPONSE",
+    kr: "Trend",
     points: [
       "Tangible and intangible service products built on the B2B infrastructure to meet client needs",
       "New items proposed after price verification and market research",
@@ -362,7 +378,7 @@ export const EN_STRATEGY_PILLARS = [
   },
   {
     name: "Data-Driven Service",
-    en: "DATA-DRIVEN SERVICE",
+    kr: "Data Base",
     points: [
       "Tailored services based on analysis of client purchase items and patterns",
       "Stronger online distribution and sustainable digital transformation powered by big data",
@@ -423,6 +439,8 @@ export const EN_VALUES = [
 
 /* ----------------------------- History ---------------------------- */
 
+export type EnHistoryEntry = { year: number; month: string; text: string };
+
 export const EN_HISTORY: { year: number; items: { month: string; text: string }[] }[] = [
   {
     year: 2025,
@@ -476,17 +494,61 @@ export const EN_YEAR_SUMMARIES = [
   "We took our first steps with incorporation and catering supply to both major airlines.",
 ];
 
+export const EN_DEFAULT_HISTORY: EnHistoryEntry[] = EN_HISTORY.flatMap((h) =>
+  h.items.map((item) => ({ year: h.year, month: item.month, text: item.text }))
+);
+
 /* ----------------------------- Partners --------------------------- */
 
-export const EN_PARTNERS = [
-  "ASIANA AIRLINES",
-  "KOREAN AIR",
-  "LSG Sky Chefs",
-  "GS Retail",
-  "MYCHEF",
-  "SALKIT",
-  "Sweet Balance",
-] as const;
+export type EnPartnerItem = { name: string; ko: string };
+
+export const EN_PARTNERS: EnPartnerItem[] = [
+  { name: "ASIANA AIRLINES", ko: "아시아나항공" },
+  { name: "KOREAN AIR", ko: "대한항공" },
+  { name: "LSG Sky Chefs", ko: "엘에스지스카이셰프코리아" },
+  { name: "GS Retail", ko: "지에스리테일" },
+  { name: "MYCHEF", ko: "마이셰프" },
+  { name: "SALKIT", ko: "셀러팝" },
+  { name: "Sweet Balance", ko: "스윗밸런스" },
+];
+
+/* ------------------------------- News ------------------------------ */
+
+export type EnNewsItem = {
+  category: string;
+  date: string;
+  title: string;
+  desc: string;
+  highlight?: boolean;
+};
+
+export const EN_NEWS: EnNewsItem[] = [
+  {
+    category: "Supply",
+    date: "2025.02",
+    title: "Ingredient supply contract signed with GS25 convenience stores",
+    desc: "Expanded our supply network to convenience-store channels nationwide and built a regular delivery system for fresh ingredients.",
+    highlight: true,
+  },
+  {
+    category: "Certification",
+    date: "2024.10",
+    title: "HACCP certification for ready-to-cook sets — all 4 categories now certified",
+    desc: "Following fruit & vegetable products, fresh convenience foods, and ready-to-eat foods, our fourth category certification completed HACCP management across the entire lineup.",
+  },
+  {
+    category: "Supply",
+    date: "2024.02",
+    title: "Ingredient supply begins for GS Supermarkets",
+    desc: "Expanded supply to major-retail channels, proving quality built on airline-catering expertise.",
+  },
+  {
+    category: "Facility",
+    date: "2023.05",
+    title: "Seongnam Plant 2 established — with HACCP certification",
+    desc: "Commissioned a second plant to expand production capacity and obtained HACCP certification in August of the same year.",
+  },
+];
 
 export const EN_CHANNELS = [
   { icon: "plane", label: "Airlines & Catering", desc: "Korean Air · Asiana Airlines · LSG" },

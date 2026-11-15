@@ -8,37 +8,40 @@ import {
   Database,
   Factory,
   ShieldCheck,
-  Truck,
+  Sprout,
   TrendingUp,
+  Truck,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
-import { cn } from "@/lib/utils";
 import {
-  EN_END_TO_END_FLOW,
+  EN_DEFAULT_GROWTH_METRICS,
   EN_STRATEGY_PILLARS,
   EN_VALUES,
+  EN_END_TO_END_FLOW,
+  type EnGrowthMetricItem,
 } from "@/lib/company-en";
 
 const PILLAR_ICONS = [Factory, ShieldCheck, Coins, TrendingUp, Database];
 
-const FLOW_ICONS = [
-  Factory, // raw sourcing
-  ShieldCheck, // HACCP manufacturing
-  ClipboardCheck, // quality inspection
-  Truck, // cold-chain delivery
-  Database, // data accumulation
-];
+const FLOW_ICONS = [Sprout, Factory, ClipboardCheck, Truck, Database];
+
+const FLOW = EN_END_TO_END_FLOW.map((step, i) => ({
+  ...step,
+  icon: FLOW_ICONS[i] ?? Database,
+}));
 
 export function EnGrowth() {
   return (
     <>
-      {/* Strategy pillars + end-to-end flow */}
+      {/* Growth strategy — light, warm food-editorial */}
       <section
-        id="growth-en"
+        id="growth"
         className="relative overflow-hidden bg-brand-mist py-24 md:py-32"
         aria-label="Sustainable growth strategy"
       >
+        {/* Soft organic accents */}
         <div
           className="pointer-events-none absolute -right-32 -top-32 h-[460px] w-[460px] rounded-full bg-brand-soft opacity-70 blur-3xl"
           aria-hidden="true"
@@ -51,12 +54,70 @@ export function EnGrowth() {
         <div className="relative mx-auto max-w-[1280px] px-5 md:px-8">
           <SectionHeading
             kicker="SUSTAINABILITY"
-            title={"Sustainable growth,\ndesigned with data."}
+            title={"Sustainable growth,\ndesigned with data"}
             description="Five core competencies connected as one process — building a sustainably growing food distribution company."
           />
 
+          {/* Feature panel: fresh imagery + verified metrics */}
+          <FadeIn delay={0.08} className="mt-12 md:mt-14">
+            <div className="overflow-hidden rounded-[28px] border border-brand-line bg-white shadow-[0_32px_70px_-42px_rgba(6,25,19,0.28)]">
+              <div className="grid lg:grid-cols-[1.05fr_1fr]">
+                <div className="img-zoom relative min-h-[260px] overflow-hidden lg:min-h-[440px]">
+                  <Image
+                    src="/images/hero-mealkit.png"
+                    alt="Fresh ingredients and CHEDAWON meal kits"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    className="object-cover"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-brand-ink/45 via-transparent to-transparent"
+                    aria-hidden="true"
+                  />
+                  <div className="absolute bottom-5 left-5 flex flex-wrap gap-2">
+                    <span className="rounded-full bg-white/90 px-4 py-2 text-[14.5px] font-bold text-brand-deep backdrop-blur-sm">
+                      HACCP-certified in-house plant
+                    </span>
+                    <span className="rounded-full bg-brand/90 px-4 py-2 text-[14.5px] font-bold text-white backdrop-blur-sm">
+                      Multi-item, small-batch production
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center p-7 md:p-10 lg:p-12">
+                  <p className="text-[15px] font-bold tracking-[0.22em] text-brand">
+                    FIVE CORE COMPETENCIES
+                  </p>
+                  <h3 className="mt-3.5 text-[24px] font-extrabold leading-[1.35] tracking-tight whitespace-pre-line text-foreground md:text-[28px]">
+                    {"From raw sourcing to data,\nengineered around five competencies"}
+                  </h3>
+                  <p className="mt-4 text-[16px] leading-relaxed text-muted-foreground md:text-[16.5px]">
+                    Regional sourcing, HACCP manufacturing, price
+                    competitiveness, trend response, and data-driven services —
+                    proven operational expertise drives CHEDAWON's growth.
+                  </p>
+                  <div className="mt-8 grid grid-cols-2 gap-3">
+                    {(EN_DEFAULT_GROWTH_METRICS as EnGrowthMetricItem[]).map((m) => (
+                      <div
+                        key={m.label}
+                        className="rounded-2xl border border-brand-line/60 bg-brand-mist px-5 py-4 transition-colors duration-300 hover:border-brand/40 hover:bg-brand-soft"
+                      >
+                        <p className="font-num text-[24px] font-extrabold leading-none tracking-tight text-brand">
+                          {m.value}
+                        </p>
+                        <p className="mt-2 text-[15px] font-bold text-muted-foreground">
+                          {m.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
           {/* Five capability cards */}
-          <div className="mt-12 grid gap-4 md:mt-14 md:grid-cols-2 md:gap-5 lg:grid-cols-6">
+          <div className="mt-6 grid gap-4 md:mt-8 md:grid-cols-2 md:gap-5 lg:grid-cols-6">
             {EN_STRATEGY_PILLARS.map((p, i) => {
               const Icon = PILLAR_ICONS[i] ?? Database;
               const featured = i < 2;
@@ -75,17 +136,17 @@ export function EnGrowth() {
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
-                    <h3 className="mt-5 text-[20px] font-extrabold tracking-tight text-foreground">
+                    <h3 className="mt-5 text-[20px] font-extrabold tracking-tight text-foreground md:text-[21px]">
                       {p.name}
                     </h3>
-                    <p className="mt-1 text-[13.5px] font-bold uppercase tracking-[0.18em] text-brand/60">
-                      {p.en}
+                    <p className="mt-1 text-[14px] font-bold uppercase tracking-[0.18em] text-brand/60">
+                      {p.kr}
                     </p>
                     <ul className="mt-4 space-y-2.5">
                       {p.points.map((point) => (
                         <li
                           key={point}
-                          className="flex gap-2.5 text-[15px] leading-relaxed text-muted-foreground"
+                          className="flex gap-2.5 text-[15.5px] leading-relaxed text-muted-foreground"
                         >
                           <span
                             className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-brand/50"
@@ -109,53 +170,50 @@ export function EnGrowth() {
                   END-TO-END PROCESS
                 </p>
                 <p className="text-[15px] text-muted-foreground">
-                  Every stage operated with our own capabilities — from sourcing to data
+                  From sourcing to data — every step run with in-house capabilities
                 </p>
               </div>
               <ol className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-0">
-                {EN_END_TO_END_FLOW.map((step, i) => {
-                  const Icon = FLOW_ICONS[i] ?? Database;
-                  return (
-                    <li
-                      key={step.label}
-                      className="group flex items-center gap-3 md:flex-1 md:gap-3"
-                    >
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
-                        <Icon className="h-4.5 w-4.5" aria-hidden="true" />
+                {FLOW.map((step, i) => (
+                  <li
+                    key={step.label}
+                    className="group flex items-center gap-3 md:flex-1 md:gap-3"
+                  >
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
+                      <step.icon className="h-4.5 w-4.5" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[15.5px] font-extrabold tracking-tight text-foreground">
+                        {step.label}
                       </span>
-                      <span className="min-w-0">
-                        <span className="block text-[15px] font-extrabold tracking-tight text-foreground">
-                          {step.label}
-                        </span>
-                        <span className="mt-0.5 block text-[14.5px] text-muted-foreground">
-                          {step.desc}
-                        </span>
+                      <span className="mt-0.5 block text-[15px] text-muted-foreground">
+                        {step.desc}
                       </span>
-                      {i < EN_END_TO_END_FLOW.length - 1 && (
-                        <ChevronRight
-                          className="ml-auto h-4 w-4 shrink-0 rotate-90 text-brand-line md:ml-3 md:rotate-0"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </li>
-                  );
-                })}
+                    </span>
+                    {i < FLOW.length - 1 && (
+                      <ChevronRight
+                        className="ml-auto h-4 w-4 shrink-0 rotate-90 text-brand-line md:ml-3 md:rotate-0"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </li>
+                ))}
               </ol>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* Core values */}
+      {/* Core values — light */}
       <section
-        id="values-en"
+        id="values"
         className="bg-white py-24 md:py-32"
-        aria-label="Our values"
+        aria-label="Core values"
       >
         <div className="mx-auto max-w-[1280px] px-5 md:px-8">
           <SectionHeading
             kicker="OUR VALUES"
-            title={"Four promises to people\nand good food."}
+            title={"Four promises to people\nand to good food"}
           />
           <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {EN_VALUES.map((v, i) => (
@@ -171,14 +229,14 @@ export function EnGrowth() {
                     />
                   </div>
                   <div className="p-5">
-                    <h3 className="text-[18px] font-extrabold leading-snug tracking-tight whitespace-pre-line text-foreground">
+                    <h3 className="text-[18px] font-extrabold tracking-tight whitespace-pre-line text-foreground">
                       {v.title}
                     </h3>
                     <ul className="mt-3 space-y-1.5">
                       {v.points.slice(0, 3).map((pt) => (
                         <li
                           key={pt}
-                          className={cn("flex gap-2 text-[14.5px] leading-relaxed text-muted-foreground")}
+                          className="flex gap-2 text-[15px] leading-relaxed text-muted-foreground"
                         >
                           <span
                             className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-brand"

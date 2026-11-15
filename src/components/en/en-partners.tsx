@@ -1,65 +1,77 @@
 "use client";
 
-import { Hotel, Plane, Store, UtensilsCrossed } from "lucide-react";
+import { Plane, Store, Hotel, UtensilsCrossed } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
-import { EN_CHANNELS, EN_PARTNERS } from "@/lib/company-en";
+import { EN_PARTNERS, type EnPartnerItem } from "@/lib/company-en";
 
-const CHANNEL_ICONS = {
-  plane: Plane,
-  store: Store,
-  utensils: UtensilsCrossed,
-  hotel: Hotel,
-} as const;
+const CHANNELS = [
+  { icon: Plane, label: "Airlines & Catering", desc: "Korean Air · Asiana Airlines · LSG" },
+  { icon: Store, label: "Major Retail", desc: "GS Retail (supermarkets & convenience stores)" },
+  { icon: UtensilsCrossed, label: "Franchise", desc: "Salad & meal-kit brands" },
+  { icon: Hotel, label: "Hotels & Resorts", desc: "Catering ingredient supply" },
+];
 
 export function EnPartners() {
   return (
     <section
-      id="partners-en"
+      id="partners"
       className="bg-white py-24 md:py-32"
       aria-label="Partner network"
     >
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <SectionHeading
           kicker="PARTNERSHIP"
-          title={"Trusted partnerships,\nfrom the sky to the convenience store."}
-          description="Years of ingredient supply expertise with Korea's major airlines, now extended to major retail chains, salad franchises, and hotels & resorts."
+          title={"From tables in the sky to convenience stores,\nproven partnerships"}
+          description="Years of expertise supplying major Korean airlines — now expanding into supermarkets and convenience stores of large retailers, salad franchises, and hotels & resorts."
         />
 
         {/* Partner wordmark cards */}
         <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5 lg:grid-cols-4">
-          {EN_PARTNERS.map((p, i) => (
-            <FadeIn as="li" key={p} delay={(i % 4) * 0.05}>
-              <article className="hover-lift flex h-full items-center justify-center rounded-2xl border border-brand-line bg-cream p-6">
-                <p className="text-center text-[17px] font-extrabold tracking-tight text-brand-deep">
-                  {p}
+          {(EN_PARTNERS as EnPartnerItem[]).map((p, i) => (
+            <FadeIn as="li" key={p.name} delay={(i % 4) * 0.05}>
+              <article className="hover-lift flex h-full flex-col justify-between rounded-2xl border border-brand-line bg-cream p-6">
+                <p className="text-[18px] font-extrabold tracking-tight text-brand-deep">
+                  {p.name}
+                </p>
+                <p className="mt-2 text-[16px] font-semibold text-muted-foreground">
+                  {p.ko}
                 </p>
               </article>
             </FadeIn>
           ))}
+          <FadeIn as="li" delay={0.2}>
+            <article className="flex h-full flex-col justify-between rounded-2xl bg-brand p-6 text-white">
+              <p className="text-[18px] font-extrabold tracking-tight">
+                16,000+
+              </p>
+              <p className="mt-2 text-[16px] font-semibold text-white/75">
+                Growing together with our business clients
+              </p>
+            </article>
+          </FadeIn>
         </ul>
 
         {/* Supply channels */}
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-          {EN_CHANNELS.map((channel, i) => {
-            const Icon = CHANNEL_ICONS[channel.icon];
-            return (
-              <FadeIn key={channel.label} delay={i * 0.06}>
-                <article className="hover-lift flex h-full flex-col rounded-2xl border border-brand-line bg-brand-mist p-6">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <h3 className="mt-4 text-[17px] font-extrabold tracking-tight text-foreground">
-                    {channel.label}
-                  </h3>
-                  <p className="mt-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
-                    {channel.desc}
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {CHANNELS.map((c, i) => (
+            <FadeIn as="li" key={c.label} delay={i * 0.06}>
+              <div className="flex h-full items-start gap-4 rounded-2xl border border-brand-line bg-white p-5">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
+                  <c.icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-[16px] font-extrabold text-foreground">
+                    {c.label}
                   </p>
-                </article>
-              </FadeIn>
-            );
-          })}
-        </div>
+                  <p className="mt-1 text-[15.5px] text-muted-foreground">
+                    {c.desc}
+                  </p>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </ul>
       </div>
     </section>
   );

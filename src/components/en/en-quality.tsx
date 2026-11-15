@@ -13,15 +13,15 @@ const STEP_INDEX = new Map(
 export function EnQuality() {
   return (
     <section
-      id="quality-en"
+      id="quality"
       className="bg-brand-mist py-24 md:py-32"
       aria-label="Quality and certification"
     >
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <SectionHeading
           kicker="QUALITY · CERTIFICATION"
-          title={"4 HACCP certifications,\nquality competitiveness end to end."}
-          description="From item selection and ordering to production and delivery — function-by-function checks and an advanced hygiene management system keep every meal safe."
+          title={"HACCP certified in 4 categories,\nquality strength across every step"}
+          description="From item selection to ordering, production, and delivery — function-by-function checks and an advanced hygiene management system keep food safe."
         />
 
         {/* HACCP certifications */}
@@ -32,13 +32,13 @@ export function EnQuality() {
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand">
                   <BadgeCheck className="h-5.5 w-5.5" aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 text-[17px] font-extrabold leading-snug tracking-tight text-foreground">
+                <h3 className="mt-4 text-[18px] font-extrabold tracking-tight text-foreground">
                   {cert.name}
                 </h3>
-                <p className="mt-1.5 text-[14.5px] font-semibold text-brand">
+                <p className="mt-1.5 text-[15px] font-semibold text-brand">
                   HACCP {cert.no}
                 </p>
-                <p className="font-num mt-2 text-[14.5px] text-muted-foreground">
+                <p className="font-num mt-2 text-[15.5px] text-muted-foreground">
                   {cert.period}
                 </p>
               </article>
@@ -46,7 +46,7 @@ export function EnQuality() {
           ))}
         </ul>
 
-        {/* Facilities & equipment intro */}
+        {/* Facilities & equipment */}
         <div className="mt-16 grid gap-8 lg:grid-cols-[7fr_5fr] lg:gap-12">
           <div className="grid grid-cols-2 gap-4 md:gap-5">
             <FadeIn className="img-zoom overflow-hidden rounded-2xl">
@@ -59,10 +59,13 @@ export function EnQuality() {
                 className="h-56 w-full object-cover md:h-72"
               />
             </FadeIn>
-            <FadeIn delay={0.1} className="img-zoom overflow-hidden rounded-2xl">
+            <FadeIn
+              delay={0.1}
+              className="img-zoom overflow-hidden rounded-2xl"
+            >
               <Image
                 src="/images/quality-2.png"
-                alt="An automatic thermoforming vacuum packer operating in the CHEDAWON plant"
+                alt="An automatic thermoforming vacuum packer in operation at CHEDAWON's plant"
                 width={1344}
                 height={768}
                 sizes="(max-width: 1024px) 50vw, 480px"
@@ -74,27 +77,29 @@ export function EnQuality() {
           <FadeIn delay={0.15} className="flex flex-col justify-center">
             <p className="kicker">FACILITY · EQUIPMENT</p>
             <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-foreground md:text-[28px]">
-              Professional facilities for
+              Dedicated facilities and equipment,
               <br />
-              multi-item, small-batch production
+              from multi-item to small-batch runs
             </h3>
             <p className="mt-4 text-[16px] leading-relaxed text-muted-foreground">
-              In HACCP-standard plants, we support small-batch production across
-              many product types. From raw-material washing to vacuum packing
-              and metal detection — every process runs on our own equipment.
+              Our own plants, designed to HACCP standards, support multi-item
+              small-batch production by product type. From raw-material washing
+              to vacuum packing and metal detection — every process runs on
+              in-house equipment.
             </p>
             <p className="mt-6 flex items-center gap-2 text-[15px] font-bold text-brand">
               <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-              10 types of in-house equipment across all production stages
+              10 types of equipment operated in-house, from raw washing to shipment inspection
             </p>
           </FadeIn>
         </div>
 
-        {/* Production line — 10 equipment, by stage */}
+        {/* Production line — 10 in-house equipment types, by process stage */}
         <div className="mt-12 space-y-12 md:mt-16 md:space-y-14">
           {EN_EQUIPMENT_STAGES.map((stage, si) => (
             <FadeIn key={stage.label} delay={si * 0.05}>
               <div className="grid gap-5 lg:grid-cols-[230px_1fr] lg:gap-10">
+                {/* Stage label */}
                 <div className="lg:sticky lg:top-28 lg:self-start">
                   <p className="font-num text-[15px] font-extrabold tracking-[0.24em] text-brand">
                     STAGE 0{si + 1}
@@ -106,7 +111,7 @@ export function EnQuality() {
                     {stage.desc}
                   </p>
                   <p className="font-num mt-3 hidden text-[14px] font-bold text-brand/70 lg:block">
-                    {stage.items.length} machines
+                    {stage.items.length} units
                   </p>
                   <span
                     className="mt-4 hidden h-px w-14 bg-brand/30 lg:block"
@@ -114,6 +119,7 @@ export function EnQuality() {
                   />
                 </div>
 
+                {/* Equipment cards */}
                 <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
                   {stage.items.map((eq) => {
                     const step = (STEP_INDEX.get(eq.name) ?? 0) + 1;
@@ -133,10 +139,10 @@ export function EnQuality() {
                             </span>
                           </div>
                           <figcaption className="flex flex-1 flex-col justify-center border-t border-brand-line/60 px-4 py-3.5">
-                            <p className="text-[14.5px] font-extrabold leading-snug tracking-tight text-foreground">
+                            <p className="text-[15.5px] font-extrabold leading-snug tracking-tight text-foreground">
                               {eq.name}
                             </p>
-                            <p className="mt-1 text-[13.5px] font-semibold text-brand">
+                            <p className="mt-1 text-[14px] font-semibold text-brand">
                               {eq.role}
                             </p>
                           </figcaption>
@@ -153,8 +159,7 @@ export function EnQuality() {
         <FadeIn delay={0.2}>
           <p className="mt-8 flex items-center gap-2 text-[15px] font-bold text-brand">
             <BadgeCheck className="h-4 w-4" aria-hidden="true" />
-            Certified: fruit & vegetable products · ready-to-cook sets · fresh
-            convenience foods · ready-to-eat foods
+            Certified across 4 categories: fruit & vegetable products · ready-to-cook sets · fresh convenience foods · ready-to-eat foods
           </p>
         </FadeIn>
       </div>
