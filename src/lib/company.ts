@@ -115,7 +115,7 @@ export const BUSINESSES: BusinessItem[] = [
     category: "B2B / B2C",
     title: "식품제조 연결사업",
     headline: "푸드메이킹 프로세스 혁신",
-    image: "/images/biz-mfg-v4.png",
+    image: "/images/biz-mfg-v5.png",
     intro:
       "간편식과 기타 자체 레시피의 상품화를 원하는 개인·소상공인에게 자체 제조시설을 제공하여, 업계 최소 MOQ로 부담 없이 의뢰하고 상품을 만들 수 있습니다. R&D 기획과 제조역량, 빠른 고객테스트와 온라인에 대한 강점을 가진 경쟁력이 밀레니얼 세대의 감성을 파고들어 팬덤을 이루고, 꾸준하고 지속적인 소비로 연결하면서 시장을 만들 수 있습니다.",
     stats: [

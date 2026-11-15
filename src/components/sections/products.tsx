@@ -178,7 +178,7 @@ export function Products() {
                   </FadeIn>
                   <FadeIn className="img-zoom order-1 overflow-hidden rounded-2xl lg:order-2">
                     <Image
-                      src="/images/biz-mfg-v4.png"
+                      src="/images/biz-mfg-v5.png"
                       alt="HACCP 인증 채다원 식품제조 시설의 생산 라인"
                       width={1344}
                       height={768}
