@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Loader2, MailOpen, Search, Trash2 } from "lucide-react";
+import { Download, Loader2, MailOpen, NotebookPen, Search, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -23,6 +22,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
   STATUS_LABEL,
@@ -53,6 +54,41 @@ const STATUS_STYLE: Record<InquiryStatus, string> = {
   DONE: "bg-brand text-white",
 };
 
+function csvCell(value: string): string {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
+function exportCsv(messages: AdminMessage[]) {
+  const header = ["접수일시", "성명", "회사", "연락처", "처리상태", "문의내용", "관리자메모"];
+  const rows = messages.map((m) =>
+    [
+      formatDate(m.createdAt),
+      m.name,
+      m.company ?? "",
+      m.phone,
+      STATUS_LABEL[m.status] ?? m.status,
+      m.message.replace(/\r?\n/g, " "),
+      (m.memo ?? "").replace(/\r?\n/g, " "),
+    ]
+      .map(csvCell)
+      .join(",")
+  );
+  // BOM: Excel에서 한글 깨짐 방지
+  const csv = "\uFEFF" + [header.map(csvCell).join(","), ...rows].join("\r\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const today = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  a.href = url;
+  a.download = `채다원_문의내역_${today.getFullYear()}${pad(today.getMonth() + 1)}${pad(today.getDate())}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export function InquiriesPanel({
   messages,
   counts,
@@ -66,6 +102,9 @@ export function InquiriesPanel({
   const [deleteTarget, setDeleteTarget] = useState<AdminMessage | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  // 상세 Dialog의 메모 편집 로컬 상태
+  const [memoDraft, setMemoDraft] = useState("");
+  const [memoSaving, setMemoSaving] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -75,10 +114,16 @@ export function InquiriesPanel({
       return (
         m.name.toLowerCase().includes(q) ||
         (m.company ?? "").toLowerCase().includes(q) ||
-        m.phone.includes(q)
+        m.phone.includes(q) ||
+        m.message.toLowerCase().includes(q)
       );
     });
   }, [messages, filter, query]);
+
+  const openDetail = (m: AdminMessage) => {
+    setDetail(m);
+    setMemoDraft(m.memo ?? "");
+  };
 
   const changeStatus = async (m: AdminMessage, status: InquiryStatus) => {
     setUpdatingId(m.id);
@@ -108,6 +153,38 @@ export function InquiriesPanel({
       });
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const saveMemo = async () => {
+    if (!detail) return;
+    setMemoSaving(true);
+    try {
+      const res = await fetch(`/api/messages/${detail.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memo: memoDraft }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.ok) {
+        toast({
+          title: "메모 저장 실패",
+          description: data?.error ?? "잠시 후 다시 시도해주세요.",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({ title: "메모가 저장되었습니다." });
+      await onRefresh();
+      setDetail((d) => (d ? { ...d, memo: memoDraft } : d));
+    } catch {
+      toast({
+        title: "메모 저장 실패",
+        description: "네트워크 오류가 발생했습니다.",
+        variant: "destructive",
+      });
+    } finally {
+      setMemoSaving(false);
     }
   };
 
@@ -142,6 +219,21 @@ export function InquiriesPanel({
     }
   };
 
+  const handleExport = () => {
+    if (filtered.length === 0) {
+      toast({
+        title: "내보낼 문의가 없습니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+    exportCsv(filtered);
+    toast({
+      title: "CSV 파일이 다운로드되었습니다.",
+      description: `현재 필터 조건의 ${filtered.length}건을 내보냈습니다.`,
+    });
+  };
+
   const FILTERS: { key: "ALL" | InquiryStatus; label: string; count: number }[] = [
     { key: "ALL", label: "전체", count: counts?.total ?? messages.length },
     { key: "NEW", label: STATUS_LABEL.NEW, count: counts?.new ?? 0 },
@@ -171,18 +263,29 @@ export function InquiriesPanel({
             </button>
           ))}
         </div>
-        <div className="relative w-full md:w-72">
-          <Search
-            className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="성명 · 회사 · 연락처 검색"
-            className="pl-10"
-            aria-label="문의 검색"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative w-full md:w-64">
+            <Search
+              className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="성명 · 회사 · 연락처 · 내용 검색"
+              className="pl-10"
+              aria-label="문의 검색"
+            />
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleExport}
+            className="h-11 shrink-0 gap-1.5 rounded-full border-brand-line text-[14.5px] font-bold text-brand hover:bg-brand-soft hover:text-brand-deep"
+            aria-label="문의 내역 CSV 내보내기"
+          >
+            <Download className="h-4 w-4" aria-hidden="true" />
+            CSV
+          </Button>
         </div>
       </div>
 
@@ -201,7 +304,7 @@ export function InquiriesPanel({
             </p>
           </div>
         ) : (
-          <ul className="divide-y divide-brand-line/70">
+          <ul className="max-h-[560px] overflow-y-auto thin-scroll divide-y divide-brand-line/70">
             {filtered.map((m) => (
               <li
                 key={m.id}
@@ -225,10 +328,19 @@ export function InquiriesPanel({
                     >
                       {STATUS_LABEL[m.status]}
                     </span>
+                    {m.memo && (
+                      <span
+                        className="inline-flex items-center gap-1 rounded-full bg-brand-soft px-2 py-0.5 text-[13px] font-bold text-brand"
+                        aria-label="메모 있음"
+                      >
+                        <NotebookPen className="h-3 w-3" aria-hidden="true" />
+                        메모
+                      </span>
+                    )}
                   </div>
                   <button
                     type="button"
-                    onClick={() => setDetail(m)}
+                    onClick={() => openDetail(m)}
                     className="mt-1 block w-full truncate text-left text-[15px] text-muted-foreground hover:text-brand"
                   >
                     {m.message}
@@ -257,7 +369,7 @@ export function InquiriesPanel({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setDetail(m)}
+                    onClick={() => openDetail(m)}
                     className="h-9 text-[14px] font-bold"
                   >
                     상세
@@ -280,7 +392,7 @@ export function InquiriesPanel({
 
       {/* Detail dialog */}
       <Dialog open={detail !== null} onOpenChange={(o) => !o && setDetail(null)}>
-        <DialogContent className="max-w-[560px] rounded-3xl">
+        <DialogContent className="max-w-[600px] rounded-3xl">
           {detail && (
             <>
               <DialogHeader>
@@ -296,10 +408,40 @@ export function InquiriesPanel({
                   {formatDate(detail.createdAt)} 접수 · {detail.phone}
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-1 max-h-72 overflow-y-auto thin-scroll rounded-2xl bg-brand-mist p-5 text-[15.5px] leading-relaxed whitespace-pre-wrap text-foreground">
+              <div className="mt-1 max-h-56 overflow-y-auto thin-scroll rounded-2xl bg-brand-mist p-5 text-[15.5px] leading-relaxed whitespace-pre-wrap text-foreground">
                 {detail.message}
               </div>
-              <div className="mt-4 flex items-center justify-between gap-3">
+              <div className="mt-4 grid gap-2">
+                <Label
+                  htmlFor="inquiry-memo"
+                  className="flex items-center gap-1.5 text-[14.5px]"
+                >
+                  <NotebookPen className="h-4 w-4 text-brand" aria-hidden="true" />
+                  처리 메모
+                </Label>
+                <Textarea
+                  id="inquiry-memo"
+                  value={memoDraft}
+                  onChange={(e) => setMemoDraft(e.target.value)}
+                  placeholder="통화 내용, 요청 사항 등 내부 처리 기록을 남겨주세요."
+                  rows={3}
+                  className="text-[15px]"
+                />
+                <div className="flex justify-end">
+                  <Button
+                    size="sm"
+                    onClick={saveMemo}
+                    disabled={memoSaving || memoDraft === (detail.memo ?? "")}
+                    className="h-9 gap-1.5 rounded-full bg-brand px-5 text-[14px] font-bold hover:bg-brand-deep"
+                  >
+                    {memoSaving ? (
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    ) : null}
+                    {memoSaving ? "저장 중..." : "메모 저장"}
+                  </Button>
+                </div>
+              </div>
+              <div className="mt-2 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-[14.5px] font-bold text-muted-foreground">
                     처리 상태

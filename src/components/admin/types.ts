@@ -6,6 +6,7 @@ export type AdminMessage = {
   company: string | null;
   phone: string;
   message: string;
+  memo: string;
   status: InquiryStatus;
   createdAt: string;
 };

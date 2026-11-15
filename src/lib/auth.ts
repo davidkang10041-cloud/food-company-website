@@ -65,3 +65,87 @@ export function sessionCookieOptions(maxAgeSeconds: number) {
     maxAge: maxAgeSeconds,
   };
 }
+
+/* ------------------------------------------------------------------ */
+/*  로그인 시도 제한 (brute-force 방지)                                 */
+/*  - 메모리 기반: 프로세스 재시작 시 초기화 (경량 서버 운영 환경 전제)   */
+/*  - 연속 5회 실패 시 5분 잠금                                         */
+/* ------------------------------------------------------------------ */
+
+const MAX_ATTEMPTS = 5;
+const LOCK_MS = 5 * 60 * 1000; // 5분
+
+const attemptStore: Map<string, { count: number; lockedUntil: number; firstAt: number }> =
+  new Map();
+
+function clientKey(request: Request): string {
+  const fwd =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown";
+  return fwd;
+}
+
+function cleanupExpired() {
+  const now = Date.now();
+  for (const [key, entry] of attemptStore) {
+    if (
+      entry.lockedUntil < now &&
+      now - entry.firstAt > LOCK_MS &&
+      entry.count < MAX_ATTEMPTS
+    ) {
+      attemptStore.delete(key);
+    }
+  }
+}
+
+export type LoginGateResult =
+  | { allowed: true }
+  | { allowed: false; retryAfterSec: number; remaining: number };
+
+/** 로그인 시도가 허용되는지 확인 (잠금 상태면 차단) */
+export function loginGate(request: Request): LoginGateResult {
+  cleanupExpired();
+  const key = clientKey(request);
+  const entry = attemptStore.get(key);
+  const now = Date.now();
+
+  if (!entry) return { allowed: true };
+
+  if (entry.lockedUntil > now) {
+    return {
+      allowed: false,
+      retryAfterSec: Math.ceil((entry.lockedUntil - now) / 1000),
+      remaining: 0,
+    };
+  }
+  return { allowed: true };
+}
+
+/** 실패 기록 — MAX_ATTEMPTS 도달 시 잠금 */
+export function recordLoginFailure(request: Request): {
+  locked: boolean;
+  remaining: number;
+} {
+  const key = clientKey(request);
+  const now = Date.now();
+  const entry = attemptStore.get(key);
+
+  if (!entry || now - entry.firstAt > LOCK_MS) {
+    attemptStore.set(key, { count: 1, lockedUntil: 0, firstAt: now });
+    return { locked: false, remaining: MAX_ATTEMPTS - 1 };
+  }
+
+  entry.count += 1;
+  if (entry.count >= MAX_ATTEMPTS) {
+    entry.lockedUntil = now + LOCK_MS;
+    attemptStore.set(key, entry);
+    return { locked: true, remaining: 0 };
+  }
+  return { locked: false, remaining: MAX_ATTEMPTS - entry.count };
+}
+
+/** 성공 시 기록 초기화 */
+export function clearLoginFailures(request: Request): void {
+  attemptStore.delete(clientKey(request));
+}

@@ -104,7 +104,7 @@ function AdminApp() {
       {tab === "overview" && (
         <OverviewPanel
           counts={counts}
-          newsCount={news.filter((n) => n.published).length}
+          news={news}
           messages={messages}
           onGoTab={setTab}
         />

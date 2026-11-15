@@ -4,12 +4,13 @@ import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 
 const patchSchema = z.object({
-  status: z.enum(["NEW", "IN_PROGRESS", "DONE"]),
+  status: z.enum(["NEW", "IN_PROGRESS", "DONE"]).optional(),
+  memo: z.string().max(2000).optional(),
 });
 
 type Params = { params: Promise<{ id: string }> };
 
-/** 문의 상태 변경 (관리자) */
+/** 문의 상태/메모 변경 (관리자) */
 export async function PATCH(request: Request, { params }: Params) {
   const guard = await requireAdmin();
   if (guard) return guard;
@@ -19,7 +20,13 @@ export async function PATCH(request: Request, { params }: Params) {
     const parsed = patchSchema.safeParse(await request.json().catch(() => null));
     if (!parsed.success) {
       return NextResponse.json(
-        { ok: false, error: "상태값이 올바르지 않습니다." },
+        { ok: false, error: "입력값이 올바르지 않습니다." },
+        { status: 400 }
+      );
+    }
+    if (Object.keys(parsed.data).length === 0) {
+      return NextResponse.json(
+        { ok: false, error: "변경할 내용이 없습니다." },
         { status: 400 }
       );
     }
@@ -34,13 +41,13 @@ export async function PATCH(request: Request, { params }: Params) {
 
     const updated = await db.contactMessage.update({
       where: { id },
-      data: { status: parsed.data.status },
+      data: parsed.data,
     });
     return NextResponse.json({ ok: true, message: updated });
   } catch (error) {
     console.error("[messages][PATCH]", error);
     return NextResponse.json(
-      { ok: false, error: "문의 상태 변경 중 오류가 발생했습니다." },
+      { ok: false, error: "문의 변경 중 오류가 발생했습니다." },
       { status: 500 }
     );
   }

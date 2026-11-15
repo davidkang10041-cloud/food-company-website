@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -76,16 +76,29 @@ export function NewsPanel({ news, loading, onRefresh }: NewsPanelProps) {
   const [pending, setPending] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<AdminNews | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [query, setQuery] = useState("");
 
-  const sorted = useMemo(
-    () =>
-      [...news].sort((a, b) =>
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [...news].sort((a, b) =>
+      a.date === b.date
+        ? b.createdAt.localeCompare(a.createdAt)
+        : b.date.localeCompare(a.date)
+    );
+    return [...news]
+      .sort((a, b) =>
         a.date === b.date
           ? b.createdAt.localeCompare(a.createdAt)
           : b.date.localeCompare(a.date)
-      ),
-    [news]
-  );
+      )
+      .filter(
+        (n) =>
+          n.title.toLowerCase().includes(q) ||
+          n.desc.toLowerCase().includes(q) ||
+          n.category.includes(q) ||
+          n.date.includes(q)
+      );
+  }, [news, query]);
 
   const openCreate = () => {
     setEditing(null);
@@ -209,22 +222,37 @@ export function NewsPanel({ news, loading, onRefresh }: NewsPanelProps) {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <p className="text-[15px] text-muted-foreground">
-          총 <span className="font-num font-bold text-foreground">{sorted.length}</span>
+          총 <span className="font-num font-bold text-foreground">{filtered.length}</span>
           건 · 게시중{" "}
           <span className="font-num font-bold text-foreground">
-            {sorted.filter((n) => n.published).length}
+            {filtered.filter((n) => n.published).length}
           </span>
           건
         </p>
-        <Button
-          onClick={openCreate}
-          className="h-11 gap-1.5 rounded-full bg-brand px-5 text-[15px] font-bold hover:bg-brand-deep"
-        >
-          <Plus className="h-4 w-4" aria-hidden="true" />
-          새 공지사항 등록
-        </Button>
+        <div className="flex w-full items-center gap-2 md:w-auto">
+          <div className="relative w-full md:w-64">
+            <Search
+              className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="제목 · 내용 · 카테고리 검색"
+              className="pl-10"
+              aria-label="공지사항 검색"
+            />
+          </div>
+          <Button
+            onClick={openCreate}
+            className="h-11 shrink-0 gap-1.5 rounded-full bg-brand px-5 text-[15px] font-bold hover:bg-brand-deep"
+          >
+            <Plus className="h-4 w-4" aria-hidden="true" />
+            새 공지사항 등록
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-brand-line bg-white">
@@ -233,18 +261,18 @@ export function NewsPanel({ news, loading, onRefresh }: NewsPanelProps) {
             <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
             불러오는 중...
           </div>
-        ) : sorted.length === 0 ? (
+        ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16 text-center">
             <p className="text-[15px] font-semibold text-muted-foreground">
               등록된 공지사항이 없습니다.
             </p>
             <p className="text-[14.5px] text-muted-foreground">
-              첫 공지사항을 등록하면 홈페이지 뉴스룸에 표시됩니다.
+              검색 조건에 맞는 공지사항이 없습니다.
             </p>
           </div>
         ) : (
-          <ul className="divide-y divide-brand-line/70">
-            {sorted.map((item) => (
+          <ul className="max-h-[560px] overflow-y-auto thin-scroll divide-y divide-brand-line/70">
+            {filtered.map((item) => (
               <li
                 key={item.id}
                 className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:gap-4 md:p-5"
