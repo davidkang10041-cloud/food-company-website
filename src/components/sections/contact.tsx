@@ -4,15 +4,16 @@ import { useState } from "react";
 import { Building2, MapPin, Phone, Send } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
+import { useSiteSettings } from "@/components/settings-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { COMPANY } from "@/lib/company";
 
 export function Contact() {
   const { toast } = useToast();
+  const settings = useSiteSettings();
   const [pending, setPending] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -54,7 +55,7 @@ export function Contact() {
     } catch {
       toast({
         title: "전송에 실패했습니다",
-        description: `잠시 후 다시 시도하거나 ${COMPANY.phoneDisplay} 로 전화 주시면 신속히 안내해 드립니다.`,
+        description: `잠시 후 다시 시도하거나 ${settings.phoneDisplay} 로 전화 주시면 신속히 안내해 드립니다.`,
         variant: "destructive",
       });
     } finally {
@@ -80,7 +81,7 @@ export function Contact() {
 
             <FadeIn className="mt-10 space-y-4">
               <a
-                href={`tel:${COMPANY.phone.replace(/-/g, "")}`}
+                href={`tel:${settings.phone.replace(/-/g, "")}`}
                 className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.05] p-5 transition-colors hover:bg-white/10"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-white">
@@ -91,7 +92,7 @@ export function Contact() {
                     대표전화
                   </span>
                   <span className="font-num mt-1 block text-xl font-extrabold tracking-tight text-white">
-                    {COMPANY.phoneDisplay}
+                    {settings.phoneDisplay}
                   </span>
                 </span>
               </a>
@@ -104,7 +105,7 @@ export function Contact() {
                     주소
                   </span>
                   <span className="mt-1 block text-[16px] font-bold text-white">
-                    {COMPANY.address}
+                    {settings.address}
                   </span>
                 </span>
               </div>
@@ -117,7 +118,7 @@ export function Contact() {
                     사업분야
                   </span>
                   <span className="mt-1 block text-[16px] font-bold text-white">
-                    {COMPANY.business}
+                    {settings.business}
                   </span>
                 </span>
               </div>

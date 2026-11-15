@@ -1,45 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { FadeIn } from "@/components/site/fade-in";
 import { SectionHeading } from "@/components/site/section-heading";
+import { DEFAULT_NEWS, type DefaultNewsItem } from "@/lib/company";
 import { cn } from "@/lib/utils";
 
-type NewsItem = {
-  category: string;
-  date: string;
-  title: string;
-  desc: string;
-  highlight?: boolean;
-};
-
-const NEWS: NewsItem[] = [
-  {
-    category: "공급",
-    date: "2025.02",
-    title: "GS25 편의점 채널 식자재 공급 계약 체결",
-    desc: "전국 편의점 채널로 공급망을 확대하고, 신선 식자재 정기 납품 체계를 구축했습니다.",
-    highlight: true,
-  },
-  {
-    category: "인증",
-    date: "2024.10",
-    title: "간편조리세트 HACCP 인증 획득 — 4개 품목 인증 완성",
-    desc: "과채가공품 · 신선편의식품 · 즉석섭취식품에 이어 네 번째 품목 인증으로 전 품목 HACCP 관리 체계를 완성했습니다.",
-  },
-  {
-    category: "공급",
-    date: "2024.02",
-    title: "GS수퍼 식자재 공급 개시",
-    desc: "대기업 유통 채널 공급을 확대하며 항공사 케이터링 노하우 기반의 품질 경쟁력을 입증했습니다.",
-  },
-  {
-    category: "시설",
-    date: "2023.05",
-    title: "성남 제2공장 신설 및 HACCP 인증 획득",
-    desc: "생산역량 확대를 위한 제2공장을 준공하고, 같은 해 8월 HACCP 인증을 획득했습니다.",
-  },
-];
+type NewsItem = DefaultNewsItem;
 
 const CATEGORY_STYLE: Record<string, string> = {
   공급: "bg-brand text-white",
@@ -48,6 +16,25 @@ const CATEGORY_STYLE: Record<string, string> = {
 };
 
 export function News() {
+  const [news, setNews] = useState<NewsItem[]>(DEFAULT_NEWS);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/news", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.ok && Array.isArray(data.news) && data.news.length > 0) {
+          setNews(data.news);
+        }
+      })
+      .catch(() => {
+        // 실패 시 기본 데이터 유지
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <section
       id="news"
@@ -74,7 +61,7 @@ export function News() {
 
         <FadeIn className="mt-12">
           <ul>
-            {NEWS.map((item) => (
+            {news.map((item) => (
               <li key={item.title}>
                 <a href="#contact" className="news-row group">
                   <span className="font-num w-20 shrink-0 text-[15px] font-bold text-muted-foreground md:w-24">

@@ -13,7 +13,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
-import { COMPANY } from "@/lib/company";
+import { useSiteSettings } from "@/components/settings-context";
 
 type MegaItem = {
   href: string;
@@ -105,6 +105,7 @@ const MEGA: MegaItem[] = [
 const QUICK_LINKS = MEGA.flatMap((m) => m.links);
 
 export function SiteHeader() {
+  const settings = useSiteSettings();
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -315,7 +316,7 @@ export function SiteHeader() {
               )}
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
-              {COMPANY.phoneDisplay}
+              {settings.phoneDisplay}
             </a>
           </div>
 
@@ -610,7 +611,7 @@ export function SiteHeader() {
                 className="flex items-center justify-center gap-2 rounded-full bg-brand py-4 text-[16px] font-bold text-white"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" />
-                1:1 문의하기 · {COMPANY.phoneDisplay}
+                1:1 문의하기 · {settings.phoneDisplay}
               </a>
               <p className="mt-4 text-center text-[14px] font-semibold tracking-[0.2em] text-white/60">
                 CHEDAWON CO., LTD. · SINCE 2017

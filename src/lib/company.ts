@@ -16,6 +16,68 @@ export const COMPANY = {
   business: "식자재 유통 및 밀키트 OEM/ODM 사업",
 } as const;
 
+/* --------------------- 관리자 페이지: 사이트 설정 --------------------- */
+/*  DB(SiteSetting)에서 관리되며, 값이 없을 때의 기본값.                  */
+
+export const SETTING_FIELDS = [
+  { key: "companyName", label: "상호 (회사명)", defaultValue: COMPANY.name },
+  { key: "nameEn", label: "영문 상호", defaultValue: COMPANY.nameEn },
+  { key: "ceo", label: "대표이사", defaultValue: COMPANY.ceo },
+  { key: "founded", label: "설립일", defaultValue: COMPANY.founded },
+  { key: "capital", label: "자본금", defaultValue: COMPANY.capital },
+  { key: "phone", label: "대표전화 (tel: 링크용)", defaultValue: COMPANY.phone },
+  { key: "phoneDisplay", label: "대표전화 표시 형식", defaultValue: COMPANY.phoneDisplay },
+  { key: "address", label: "주소", defaultValue: COMPANY.address },
+  { key: "business", label: "사업분야", defaultValue: COMPANY.business },
+  { key: "slogan", label: "슬로건", defaultValue: COMPANY.slogan },
+] as const;
+
+export type SiteSettingsMap = Record<(typeof SETTING_FIELDS)[number]["key"], string>;
+
+export const DEFAULT_SETTINGS: SiteSettingsMap = SETTING_FIELDS.reduce(
+  (acc, f) => ({ ...acc, [f.key]: f.defaultValue }),
+  {} as SiteSettingsMap
+);
+
+/* --------------------- 관리자 페이지: 기본 공지사항 --------------------- */
+/*  뉴스룸이 비어 있을 때 자동 시딩되는 기본 데이터 + 프론트 폴백.         */
+
+export type DefaultNewsItem = {
+  category: string;
+  date: string;
+  title: string;
+  desc: string;
+  highlight?: boolean;
+};
+
+export const DEFAULT_NEWS: DefaultNewsItem[] = [
+  {
+    category: "공급",
+    date: "2025.02",
+    title: "GS25 편의점 채널 식자재 공급 계약 체결",
+    desc: "전국 편의점 채널로 공급망을 확대하고, 신선 식자재 정기 납품 체계를 구축했습니다.",
+    highlight: true,
+  },
+  {
+    category: "인증",
+    date: "2024.10",
+    title: "간편조리세트 HACCP 인증 획득 — 4개 품목 인증 완성",
+    desc: "과채가공품 · 신선편의식품 · 즉석섭취식품에 이어 네 번째 품목 인증으로 전 품목 HACCP 관리 체계를 완성했습니다.",
+  },
+  {
+    category: "공급",
+    date: "2024.02",
+    title: "GS수퍼 식자재 공급 개시",
+    desc: "대기업 유통 채널 공급을 확대하며 항공사 케이터링 노하우 기반의 품질 경쟁력을 입증했습니다.",
+  },
+  {
+    category: "시설",
+    date: "2023.05",
+    title: "성남 제2공장 신설 및 HACCP 인증 획득",
+    desc: "생산역량 확대를 위한 제2공장을 준공하고, 같은 해 8월 HACCP 인증을 획득했습니다.",
+  },
+];
+
 /* ------------------------------ Hero ------------------------------ */
 
 export const HERO_KEYWORDS = [

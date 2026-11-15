@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "./logo";
-import { COMPANY } from "@/lib/company";
+import { useSiteSettings } from "@/components/settings-context";
 
 const MENU_GROUPS = [
   {
@@ -122,6 +122,8 @@ function FamilySiteDropdown() {
 }
 
 export function SiteFooter() {
+  const settings = useSiteSettings();
+
   return (
     <footer className="mt-auto bg-brand-ink text-white">
       {/* CTA strip */}
@@ -143,11 +145,11 @@ export function SiteFooter() {
               1:1 문의하기
             </a>
             <a
-              href={`tel:${COMPANY.phone.replace(/-/g, "")}`}
+              href={`tel:${settings.phone.replace(/-/g, "")}`}
               className="font-num inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-[16px] font-bold text-white transition-colors hover:bg-white/10"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
-              {COMPANY.phoneDisplay}
+              {settings.phoneDisplay}
             </a>
           </div>
         </div>
@@ -159,7 +161,7 @@ export function SiteFooter() {
           <div className="max-w-sm">
             <Logo variant="light" />
             <p className="mt-5 text-[16px] leading-relaxed text-white/60">
-              {COMPANY.slogan}
+              {settings.slogan}
               <br />
               올바른 식자재 유통과 차별화된 식품 솔루션으로
               건강한 식문화를 발전시킵니다.
@@ -240,10 +242,18 @@ export function SiteFooter() {
             </a>
           </div>
           <p className="leading-relaxed">
-            {COMPANY.name} · 대표자 {COMPANY.ceo} · {COMPANY.address} ·{" "}
-            대표전화 <span className="font-num">{COMPANY.phoneDisplay}</span>
+            {settings.companyName} · 대표자 {settings.ceo} · {settings.address} ·{" "}
+            대표전화 <span className="font-num">{settings.phoneDisplay}</span>
           </p>
-          <p>© {new Date().getFullYear()} CHEDAWON Co., Ltd. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <p>© {new Date().getFullYear()} {settings.nameEn}. All rights reserved.</p>
+            <a
+              href="/admin"
+              className="shrink-0 rounded-full border border-white/20 px-3 py-1 text-[13.5px] font-semibold text-white/45 transition-colors hover:border-white/45 hover:text-white"
+            >
+              관리자
+            </a>
+          </div>
         </div>
       </div>
     </footer>

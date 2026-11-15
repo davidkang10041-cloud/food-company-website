@@ -14,6 +14,7 @@ import { News } from "@/components/sections/news";
 import { Growth } from "@/components/sections/growth";
 import { History } from "@/components/sections/history";
 import { Contact } from "@/components/sections/contact";
+import { SiteSettingsProvider } from "@/components/settings-context";
 import { HERO_KEYWORDS } from "@/lib/company";
 
 function KeywordTicker() {
@@ -89,7 +90,8 @@ function BackToTop() {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <SiteSettingsProvider>
+      <div className="flex min-h-screen flex-col">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-brand focus:px-5 focus:py-3 focus:text-[15px] focus:font-bold focus:text-white"
@@ -113,6 +115,7 @@ export default function Home() {
       </main>
       <SiteFooter />
       <BackToTop />
-    </div>
+      </div>
+    </SiteSettingsProvider>
   );
 }

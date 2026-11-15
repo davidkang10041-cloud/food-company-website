@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,29 +7,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
+/// 홈페이지 1:1 문의 (문의 폼 제출 건)
 model ContactMessage {
   id        String   @id @default(cuid())
   name      String
   company   String?
   phone     String
   message   String
+  /// NEW | IN_PROGRESS | DONE
+  status    String   @default("NEW")
   createdAt DateTime @default(now())
+}
+
+/// 뉴스룸 공지사항 (관리자 CRUD)
+model NewsPost {
+  id        String   @id @default(cuid())
+  category  String
+  date      String
+  title     String
+  desc      String
+  highlight Boolean  @default(false)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 사이트 설정 (키-값 저장소: 회사 정보 등)
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
