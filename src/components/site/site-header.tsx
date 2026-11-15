@@ -420,28 +420,24 @@ export function SiteHeader() {
                   </ul>
                 </div>
                 <div className="border-t border-brand-line bg-brand-mist/60">
-                  <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-x-8 gap-y-1 px-8 py-3.5 text-[15px] font-medium text-muted-foreground">
-                    <p>
-                      <span className="font-bold text-foreground/70">
-                        대표이사 {COMPANY.ceo}
+                  <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-x-8 gap-y-2 px-8 py-3.5">
+                    <p className="text-[15px] text-muted-foreground">
+                      <span className="font-bold text-foreground/75">
+                        식자재 공급 · OEM/ODM 상담
                       </span>
-                      <span className="mx-2.5 text-brand-line" aria-hidden="true">
-                        ·
-                      </span>
-                      {COMPANY.address}
+                      이 필요하신가요? 담당자가 신속하게 연결해드립니다.
                     </p>
-                    <p className="flex items-center gap-2">
-                      <Phone className="h-3.5 w-3.5 text-brand" aria-hidden="true" />
-                      <span className="font-bold text-foreground/70">
-                        대표번호 {COMPANY.phoneDisplay}
-                      </span>
-                      <span className="mx-1 text-brand-line" aria-hidden="true">
-                        ·
-                      </span>
-                      <span className="font-num font-bold tracking-wide">
-                        SINCE 2017
-                      </span>
-                    </p>
+                    <a
+                      href="#contact"
+                      onClick={() => setOpenMenu(null)}
+                      className="group inline-flex items-center gap-1.5 text-[15px] font-bold text-brand transition-colors hover:text-brand-deep"
+                    >
+                      1:1 문의하기
+                      <ArrowUpRight
+                        className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    </a>
                   </div>
                 </div>
               </motion.div>
