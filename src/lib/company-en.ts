@@ -242,7 +242,7 @@ export const EN_PRODUCTS = [
     kcal: "238.51 kcal",
     dressing: "Balsamic",
     items: ["Ricotta cheese", "Fusilli", "Cherry tomatoes", "Sweet corn", "Olives", "Vegetable mix"],
-    image: "/images/prod-1.png",
+    image: "/images/prod-1-v2.png",
   },
   {
     name: "Tender Chicken Salad",
@@ -251,7 +251,7 @@ export const EN_PRODUCTS = [
     kcal: "216.59 kcal",
     dressing: "Ranch",
     items: ["Cajun chicken", "Cherry tomatoes", "Sweet corn", "Olives", "Vegetable mix"],
-    image: "/images/prod-2.png",
+    image: "/images/prod-2-v2.png",
   },
   {
     name: "Bacon Potato Salad",
@@ -260,7 +260,7 @@ export const EN_PRODUCTS = [
     kcal: "229.38 kcal",
     dressing: "Ranch",
     items: ["Bacon", "Potato", "Cherry tomatoes", "Egg", "Kidney beans", "Vegetable mix"],
-    image: "/images/prod-3-v2.png",
+    image: "/images/prod-3-v3.png",
   },
   {
     name: "Chicken Breast Salad",
@@ -269,7 +269,7 @@ export const EN_PRODUCTS = [
     kcal: "194.23 kcal",
     dressing: "Balsamic",
     items: ["Chicken breast", "Cherry tomatoes", "Olives", "Vegetable mix"],
-    image: "/images/prod-4.png",
+    image: "/images/prod-4-v2.png",
   },
   {
     name: "Smoked Chicken Salad",
@@ -278,7 +278,7 @@ export const EN_PRODUCTS = [
     kcal: "196.53 kcal",
     dressing: "Oriental",
     items: ["Smoked chicken breast", "Olives", "Paprika", "Sweet corn", "Vegetable mix"],
-    image: "/images/prod-5.png",
+    image: "/images/prod-5-v2.png",
   },
 ] as const;
 

@@ -390,7 +390,7 @@ export const PRODUCTS = [
     kcal: "238.51 kcal",
     dressing: "발사믹",
     items: ["리코타치즈", "퓨질리", "방울토마토", "스위트콘", "올리브", "야채믹스"],
-    image: "/images/prod-1.png",
+    image: "/images/prod-1-v2.png",
   },
   {
     name: "텐더치킨 샐러드",
@@ -399,7 +399,7 @@ export const PRODUCTS = [
     kcal: "216.59 kcal",
     dressing: "랜치",
     items: ["케이준치킨", "방울토마토", "스위트콘", "올리브", "야채믹스"],
-    image: "/images/prod-2.png",
+    image: "/images/prod-2-v2.png",
   },
   {
     name: "베이컨 감자 샐러드",
@@ -408,7 +408,7 @@ export const PRODUCTS = [
     kcal: "229.38 kcal",
     dressing: "랜치",
     items: ["베이컨", "감자", "방울토마토", "계란", "키드니빈스", "야채믹스"],
-    image: "/images/prod-3-v2.png",
+    image: "/images/prod-3-v3.png",
   },
   {
     name: "닭가슴살 샐러드",
@@ -417,7 +417,7 @@ export const PRODUCTS = [
     kcal: "194.23 kcal",
     dressing: "발사믹",
     items: ["닭가슴살", "방울토마토", "올리브", "야채믹스"],
-    image: "/images/prod-4.png",
+    image: "/images/prod-4-v2.png",
   },
   {
     name: "훈제 닭가슴살 샐러드",
@@ -426,7 +426,7 @@ export const PRODUCTS = [
     kcal: "196.53 kcal",
     dressing: "오리엔탈",
     items: ["훈제닭가슴살", "올리브", "파프리카", "스위트콘", "야채믹스"],
-    image: "/images/prod-5.png",
+    image: "/images/prod-5-v2.png",
   },
 ];
 
