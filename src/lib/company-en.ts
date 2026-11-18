@@ -260,7 +260,7 @@ export const EN_PRODUCTS = [
     kcal: "229.38 kcal",
     dressing: "Ranch",
     items: ["Bacon", "Potato", "Cherry tomatoes", "Egg", "Kidney beans", "Vegetable mix"],
-    image: "/images/prod-3.png",
+    image: "/images/prod-3-v2.png",
   },
   {
     name: "Chicken Breast Salad",

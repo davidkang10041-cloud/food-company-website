@@ -408,7 +408,7 @@ export const PRODUCTS = [
     kcal: "229.38 kcal",
     dressing: "랜치",
     items: ["베이컨", "감자", "방울토마토", "계란", "키드니빈스", "야채믹스"],
-    image: "/images/prod-3.png",
+    image: "/images/prod-3-v2.png",
   },
   {
     name: "닭가슴살 샐러드",
